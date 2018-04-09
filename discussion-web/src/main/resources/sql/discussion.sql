@@ -1,0 +1,1142 @@
+/*
+Navicat MySQL Data Transfer
+
+Source Server         : 本地
+Source Server Version : 50720
+Source Host           : 192.168.1.79:3306
+Source Database       : discussiondb
+
+Target Server Type    : MYSQL
+Target Server Version : 50720
+File Encoding         : 65001
+
+Date: 2018-04-03 09:19:11
+*/
+
+SET FOREIGN_KEY_CHECKS=0;
+
+-- ----------------------------
+-- Table structure for blog_article
+-- ----------------------------
+DROP TABLE IF EXISTS `blog_article`;
+CREATE TABLE `blog_article` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '主键',
+  `title` varchar(255) NOT NULL COMMENT '标题,input,NO,false,true,true',
+  `sub_title` varchar(255) DEFAULT NULL COMMENT '副标题,input,YES,false,false,false',
+  `marks` varchar(255) DEFAULT NULL COMMENT '摘要,textarea,YES,false,false,false',
+  `show_pic` varchar(255) DEFAULT NULL COMMENT '显示图片,uploadImg,YES,false,false,false',
+  `category` varchar(255) DEFAULT NULL COMMENT '文章类型,radio,YES,false,true,true',
+  `out_link_url` varchar(255) DEFAULT NULL COMMENT '外链地址,input,YES,false,false,false',
+  `resources` varchar(255) DEFAULT NULL COMMENT '来源,input,YES,false,true,false',
+  `publist_time` datetime DEFAULT NULL COMMENT '发布时间,timer,YES,false,true,true',
+  `content` text NOT NULL COMMENT '内容,editor,NO,false,true,true',
+  `text` text COMMENT '纯文字文章内容,textarea,YES,false,false,false',
+  `click` int(11) DEFAULT NULL COMMENT '浏览量,0,YES,false,false,false',
+  `channel_id` bigint(20) DEFAULT NULL COMMENT '栏目ID,0,YES,false,false,false',
+  `sort` int(11) DEFAULT NULL COMMENT '排序值,0,YES,false,false,false',
+  `is_top` bit(1) DEFAULT NULL COMMENT '是否置顶,switch,YES,true,true,false',
+  `is_recommend` bit(1) DEFAULT NULL COMMENT '是否推荐,switch,YES,true,true,false',
+  `status` int(11) DEFAULT NULL COMMENT '文章状态,0,YES,false,false,false',
+  `create_date` datetime DEFAULT NULL COMMENT '创建时间',
+  `create_by` bigint(20) DEFAULT NULL COMMENT '创建人',
+  `update_date` datetime DEFAULT NULL COMMENT '修改时间',
+  `update_by` bigint(20) DEFAULT NULL COMMENT '修改人',
+  `remarks` varchar(255) DEFAULT NULL COMMENT '备注',
+  `del_flag` tinyint(4) DEFAULT NULL COMMENT '删除标记',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COMMENT='博客内容,1,uploadImg-showPic-YES,timer-publistTime-YES,editor-co';
+
+-- ----------------------------
+-- Records of blog_article
+-- ----------------------------
+INSERT INTO `blog_article` VALUES ('1', 'banner', 'banner', null, 'https://static.mysiteforme.com/3e2baf40-f2e5-4b3c-93d1-3f97965017ec.jpg', '1', null, null, '2018-03-13 08:00:00', '<p>图片<br></p>', '图片', null, '19', '0', '\0', '\0', null, '2018-03-13 12:55:17', '1', '2018-03-13 12:55:17', '1', null, '0');
+
+-- ----------------------------
+-- Table structure for blog_article_tags
+-- ----------------------------
+DROP TABLE IF EXISTS `blog_article_tags`;
+CREATE TABLE `blog_article_tags` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '主键',
+  `article_id` bigint(20) NOT NULL COMMENT '文章ID,0,NO,false,false,false',
+  `tags_id` bigint(20) NOT NULL COMMENT '标签ID,0,NO,false,false,false',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='标签-文章关联表,3';
+
+-- ----------------------------
+-- Records of blog_article_tags
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for blog_channel
+-- ----------------------------
+DROP TABLE IF EXISTS `blog_channel`;
+CREATE TABLE `blog_channel` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '主键',
+  `name` varchar(255) NOT NULL COMMENT '名称,input,NO,false,true,true',
+  `site_id` bigint(20) DEFAULT NULL COMMENT '站点ID,0,YES,false,false,false',
+  `href` varchar(500) DEFAULT NULL COMMENT '链接地址,input,YES,false,true,true',
+  `logo` varchar(255) DEFAULT NULL COMMENT '栏目图标,input,YES,false,true,false',
+  `is_base_channel` bit(1) DEFAULT NULL COMMENT '是否为主栏目,switch,YES,true,true,true',
+  `can_comment` bit(1) DEFAULT NULL COMMENT '是否能够评论,switch,YES,true,true,true',
+  `is_no_name` bit(1) DEFAULT NULL COMMENT '是否匿名,switch,YES,true,true,true',
+  `is_can_aduit` bit(1) DEFAULT NULL COMMENT '是否开启审核,switch,YES,true,true,true',
+  `seo_title` varchar(255) DEFAULT NULL COMMENT '网页title(seo),input,YES,false,false,false',
+  `seo_keywords` varchar(255) DEFAULT NULL COMMENT '网页关键字(seo) ,input,YES,false,false,false',
+  `seo_description` varchar(255) DEFAULT NULL COMMENT '网页描述(seo),textarea,YES,false,false,false',
+  `parent_id` bigint(20) DEFAULT NULL COMMENT '父节点ID',
+  `parent_ids` varchar(2000) DEFAULT NULL COMMENT '父节点联集',
+  `level` bigint(2) DEFAULT NULL COMMENT '层级深度',
+  `sort` smallint(6) DEFAULT NULL COMMENT '排序',
+  `create_date` datetime DEFAULT NULL COMMENT '创建时间',
+  `create_by` bigint(20) DEFAULT NULL COMMENT '创建人',
+  `update_date` datetime DEFAULT NULL COMMENT '修改时间',
+  `update_by` bigint(20) DEFAULT NULL COMMENT '修改人',
+  `remarks` varchar(255) DEFAULT NULL COMMENT '备注',
+  `del_flag` tinyint(4) DEFAULT NULL COMMENT '删除标记',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=utf8 COMMENT='博客栏目,2,switch-baseChannel-YES-true-is_base_channel,switch-ca';
+
+-- ----------------------------
+-- Records of blog_channel
+-- ----------------------------
+INSERT INTO `blog_channel` VALUES ('1', '网站首页', '1', '/index', '', '\0', '\0', '\0', '\0', null, null, null, null, '1,', '1', '60', '2018-01-22 11:55:24', '1', '2018-01-23 00:37:57', '1', null, '0');
+INSERT INTO `blog_channel` VALUES ('2', '文章专栏', '1', '/wzzl', '', '', '', '\0', '\0', null, null, null, null, '2,', '1', '50', '2018-01-22 11:55:56', '1', '2018-02-03 21:41:52', '1', null, '0');
+INSERT INTO `blog_channel` VALUES ('3', '资源分享', '1', '/share', '', '\0', '\0', '\0', '\0', null, null, null, null, '3,', '1', '10', '2018-01-22 11:56:50', '1', '2018-02-06 11:20:48', '1', null, '0');
+INSERT INTO `blog_channel` VALUES ('4', '点点滴滴', '1', '/dddd', '', '\0', '\0', '\0', '\0', null, null, null, null, '4,', '1', '30', '2018-01-22 11:57:16', '1', '2018-02-08 01:37:32', '1', null, '0');
+INSERT INTO `blog_channel` VALUES ('5', '关于本站', '1', '/about', '', '\0', '\0', '\0', '\0', null, null, null, null, '5,', '1', '20', '2018-01-22 11:57:40', '1', '2018-02-06 00:14:18', '1', null, '0');
+INSERT INTO `blog_channel` VALUES ('6', '通知', '1', '/tz', null, '\0', '\0', '\0', '\0', null, null, null, null, '6,', '1', '0', '2018-01-22 11:59:01', '1', '2018-01-22 23:25:40', '1', null, '0');
+INSERT INTO `blog_channel` VALUES ('7', '更新日志', '1', '/gxrz', null, '\0', '\0', '\0', '\0', null, null, null, null, '7,', '1', '-1', '2018-01-22 23:37:25', '1', '2018-01-22 23:37:38', '1', null, '0');
+INSERT INTO `blog_channel` VALUES ('9', 'H5', '1', '/wzzl/h5', null, '', '\0', '\0', '\0', null, null, null, '2', '2,9,', '2', '0', '2018-01-27 01:34:24', '1', '2018-01-27 01:46:23', '1', null, '0');
+INSERT INTO `blog_channel` VALUES ('10', 'mysql', '1', '/wzzl/mysql', null, '', '\0', '\0', '\0', null, null, null, '2', '2,10,', '2', '10', '2018-01-27 01:34:42', '1', '2018-01-27 01:46:17', '1', null, '0');
+INSERT INTO `blog_channel` VALUES ('11', 'springboot', '1', '/wzzl/springboot', null, '', '\0', '\0', '\0', null, null, null, '2', '2,11,', '2', '20', '2018-01-27 01:35:05', '1', '2018-01-27 01:46:09', '1', null, '0');
+INSERT INTO `blog_channel` VALUES ('12', 'mybatis', '1', '/wzzl/mybatis', null, '', '\0', '\0', '\0', null, null, null, '2', '2,12,', '2', '30', '2018-01-27 01:35:18', '1', '2018-01-27 01:46:02', '1', null, '0');
+INSERT INTO `blog_channel` VALUES ('13', 'IDE', '1', '/wzzl/ide', null, '', '', '\0', '\0', null, null, null, '2', '2,13,', '2', '40', '2018-01-27 01:35:44', '1', '2018-02-04 04:00:11', '1', null, '0');
+INSERT INTO `blog_channel` VALUES ('14', 'java', '1', '/wzzl/java', null, '', '', '\0', '\0', null, null, null, '2', '2,14,', '2', '50', '2018-01-27 01:35:56', '1', '2018-02-04 02:04:20', '1', null, '0');
+INSERT INTO `blog_channel` VALUES ('15', '留言墙', '1', '/about/messages', null, '\0', '', '\0', '\0', null, null, null, '5', '5,15,', '2', '0', '2018-02-05 21:27:13', '1', '2018-02-06 00:07:04', '1', null, '0');
+INSERT INTO `blog_channel` VALUES ('16', '友情链接', '1', '/about/friendlink', null, '\0', '\0', '\0', '\0', null, null, null, '5', '5,16,', '2', '10', '2018-02-05 21:27:33', '1', '2018-02-06 00:06:30', '1', null, '0');
+INSERT INTO `blog_channel` VALUES ('17', '关于作者', '1', '/about/author', null, '\0', '\0', '\0', '\0', null, null, null, '5', '5,17,', '2', '20', '2018-02-05 21:27:51', '1', '2018-02-06 00:06:18', '1', null, '0');
+INSERT INTO `blog_channel` VALUES ('18', '关于博客', '1', '/about/blog', null, '\0', '\0', '\0', '\0', null, null, null, '5', '5,18,', '2', '30', '2018-02-05 21:28:09', '1', '2018-02-05 23:14:56', '1', null, '0');
+INSERT INTO `blog_channel` VALUES ('19', '首页banner图', '1', '/sybannert', null, '\0', '\0', '\0', '\0', null, null, null, null, '19,', '1', '1', '2018-02-07 10:31:12', '1', '2018-02-07 10:31:21', '1', null, '0');
+
+-- ----------------------------
+-- Table structure for blog_comment
+-- ----------------------------
+DROP TABLE IF EXISTS `blog_comment`;
+CREATE TABLE `blog_comment` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '主键',
+  `content` text NOT NULL COMMENT '评论内容,textarea,NO,false,true,true',
+  `type` int(11) DEFAULT NULL COMMENT 'ip,input,YES,false,true,true',
+  `ip` varchar(255) DEFAULT NULL COMMENT 'ip,input,YES,false,true,true',
+  `system` varchar(255) DEFAULT NULL COMMENT '操作系统,input,YES,false,true,false',
+  `browser` varchar(255) DEFAULT NULL COMMENT '浏览器,input,YES,false,true,false',
+  `floor` int(11) DEFAULT NULL COMMENT '楼层,0,YES,false,false,false',
+  `channel_id` bigint(20) DEFAULT NULL COMMENT '栏目ID,0,YES,false,false,false',
+  `article_id` int(11) DEFAULT NULL COMMENT '文章ID,0,YES,false,false,false',
+  `reply_id` bigint(20) DEFAULT NULL COMMENT '回复评论ID,0,YES,false,false,false',
+  `is_admin_reply` bit(1) DEFAULT NULL COMMENT '管理员是否回复,switch,YES,true,true,true',
+  `reply_content` text COMMENT '管理员回复内容,textarea,YES,false,true,false',
+  `create_date` datetime DEFAULT NULL COMMENT '创建时间',
+  `create_by` bigint(20) DEFAULT NULL COMMENT '创建人',
+  `update_date` datetime DEFAULT NULL COMMENT '修改时间',
+  `update_by` bigint(20) DEFAULT NULL COMMENT '修改人',
+  `remarks` varchar(255) DEFAULT NULL COMMENT '备注',
+  `del_flag` tinyint(4) DEFAULT NULL COMMENT '删除标记',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='博客评论,1,switch-adminReply-YES-true-is_admin_reply';
+
+-- ----------------------------
+-- Records of blog_comment
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for blog_tags
+-- ----------------------------
+DROP TABLE IF EXISTS `blog_tags`;
+CREATE TABLE `blog_tags` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '主键',
+  `name` varchar(255) DEFAULT NULL COMMENT '标签名字,input,YES,false,true,true',
+  `sort` int(11) DEFAULT NULL COMMENT '排序,0,YES,false,false,false',
+  `create_date` datetime DEFAULT NULL COMMENT '创建时间',
+  `create_by` bigint(20) DEFAULT NULL COMMENT '创建人',
+  `update_date` datetime DEFAULT NULL COMMENT '修改时间',
+  `update_by` bigint(20) DEFAULT NULL COMMENT '修改人',
+  `remarks` varchar(255) DEFAULT NULL COMMENT '备注',
+  `del_flag` tinyint(4) DEFAULT NULL COMMENT '删除标记',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='博客标签,1';
+
+-- ----------------------------
+-- Records of blog_tags
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for hat_area
+-- ----------------------------
+DROP TABLE IF EXISTS `hat_area`;
+CREATE TABLE `hat_area` (
+  `id` int(11) NOT NULL,
+  `areaID` varchar(255) DEFAULT NULL,
+  `area` varchar(255) DEFAULT NULL,
+  `father` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of hat_area
+-- ----------------------------
+INSERT INTO `hat_area` VALUES ('1', '110101', '东城区', '110100');
+INSERT INTO `hat_area` VALUES ('2', '110102', '西城区', '110100');
+INSERT INTO `hat_area` VALUES ('3', '110103', '崇文区', '110100');
+INSERT INTO `hat_area` VALUES ('4', '110104', '宣武区', '110100');
+INSERT INTO `hat_area` VALUES ('5', '110105', '朝阳区', '110100');
+INSERT INTO `hat_area` VALUES ('6', '110106', '丰台区', '110100');
+INSERT INTO `hat_area` VALUES ('7', '110107', '石景山区', '110100');
+INSERT INTO `hat_area` VALUES ('8', '110108', '海淀区', '110100');
+INSERT INTO `hat_area` VALUES ('9', '110109', '门头沟区', '110100');
+INSERT INTO `hat_area` VALUES ('10', '110111', '房山区', '110100');
+INSERT INTO `hat_area` VALUES ('11', '110112', '通州区', '110100');
+INSERT INTO `hat_area` VALUES ('12', '110113', '顺义区', '110100');
+INSERT INTO `hat_area` VALUES ('13', '110114', '昌平区', '110100');
+INSERT INTO `hat_area` VALUES ('14', '110115', '大兴区', '110100');
+INSERT INTO `hat_area` VALUES ('15', '110116', '怀柔区', '110100');
+INSERT INTO `hat_area` VALUES ('16', '110117', '平谷区', '110100');
+INSERT INTO `hat_area` VALUES ('17', '110228', '密云县', '110200');
+INSERT INTO `hat_area` VALUES ('18', '110229', '延庆县', '110200');
+INSERT INTO `hat_area` VALUES ('19', '120101', '和平区', '120100');
+INSERT INTO `hat_area` VALUES ('20', '120102', '河东区', '120100');
+INSERT INTO `hat_area` VALUES ('21', '120103', '河西区', '120100');
+INSERT INTO `hat_area` VALUES ('22', '120104', '南开区', '120100');
+INSERT INTO `hat_area` VALUES ('23', '120105', '河北区', '120100');
+INSERT INTO `hat_area` VALUES ('24', '120106', '红桥区', '120100');
+INSERT INTO `hat_area` VALUES ('25', '120107', '塘沽区', '120100');
+INSERT INTO `hat_area` VALUES ('26', '120108', '汉沽区', '120100');
+INSERT INTO `hat_area` VALUES ('27', '120109', '大港区', '120100');
+INSERT INTO `hat_area` VALUES ('28', '120110', '东丽区', '120100');
+INSERT INTO `hat_area` VALUES ('29', '120111', '西青区', '120100');
+INSERT INTO `hat_area` VALUES ('30', '120112', '津南区', '120100');
+INSERT INTO `hat_area` VALUES ('31', '120113', '北辰区', '120100');
+INSERT INTO `hat_area` VALUES ('32', '120114', '武清区', '120100');
+INSERT INTO `hat_area` VALUES ('33', '120115', '宝坻区', '120100');
+INSERT INTO `hat_area` VALUES ('34', '120221', '宁河县', '120200');
+INSERT INTO `hat_area` VALUES ('35', '120223', '静海县', '120200');
+INSERT INTO `hat_area` VALUES ('36', '120225', '蓟　县', '120200');
+INSERT INTO `hat_area` VALUES ('37', '130101', '市辖区', '130100');
+INSERT INTO `hat_area` VALUES ('38', '130102', '长安区', '130100');
+INSERT INTO `hat_area` VALUES ('39', '130103', '桥东区', '130100');
+INSERT INTO `hat_area` VALUES ('40', '130104', '桥西区', '130100');
+INSERT INTO `hat_area` VALUES ('41', '130105', '新华区', '130100');
+INSERT INTO `hat_area` VALUES ('42', '130107', '井陉矿区', '130100');
+
+-- ----------------------------
+-- Table structure for qrtz_blob_triggers
+-- ----------------------------
+DROP TABLE IF EXISTS `qrtz_blob_triggers`;
+CREATE TABLE `qrtz_blob_triggers` (
+  `SCHED_NAME` varchar(120) NOT NULL,
+  `TRIGGER_NAME` varchar(200) NOT NULL,
+  `TRIGGER_GROUP` varchar(200) NOT NULL,
+  `BLOB_DATA` blob,
+  PRIMARY KEY (`SCHED_NAME`,`TRIGGER_NAME`,`TRIGGER_GROUP`),
+  CONSTRAINT `qrtz_blob_triggers_ibfk_1` FOREIGN KEY (`SCHED_NAME`, `TRIGGER_NAME`, `TRIGGER_GROUP`) REFERENCES `qrtz_triggers` (`SCHED_NAME`, `TRIGGER_NAME`, `TRIGGER_GROUP`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of qrtz_blob_triggers
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for qrtz_calendars
+-- ----------------------------
+DROP TABLE IF EXISTS `qrtz_calendars`;
+CREATE TABLE `qrtz_calendars` (
+  `SCHED_NAME` varchar(120) NOT NULL,
+  `CALENDAR_NAME` varchar(200) NOT NULL,
+  `CALENDAR` blob NOT NULL,
+  PRIMARY KEY (`SCHED_NAME`,`CALENDAR_NAME`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of qrtz_calendars
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for qrtz_cron_triggers
+-- ----------------------------
+DROP TABLE IF EXISTS `qrtz_cron_triggers`;
+CREATE TABLE `qrtz_cron_triggers` (
+  `SCHED_NAME` varchar(120) NOT NULL,
+  `TRIGGER_NAME` varchar(200) NOT NULL,
+  `TRIGGER_GROUP` varchar(200) NOT NULL,
+  `CRON_EXPRESSION` varchar(200) NOT NULL,
+  `TIME_ZONE_ID` varchar(80) DEFAULT NULL,
+  PRIMARY KEY (`SCHED_NAME`,`TRIGGER_NAME`,`TRIGGER_GROUP`),
+  CONSTRAINT `qrtz_cron_triggers_ibfk_1` FOREIGN KEY (`SCHED_NAME`, `TRIGGER_NAME`, `TRIGGER_GROUP`) REFERENCES `qrtz_triggers` (`SCHED_NAME`, `TRIGGER_NAME`, `TRIGGER_GROUP`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of qrtz_cron_triggers
+-- ----------------------------
+INSERT INTO `qrtz_cron_triggers` VALUES ('MySiteForMeScheduler', 'TASK_1', 'DEFAULT', '0 0 1 * * ?', 'Asia/Shanghai');
+INSERT INTO `qrtz_cron_triggers` VALUES ('MySiteForMeScheduler', 'TASK_2', 'DEFAULT', '0 0 1 * * ?', 'Asia/Shanghai');
+
+-- ----------------------------
+-- Table structure for qrtz_fired_triggers
+-- ----------------------------
+DROP TABLE IF EXISTS `qrtz_fired_triggers`;
+CREATE TABLE `qrtz_fired_triggers` (
+  `SCHED_NAME` varchar(120) NOT NULL,
+  `ENTRY_ID` varchar(95) NOT NULL,
+  `TRIGGER_NAME` varchar(200) NOT NULL,
+  `TRIGGER_GROUP` varchar(200) NOT NULL,
+  `INSTANCE_NAME` varchar(200) NOT NULL,
+  `FIRED_TIME` bigint(13) NOT NULL,
+  `SCHED_TIME` bigint(13) NOT NULL,
+  `PRIORITY` int(11) NOT NULL,
+  `STATE` varchar(16) NOT NULL,
+  `JOB_NAME` varchar(200) DEFAULT NULL,
+  `JOB_GROUP` varchar(200) DEFAULT NULL,
+  `IS_NONCONCURRENT` varchar(1) DEFAULT NULL,
+  `REQUESTS_RECOVERY` varchar(1) DEFAULT NULL,
+  PRIMARY KEY (`SCHED_NAME`,`ENTRY_ID`),
+  KEY `idx_qrtz_ft_trig_inst_name` (`SCHED_NAME`,`INSTANCE_NAME`),
+  KEY `idx_qrtz_ft_inst_job_req_rcvry` (`SCHED_NAME`,`INSTANCE_NAME`,`REQUESTS_RECOVERY`),
+  KEY `idx_qrtz_ft_j_g` (`SCHED_NAME`,`JOB_NAME`,`JOB_GROUP`),
+  KEY `idx_qrtz_ft_jg` (`SCHED_NAME`,`JOB_GROUP`),
+  KEY `idx_qrtz_ft_t_g` (`SCHED_NAME`,`TRIGGER_NAME`,`TRIGGER_GROUP`),
+  KEY `idx_qrtz_ft_tg` (`SCHED_NAME`,`TRIGGER_GROUP`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of qrtz_fired_triggers
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for qrtz_job_details
+-- ----------------------------
+DROP TABLE IF EXISTS `qrtz_job_details`;
+CREATE TABLE `qrtz_job_details` (
+  `SCHED_NAME` varchar(120) NOT NULL,
+  `JOB_NAME` varchar(200) NOT NULL,
+  `JOB_GROUP` varchar(200) NOT NULL,
+  `DESCRIPTION` varchar(250) DEFAULT NULL,
+  `JOB_CLASS_NAME` varchar(250) NOT NULL,
+  `IS_DURABLE` varchar(1) NOT NULL,
+  `IS_NONCONCURRENT` varchar(1) NOT NULL,
+  `IS_UPDATE_DATA` varchar(1) NOT NULL,
+  `REQUESTS_RECOVERY` varchar(1) NOT NULL,
+  `JOB_DATA` blob,
+  PRIMARY KEY (`SCHED_NAME`,`JOB_NAME`,`JOB_GROUP`),
+  KEY `idx_qrtz_j_req_recovery` (`SCHED_NAME`,`REQUESTS_RECOVERY`),
+  KEY `idx_qrtz_j_grp` (`SCHED_NAME`,`JOB_GROUP`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of qrtz_job_details
+-- ----------------------------
+INSERT INTO `qrtz_job_details` VALUES ('MySiteForMeScheduler', 'TASK_1', 'DEFAULT', null, 'com.ledict.core.util.quartz.ScheduleJob', '0', '0', '0', '0', 0xACED0005737200156F72672E71756172747A2E4A6F62446174614D61709FB083E8BFA9B0CB020000787200266F72672E71756172747A2E7574696C732E537472696E674B65794469727479466C61674D61708208E8C3FBC55D280200015A0013616C6C6F77735472616E7369656E74446174617872001D6F72672E71756172747A2E7574696C732E4469727479466C61674D617013E62EAD28760ACE0200025A000564697274794C00036D617074000F4C6A6176612F7574696C2F4D61703B787001737200116A6176612E7574696C2E486173684D61700507DAC1C31660D103000246000A6C6F6164466163746F724900097468726573686F6C6478703F4000000000000C7708000000100000000174000D4A4F425F504152414D5F4B45597372001C636F6D2E6C65646963742E656E746974792E51756172747A5461736B00000000000000010200064C000463726F6E7400124C6A6176612F6C616E672F537472696E673B4C00046E616D6571007E00094C0006706172616D7371007E00094C00067374617475737400134C6A6176612F6C616E672F496E74656765723B4C000A7461726765744265616E71007E00094C000B74726765744D6574686F6471007E000978720021636F6D2E6C65646963742E656E746974792E626173652E44617461456E7469747900000000000000010200084C000A637265617465446174657400104C6A6176612F7574696C2F446174653B4C000863726561746549647400104C6A6176612F6C616E672F4C6F6E673B4C000A637265617465557365727400184C636F6D2F6C65646963742F656E746974792F557365723B4C000764656C466C61677400134C6A6176612F6C616E672F426F6F6C65616E3B4C000772656D61726B7371007E00094C000A7570646174654461746571007E000C4C0008757064617465496471007E000D4C000A7570646174655573657271007E000E78720021636F6D2E6C65646963742E656E746974792E626173652E42617365456E746974799B308635E8F2FD660200014C0002696471007E000D7872002B636F6D2E62616F6D69646F752E6D796261746973706C75732E6163746976657265636F72642E4D6F64656C000000000000000102000078707372000E6A6176612E6C616E672E4C6F6E673B8BE490CC8F23DF0200014A000576616C7565787200106A6176612E6C616E672E4E756D62657286AC951D0B94E08B020000787000000000000000017372000E6A6176612E7574696C2E44617465686A81014B597419030000787077080000016132EF0E187871007E001570737200116A6176612E6C616E672E426F6F6C65616ECD207280D59CFAEE0200015A000576616C7565787000740022E6AF8FE5A4A9E5878CE699A831E782B9E9929FE689A7E8A18CE8AFA5E4BBBBE58AA17371007E0016770800000161336910787871007E00157074000B3020302031202A202A203F74001BE5908CE6ADA5E69687E7ABA0E6B58FE8A788E9878FE695B0E68DAE74000131737200116A6176612E6C616E672E496E746567657212E2A0A4F781873802000149000576616C75657871007E00140000000074000A73797374656D5461736B74001A73796E6368726F6E697A6174696F6E41727469636C65566965777800);
+INSERT INTO `qrtz_job_details` VALUES ('MySiteForMeScheduler', 'TASK_2', 'DEFAULT', null, 'com.ledict.core.util.quartz.ScheduleJob', '0', '0', '0', '0', 0xACED0005737200156F72672E71756172747A2E4A6F62446174614D61709FB083E8BFA9B0CB020000787200266F72672E71756172747A2E7574696C732E537472696E674B65794469727479466C61674D61708208E8C3FBC55D280200015A0013616C6C6F77735472616E7369656E74446174617872001D6F72672E71756172747A2E7574696C732E4469727479466C61674D617013E62EAD28760ACE0200025A000564697274794C00036D617074000F4C6A6176612F7574696C2F4D61703B787001737200116A6176612E7574696C2E486173684D61700507DAC1C31660D103000246000A6C6F6164466163746F724900097468726573686F6C6478703F4000000000000C7708000000100000000174000D4A4F425F504152414D5F4B45597372001C636F6D2E6C65646963742E656E746974792E51756172747A5461736B00000000000000010200064C000463726F6E7400124C6A6176612F6C616E672F537472696E673B4C00046E616D6571007E00094C0006706172616D7371007E00094C00067374617475737400134C6A6176612F6C616E672F496E74656765723B4C000A7461726765744265616E71007E00094C000B74726765744D6574686F6471007E000978720021636F6D2E6C65646963742E656E746974792E626173652E44617461456E7469747900000000000000010200084C000A637265617465446174657400104C6A6176612F7574696C2F446174653B4C000863726561746549647400104C6A6176612F6C616E672F4C6F6E673B4C000A637265617465557365727400184C636F6D2F6C65646963742F656E746974792F557365723B4C000764656C466C61677400134C6A6176612F6C616E672F426F6F6C65616E3B4C000772656D61726B7371007E00094C000A7570646174654461746571007E000C4C0008757064617465496471007E000D4C000A7570646174655573657271007E000E78720021636F6D2E6C65646963742E656E746974792E626173652E42617365456E746974799B308635E8F2FD660200014C0002696471007E000D7872002B636F6D2E62616F6D69646F752E6D796261746973706C75732E6163746976657265636F72642E4D6F64656C000000000000000102000078707372000E6A6176612E6C616E672E4C6F6E673B8BE490CC8F23DF0200014A000576616C7565787200106A6176612E6C616E672E4E756D62657286AC951D0B94E08B020000787000000000000000027372000E6A6176612E7574696C2E44617465686A81014B59741903000078707708000001613F9BED98787371007E0013000000000000000170737200116A6176612E6C616E672E426F6F6C65616ECD207280D59CFAEE0200015A000576616C7565787000740031E7949FE68890E69687E7ABA0E6909CE7B4A2E7B4A2E5BC95EFBC8CE6AF8FE5A4A9E6999AE4B88A31E782B9E689A7E8A18C7371007E00167708000001613F9BED987871007E00187074000B3020302031202A202A203F740018E7949FE68890E69687E7ABA0E6909CE7B4A2E7B4A2E5BC9574000131737200116A6176612E6C616E672E496E746567657212E2A0A4F781873802000149000576616C75657871007E00140000000074000A73797374656D5461736B74001263726561746541727469636C65496E6465787800);
+
+-- ----------------------------
+-- Table structure for qrtz_locks
+-- ----------------------------
+DROP TABLE IF EXISTS `qrtz_locks`;
+CREATE TABLE `qrtz_locks` (
+  `SCHED_NAME` varchar(120) NOT NULL,
+  `LOCK_NAME` varchar(40) NOT NULL,
+  PRIMARY KEY (`SCHED_NAME`,`LOCK_NAME`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of qrtz_locks
+-- ----------------------------
+INSERT INTO `qrtz_locks` VALUES ('MySiteForMeScheduler', 'STATE_ACCESS');
+INSERT INTO `qrtz_locks` VALUES ('MySiteForMeScheduler', 'TRIGGER_ACCESS');
+
+-- ----------------------------
+-- Table structure for qrtz_paused_trigger_grps
+-- ----------------------------
+DROP TABLE IF EXISTS `qrtz_paused_trigger_grps`;
+CREATE TABLE `qrtz_paused_trigger_grps` (
+  `SCHED_NAME` varchar(120) NOT NULL,
+  `TRIGGER_GROUP` varchar(200) NOT NULL,
+  PRIMARY KEY (`SCHED_NAME`,`TRIGGER_GROUP`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of qrtz_paused_trigger_grps
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for qrtz_scheduler_state
+-- ----------------------------
+DROP TABLE IF EXISTS `qrtz_scheduler_state`;
+CREATE TABLE `qrtz_scheduler_state` (
+  `SCHED_NAME` varchar(120) NOT NULL,
+  `INSTANCE_NAME` varchar(200) NOT NULL,
+  `LAST_CHECKIN_TIME` bigint(13) NOT NULL,
+  `CHECKIN_INTERVAL` bigint(13) NOT NULL,
+  PRIMARY KEY (`SCHED_NAME`,`INSTANCE_NAME`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of qrtz_scheduler_state
+-- ----------------------------
+INSERT INTO `qrtz_scheduler_state` VALUES ('MySiteForMeScheduler', 'XS-20171123NCXA1522718194547', '1522718339303', '15000');
+
+-- ----------------------------
+-- Table structure for qrtz_simple_triggers
+-- ----------------------------
+DROP TABLE IF EXISTS `qrtz_simple_triggers`;
+CREATE TABLE `qrtz_simple_triggers` (
+  `SCHED_NAME` varchar(120) NOT NULL,
+  `TRIGGER_NAME` varchar(200) NOT NULL,
+  `TRIGGER_GROUP` varchar(200) NOT NULL,
+  `REPEAT_COUNT` bigint(7) NOT NULL,
+  `REPEAT_INTERVAL` bigint(12) NOT NULL,
+  `TIMES_TRIGGERED` bigint(10) NOT NULL,
+  PRIMARY KEY (`SCHED_NAME`,`TRIGGER_NAME`,`TRIGGER_GROUP`),
+  CONSTRAINT `qrtz_simple_triggers_ibfk_1` FOREIGN KEY (`SCHED_NAME`, `TRIGGER_NAME`, `TRIGGER_GROUP`) REFERENCES `qrtz_triggers` (`SCHED_NAME`, `TRIGGER_NAME`, `TRIGGER_GROUP`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of qrtz_simple_triggers
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for qrtz_simprop_triggers
+-- ----------------------------
+DROP TABLE IF EXISTS `qrtz_simprop_triggers`;
+CREATE TABLE `qrtz_simprop_triggers` (
+  `SCHED_NAME` varchar(120) NOT NULL,
+  `TRIGGER_NAME` varchar(200) NOT NULL,
+  `TRIGGER_GROUP` varchar(200) NOT NULL,
+  `STR_PROP_1` varchar(512) DEFAULT NULL,
+  `STR_PROP_2` varchar(512) DEFAULT NULL,
+  `STR_PROP_3` varchar(512) DEFAULT NULL,
+  `INT_PROP_1` int(11) DEFAULT NULL,
+  `INT_PROP_2` int(11) DEFAULT NULL,
+  `LONG_PROP_1` bigint(20) DEFAULT NULL,
+  `LONG_PROP_2` bigint(20) DEFAULT NULL,
+  `DEC_PROP_1` decimal(13,4) DEFAULT NULL,
+  `DEC_PROP_2` decimal(13,4) DEFAULT NULL,
+  `BOOL_PROP_1` varchar(1) DEFAULT NULL,
+  `BOOL_PROP_2` varchar(1) DEFAULT NULL,
+  PRIMARY KEY (`SCHED_NAME`,`TRIGGER_NAME`,`TRIGGER_GROUP`),
+  CONSTRAINT `qrtz_simprop_triggers_ibfk_1` FOREIGN KEY (`SCHED_NAME`, `TRIGGER_NAME`, `TRIGGER_GROUP`) REFERENCES `qrtz_triggers` (`SCHED_NAME`, `TRIGGER_NAME`, `TRIGGER_GROUP`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of qrtz_simprop_triggers
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for qrtz_triggers
+-- ----------------------------
+DROP TABLE IF EXISTS `qrtz_triggers`;
+CREATE TABLE `qrtz_triggers` (
+  `SCHED_NAME` varchar(120) NOT NULL,
+  `TRIGGER_NAME` varchar(200) NOT NULL,
+  `TRIGGER_GROUP` varchar(200) NOT NULL,
+  `JOB_NAME` varchar(200) NOT NULL,
+  `JOB_GROUP` varchar(200) NOT NULL,
+  `DESCRIPTION` varchar(250) DEFAULT NULL,
+  `NEXT_FIRE_TIME` bigint(13) DEFAULT NULL,
+  `PREV_FIRE_TIME` bigint(13) DEFAULT NULL,
+  `PRIORITY` int(11) DEFAULT NULL,
+  `TRIGGER_STATE` varchar(16) NOT NULL,
+  `TRIGGER_TYPE` varchar(8) NOT NULL,
+  `START_TIME` bigint(13) NOT NULL,
+  `END_TIME` bigint(13) DEFAULT NULL,
+  `CALENDAR_NAME` varchar(200) DEFAULT NULL,
+  `MISFIRE_INSTR` smallint(2) DEFAULT NULL,
+  `JOB_DATA` blob,
+  PRIMARY KEY (`SCHED_NAME`,`TRIGGER_NAME`,`TRIGGER_GROUP`),
+  KEY `idx_qrtz_t_j` (`SCHED_NAME`,`JOB_NAME`,`JOB_GROUP`),
+  KEY `idx_qrtz_t_jg` (`SCHED_NAME`,`JOB_GROUP`),
+  KEY `idx_qrtz_t_c` (`SCHED_NAME`,`CALENDAR_NAME`),
+  KEY `idx_qrtz_t_g` (`SCHED_NAME`,`TRIGGER_GROUP`),
+  KEY `idx_qrtz_t_state` (`SCHED_NAME`,`TRIGGER_STATE`),
+  KEY `idx_qrtz_t_n_state` (`SCHED_NAME`,`TRIGGER_NAME`,`TRIGGER_GROUP`,`TRIGGER_STATE`),
+  KEY `idx_qrtz_t_n_g_state` (`SCHED_NAME`,`TRIGGER_GROUP`,`TRIGGER_STATE`),
+  KEY `idx_qrtz_t_next_fire_time` (`SCHED_NAME`,`NEXT_FIRE_TIME`),
+  KEY `idx_qrtz_t_nft_st` (`SCHED_NAME`,`TRIGGER_STATE`,`NEXT_FIRE_TIME`),
+  KEY `idx_qrtz_t_nft_misfire` (`SCHED_NAME`,`MISFIRE_INSTR`,`NEXT_FIRE_TIME`),
+  KEY `idx_qrtz_t_nft_st_misfire` (`SCHED_NAME`,`MISFIRE_INSTR`,`NEXT_FIRE_TIME`,`TRIGGER_STATE`),
+  KEY `idx_qrtz_t_nft_st_misfire_grp` (`SCHED_NAME`,`MISFIRE_INSTR`,`NEXT_FIRE_TIME`,`TRIGGER_GROUP`,`TRIGGER_STATE`),
+  CONSTRAINT `qrtz_triggers_ibfk_1` FOREIGN KEY (`SCHED_NAME`, `JOB_NAME`, `JOB_GROUP`) REFERENCES `qrtz_job_details` (`SCHED_NAME`, `JOB_NAME`, `JOB_GROUP`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of qrtz_triggers
+-- ----------------------------
+INSERT INTO `qrtz_triggers` VALUES ('MySiteForMeScheduler', 'TASK_1', 'DEFAULT', 'TASK_1', 'DEFAULT', null, '1522774800000', '-1', '5', 'WAITING', 'CRON', '1522635959000', '0', null, '2', 0xACED0005737200156F72672E71756172747A2E4A6F62446174614D61709FB083E8BFA9B0CB020000787200266F72672E71756172747A2E7574696C732E537472696E674B65794469727479466C61674D61708208E8C3FBC55D280200015A0013616C6C6F77735472616E7369656E74446174617872001D6F72672E71756172747A2E7574696C732E4469727479466C61674D617013E62EAD28760ACE0200025A000564697274794C00036D617074000F4C6A6176612F7574696C2F4D61703B787001737200116A6176612E7574696C2E486173684D61700507DAC1C31660D103000246000A6C6F6164466163746F724900097468726573686F6C6478703F4000000000000C7708000000100000000174000D4A4F425F504152414D5F4B45597372001C636F6D2E6C65646963742E656E746974792E51756172747A5461736B00000000000000010200064C000463726F6E7400124C6A6176612F6C616E672F537472696E673B4C00046E616D6571007E00094C0006706172616D7371007E00094C00067374617475737400134C6A6176612F6C616E672F496E74656765723B4C000A7461726765744265616E71007E00094C000B74726765744D6574686F6471007E000978720021636F6D2E6C65646963742E656E746974792E626173652E44617461456E7469747900000000000000010200084C000A637265617465446174657400104C6A6176612F7574696C2F446174653B4C000863726561746549647400104C6A6176612F6C616E672F4C6F6E673B4C000A637265617465557365727400184C636F6D2F6C65646963742F656E746974792F557365723B4C000764656C466C61677400134C6A6176612F6C616E672F426F6F6C65616E3B4C000772656D61726B7371007E00094C000A7570646174654461746571007E000C4C0008757064617465496471007E000D4C000A7570646174655573657271007E000E78720021636F6D2E6C65646963742E656E746974792E626173652E42617365456E746974799B308635E8F2FD660200014C0002696471007E000D7872002B636F6D2E62616F6D69646F752E6D796261746973706C75732E6163746976657265636F72642E4D6F64656C000000000000000102000078707372000E6A6176612E6C616E672E4C6F6E673B8BE490CC8F23DF0200014A000576616C7565787200106A6176612E6C616E672E4E756D62657286AC951D0B94E08B020000787000000000000000017372000E6A6176612E7574696C2E44617465686A81014B597419030000787077080000016132EF0E187871007E001570737200116A6176612E6C616E672E426F6F6C65616ECD207280D59CFAEE0200015A000576616C7565787000740022E6AF8FE5A4A9E5878CE699A831E782B9E9929FE689A7E8A18CE8AFA5E4BBBBE58AA17371007E0016770800000161336910787871007E00157074000B3020302031202A202A203F74001BE5908CE6ADA5E69687E7ABA0E6B58FE8A788E9878FE695B0E68DAE74000131737200116A6176612E6C616E672E496E746567657212E2A0A4F781873802000149000576616C75657871007E00140000000074000A73797374656D5461736B74001A73796E6368726F6E697A6174696F6E41727469636C65566965777800);
+INSERT INTO `qrtz_triggers` VALUES ('MySiteForMeScheduler', 'TASK_2', 'DEFAULT', 'TASK_2', 'DEFAULT', null, '1522774800000', '-1', '5', 'WAITING', 'CRON', '1522635959000', '0', null, '2', 0xACED0005737200156F72672E71756172747A2E4A6F62446174614D61709FB083E8BFA9B0CB020000787200266F72672E71756172747A2E7574696C732E537472696E674B65794469727479466C61674D61708208E8C3FBC55D280200015A0013616C6C6F77735472616E7369656E74446174617872001D6F72672E71756172747A2E7574696C732E4469727479466C61674D617013E62EAD28760ACE0200025A000564697274794C00036D617074000F4C6A6176612F7574696C2F4D61703B787001737200116A6176612E7574696C2E486173684D61700507DAC1C31660D103000246000A6C6F6164466163746F724900097468726573686F6C6478703F4000000000000C7708000000100000000174000D4A4F425F504152414D5F4B45597372001C636F6D2E6C65646963742E656E746974792E51756172747A5461736B00000000000000010200064C000463726F6E7400124C6A6176612F6C616E672F537472696E673B4C00046E616D6571007E00094C0006706172616D7371007E00094C00067374617475737400134C6A6176612F6C616E672F496E74656765723B4C000A7461726765744265616E71007E00094C000B74726765744D6574686F6471007E000978720021636F6D2E6C65646963742E656E746974792E626173652E44617461456E7469747900000000000000010200084C000A637265617465446174657400104C6A6176612F7574696C2F446174653B4C000863726561746549647400104C6A6176612F6C616E672F4C6F6E673B4C000A637265617465557365727400184C636F6D2F6C65646963742F656E746974792F557365723B4C000764656C466C61677400134C6A6176612F6C616E672F426F6F6C65616E3B4C000772656D61726B7371007E00094C000A7570646174654461746571007E000C4C0008757064617465496471007E000D4C000A7570646174655573657271007E000E78720021636F6D2E6C65646963742E656E746974792E626173652E42617365456E746974799B308635E8F2FD660200014C0002696471007E000D7872002B636F6D2E62616F6D69646F752E6D796261746973706C75732E6163746976657265636F72642E4D6F64656C000000000000000102000078707372000E6A6176612E6C616E672E4C6F6E673B8BE490CC8F23DF0200014A000576616C7565787200106A6176612E6C616E672E4E756D62657286AC951D0B94E08B020000787000000000000000027372000E6A6176612E7574696C2E44617465686A81014B59741903000078707708000001613F9BED98787371007E0013000000000000000170737200116A6176612E6C616E672E426F6F6C65616ECD207280D59CFAEE0200015A000576616C7565787000740031E7949FE68890E69687E7ABA0E6909CE7B4A2E7B4A2E5BC95EFBC8CE6AF8FE5A4A9E6999AE4B88A31E782B9E689A7E8A18C7371007E00167708000001613F9BED987871007E00187074000B3020302031202A202A203F740018E7949FE68890E69687E7ABA0E6909CE7B4A2E7B4A2E5BC9574000131737200116A6176612E6C616E672E496E746567657212E2A0A4F781873802000149000576616C75657871007E00140000000074000A73797374656D5461736B74001263726561746541727469636C65496E6465787800);
+
+-- ----------------------------
+-- Table structure for quartz_task
+-- ----------------------------
+DROP TABLE IF EXISTS `quartz_task`;
+CREATE TABLE `quartz_task` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '主键',
+  `name` varchar(255) DEFAULT NULL COMMENT '任务名称,input,YES,false,true,true',
+  `cron` varchar(255) DEFAULT NULL COMMENT '任务表达式,input,YES,false,true,false',
+  `target_bean` varchar(255) DEFAULT NULL COMMENT '执行的类,input,YES,false,true,false',
+  `trget_method` varchar(255) DEFAULT NULL COMMENT '执行方法,input,YES,false,true,false',
+  `params` varchar(255) DEFAULT NULL COMMENT '执行参数,textarea,YES,false,false,false',
+  `status` int(11) DEFAULT NULL COMMENT '任务状态,radio,YES,false,true,true',
+  `create_date` datetime DEFAULT NULL COMMENT '创建时间',
+  `create_by` bigint(20) DEFAULT NULL COMMENT '创建人',
+  `update_date` datetime DEFAULT NULL COMMENT '修改时间',
+  `update_by` bigint(20) DEFAULT NULL COMMENT '修改人',
+  `remarks` varchar(255) DEFAULT NULL COMMENT '备注',
+  `del_flag` tinyint(4) DEFAULT NULL COMMENT '删除标记',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COMMENT='定时任务,1';
+
+-- ----------------------------
+-- Records of quartz_task
+-- ----------------------------
+INSERT INTO `quartz_task` VALUES ('1', '同步文章浏览量数据', '0 0 1 * * ?', 'systemTask', 'synchronizationArticleView', '1', '0', '2018-01-26 22:46:23', '1', '2018-01-27 00:59:39', '1', '每天凌晨1点钟执行该任务', '0');
+INSERT INTO `quartz_task` VALUES ('2', '生成文章搜索索引', '0 0 1 * * ?', 'systemTask', 'createArticleIndex', '1', '0', '2018-01-29 09:50:39', '1', '2018-01-29 09:50:39', '1', '生成文章搜索索引，每天晚上1点执行', '0');
+
+-- ----------------------------
+-- Table structure for quartz_task_log
+-- ----------------------------
+DROP TABLE IF EXISTS `quartz_task_log`;
+CREATE TABLE `quartz_task_log` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '主键',
+  `job_id` bigint(20) DEFAULT NULL COMMENT '任务ID,0,YES,false,false,false',
+  `name` varchar(255) DEFAULT NULL COMMENT '定时任务名称,input,YES,false,true,true',
+  `target_bean` varchar(255) DEFAULT NULL COMMENT '定制任务执行类,input,YES,false,true,false',
+  `trget_method` varchar(255) DEFAULT NULL COMMENT '定时任务执行方法,input,YES,false,true,false',
+  `params` varchar(255) DEFAULT NULL COMMENT '执行参数,input,YES,false,true,false',
+  `status` int(11) DEFAULT NULL COMMENT '任务状态,0,YES,false,false,false',
+  `error` text COMMENT '异常消息,textarea,YES,false,false,false',
+  `times` int(11) DEFAULT NULL COMMENT '执行时间,input,YES,false,true,false',
+  `create_date` datetime DEFAULT NULL COMMENT '创建时间',
+  `create_by` bigint(20) DEFAULT NULL COMMENT '创建人',
+  `update_date` datetime DEFAULT NULL COMMENT '修改时间',
+  `update_by` bigint(20) DEFAULT NULL COMMENT '修改人',
+  `remarks` varchar(255) DEFAULT NULL COMMENT '备注',
+  `del_flag` tinyint(4) DEFAULT NULL COMMENT '删除标记',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='任务执行日志,1';
+
+-- ----------------------------
+-- Records of quartz_task_log
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for sys_dict
+-- ----------------------------
+DROP TABLE IF EXISTS `sys_dict`;
+CREATE TABLE `sys_dict` (
+  `id` bigint(64) NOT NULL AUTO_INCREMENT COMMENT '编号',
+  `value` varchar(100) COLLATE utf8_bin DEFAULT NULL COMMENT '数据值',
+  `label` varchar(100) COLLATE utf8_bin DEFAULT NULL COMMENT '标签名',
+  `type` varchar(100) COLLATE utf8_bin DEFAULT NULL COMMENT '类型',
+  `description` varchar(100) COLLATE utf8_bin DEFAULT NULL COMMENT '描述',
+  `sort` int(10) DEFAULT NULL COMMENT '排序（升序）',
+  `parent_id` varchar(64) COLLATE utf8_bin DEFAULT '0' COMMENT '父级编号',
+  `create_by` varchar(64) COLLATE utf8_bin DEFAULT NULL COMMENT '创建者',
+  `create_date` datetime DEFAULT NULL COMMENT '创建时间',
+  `update_by` varchar(64) COLLATE utf8_bin DEFAULT NULL COMMENT '更新者',
+  `update_date` datetime DEFAULT NULL COMMENT '更新时间',
+  `remarks` varchar(255) COLLATE utf8_bin DEFAULT NULL COMMENT '备注信息',
+  `del_flag` char(1) COLLATE utf8_bin NOT NULL DEFAULT '0' COMMENT '删除标记',
+  PRIMARY KEY (`id`),
+  KEY `sys_dict_value` (`value`) USING BTREE,
+  KEY `sys_dict_label` (`label`) USING BTREE,
+  KEY `sys_dict_del_flag` (`del_flag`) USING BTREE
+) ENGINE=InnoDB AUTO_INCREMENT=125 DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT='字典表,测试表';
+
+-- ----------------------------
+-- Records of sys_dict
+-- ----------------------------
+INSERT INTO `sys_dict` VALUES ('1', '0', '否', 'is_or_not', '系统字段', '0', '0', '1', '2018-01-05 20:38:12', '1', '2018-01-05 20:38:15', null, '0');
+INSERT INTO `sys_dict` VALUES ('2', '1', '是', 'is_or_not', '系统字段', '1', '0', '1', '2018-01-05 20:38:40', '1', '2018-01-05 20:38:44', null, '0');
+INSERT INTO `sys_dict` VALUES ('3', 'qiniu', '七牛云存储', 'sys_rescource_source', '系统字段', '0', '0', '1', '2018-01-14 06:39:57', '1', '2018-01-14 06:39:57', null, '0');
+INSERT INTO `sys_dict` VALUES ('4', 'oss', '阿里云存储', 'sys_rescource_source', '系统字段', '1', '0', '1', '2018-01-14 06:39:57', '1', '2018-01-14 06:39:57', null, '0');
+INSERT INTO `sys_dict` VALUES ('108', '2333', '我的标签2', 'you_sign', null, '2', '0', '1', '2018-01-16 16:03:12', '1', '2018-01-16 17:52:15', null, '0');
+INSERT INTO `sys_dict` VALUES ('110', '322', '他的标签', 'you_sign', '我', '3', '0', '1', '2018-01-16 17:52:49', '1', '2018-01-16 18:02:37', null, '0');
+INSERT INTO `sys_dict` VALUES ('121', '1', '本站文章', 'blog_article_category', '博客内容-文章类型(此数据为系统自动创建:数据表【blog_article】中的字段【category】对应的值)', '0', '0', '1', '2018-01-17 16:05:45', '1', '2018-01-17 16:05:45', null, '0');
+INSERT INTO `sys_dict` VALUES ('122', '2', '外链', 'blog_article_category', '博客内容-文章类型(此数据为系统自动创建:数据表【blog_article】中的字段【category】对应的值)', '1', '0', '1', '2018-01-17 16:05:45', '1', '2018-01-17 16:05:45', null, '0');
+INSERT INTO `sys_dict` VALUES ('123', '0', '正常', 'quartz_task_status', '定时任务-任务状态(此数据为系统自动创建:数据表【quartz_task】中的字段【status】对应的值)', '0', '0', '1', '2018-01-24 23:41:56', '1', '2018-01-24 23:41:56', null, '0');
+INSERT INTO `sys_dict` VALUES ('124', '1', '暂停', 'quartz_task_status', '定时任务-任务状态(此数据为系统自动创建:数据表【quartz_task】中的字段【status】对应的值)', '1', '0', '1', '2018-01-24 23:41:56', '1', '2018-01-24 23:41:56', null, '0');
+
+-- ----------------------------
+-- Table structure for sys_group
+-- ----------------------------
+DROP TABLE IF EXISTS `sys_group`;
+CREATE TABLE `sys_group` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `name` varchar(40) DEFAULT NULL COMMENT '分组名称',
+  `parent_id` bigint(20) DEFAULT NULL COMMENT '父分组ID',
+  `level` bigint(2) DEFAULT NULL,
+  `parent_ids` varchar(2000) DEFAULT NULL COMMENT '分组序列号',
+  `sort` smallint(6) DEFAULT NULL COMMENT '分组排序值',
+  `create_by` bigint(20) DEFAULT NULL,
+  `create_date` datetime DEFAULT NULL,
+  `update_by` bigint(20) DEFAULT NULL,
+  `update_date` datetime DEFAULT NULL,
+  `remarks` varchar(255) DEFAULT NULL,
+  `del_flag` tinyint(2) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of sys_group
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for sys_group_ur
+-- ----------------------------
+DROP TABLE IF EXISTS `sys_group_ur`;
+CREATE TABLE `sys_group_ur` (
+  `group_id` bigint(20) NOT NULL COMMENT '分组ID',
+  `user_id` bigint(20) DEFAULT NULL COMMENT '用户ID',
+  `role_id` bigint(20) DEFAULT NULL COMMENT '角色ID',
+  PRIMARY KEY (`group_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of sys_group_ur
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for sys_log
+-- ----------------------------
+DROP TABLE IF EXISTS `sys_log`;
+CREATE TABLE `sys_log` (
+  `id` bigint(50) NOT NULL AUTO_INCREMENT COMMENT '编号',
+  `type` varchar(20) COLLATE utf8_bin DEFAULT NULL COMMENT '请求类型',
+  `title` varchar(255) COLLATE utf8_bin DEFAULT '' COMMENT '日志标题',
+  `remote_addr` varchar(255) COLLATE utf8_bin DEFAULT NULL COMMENT '操作IP地址',
+  `username` varchar(255) COLLATE utf8_bin DEFAULT NULL COMMENT '操作用户昵称',
+  `request_uri` varchar(255) COLLATE utf8_bin DEFAULT NULL COMMENT '请求URI',
+  `http_method` varchar(10) COLLATE utf8_bin DEFAULT NULL COMMENT '操作方式',
+  `class_method` varchar(255) COLLATE utf8_bin DEFAULT NULL COMMENT '请求类型.方法',
+  `params` text COLLATE utf8_bin COMMENT '操作提交的数据',
+  `session_id` varchar(255) COLLATE utf8_bin DEFAULT NULL COMMENT 'sessionId',
+  `response` longtext COLLATE utf8_bin COMMENT '返回内容',
+  `use_time` bigint(11) DEFAULT NULL COMMENT '方法执行时间',
+  `browser` varchar(255) COLLATE utf8_bin DEFAULT NULL COMMENT '浏览器信息',
+  `area` varchar(255) COLLATE utf8_bin DEFAULT NULL COMMENT '地区',
+  `province` varchar(255) COLLATE utf8_bin DEFAULT NULL COMMENT '省',
+  `city` varchar(255) COLLATE utf8_bin DEFAULT NULL COMMENT '市',
+  `isp` varchar(255) COLLATE utf8_bin DEFAULT NULL COMMENT '网络服务提供商',
+  `exception` text COLLATE utf8_bin COMMENT '异常信息',
+  `create_by` varchar(64) COLLATE utf8_bin DEFAULT NULL COMMENT '创建者',
+  `create_date` datetime DEFAULT NULL COMMENT '创建时间',
+  `update_by` bigint(64) DEFAULT NULL,
+  `update_date` datetime DEFAULT NULL,
+  `remarks` varchar(255) COLLATE utf8_bin DEFAULT NULL,
+  `del_flag` bit(1) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `sys_log_create_by` (`create_by`) USING BTREE,
+  KEY `sys_log_request_uri` (`request_uri`) USING BTREE,
+  KEY `sys_log_type` (`type`) USING BTREE,
+  KEY `sys_log_create_date` (`create_date`) USING BTREE
+) ENGINE=InnoDB AUTO_INCREMENT=202 DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT='系统日志';
+
+-- ----------------------------
+-- Records of sys_log
+-- ----------------------------
+INSERT INTO `sys_log` VALUES ('1', 'Ajax请求', '用户登录', '127.0.0.1', '我是管理员', 'http://localhost:8080/login/main', 'POST', 'com.ledict.core.controller.LoginController.loginMain', 0x5B226F72672E6170616368652E736869726F2E7765622E736572766C65742E536869726F48747470536572766C6574526571756573744065663161643236225D, '8310d5c4-f6ef-4937-8d20-e1c6c6cdb915', 0x7B2273756363657373223A66616C73652C226D657373616765223A22E9AA8CE8AF81E7A081E99499E8AFAF227D, '2', 'Windows-Chrome-63.0.3239.132', null, null, null, null, null, '1', '2018-02-08 13:52:23', '1', '2018-02-08 13:52:23', null, '\0');
+INSERT INTO `sys_log` VALUES ('2', 'Ajax请求', '用户登录', '127.0.0.1', '我是管理员', 'http://localhost:8080/login/main', 'POST', 'com.ledict.core.controller.LoginController.loginMain', 0x5B226F72672E6170616368652E736869726F2E7765622E736572766C65742E536869726F48747470536572766C657452657175657374403632643065376665225D, '8310d5c4-f6ef-4937-8d20-e1c6c6cdb915', 0x7B2264617461223A7B2275726C223A22696E646578227D2C2273756363657373223A747275652C226D657373616765223A22E799BBE5BD95E68890E58A9F227D, '23', 'Windows-Chrome-63.0.3239.132', null, null, null, null, null, '1', '2018-02-08 13:52:31', '1', '2018-02-08 13:52:31', null, '\0');
+INSERT INTO `sys_log` VALUES ('3', '普通请求', '跳转系统字典页面', '127.0.0.1', '我是管理员', 'http://localhost:8080/admin/system/dict/list', 'GET', 'com.ledict.core.controller.system.DictController.list', 0x5B5D, '8310d5c4-f6ef-4937-8d20-e1c6c6cdb915', 0x2261646D696E2F73797374656D2F646963742F6C69737422, '1', 'Windows-Chrome-63.0.3239.132', null, null, null, null, null, '1', '2018-02-08 13:52:45', '1', '2018-02-08 13:52:45', null, '\0');
+INSERT INTO `sys_log` VALUES ('4', '普通请求', '跳转数据表列表页面', '127.0.0.1', '我是管理员', 'http://localhost:8080/admin/system/table/list', 'GET', 'com.ledict.core.controller.system.TableController.list', 0x5B5D, '8310d5c4-f6ef-4937-8d20-e1c6c6cdb915', 0x2261646D696E2F73797374656D2F7461626C652F6C69737422, '1', 'Windows-Chrome-63.0.3239.132', null, null, null, null, null, '1', '2018-02-08 13:52:47', '1', '2018-02-08 13:52:47', null, '\0');
+INSERT INTO `sys_log` VALUES ('5', '普通请求', '跳转网站展示页面', '127.0.0.1', '我是管理员', 'http://localhost:8080/admin/system/site/show', 'GET', 'com.ledict.core.controller.system.SiteController.show', 0x5B7B7D5D, '8310d5c4-f6ef-4937-8d20-e1c6c6cdb915', 0x2261646D696E2F73797374656D2F736974652F73686F7722, '5', 'Windows-Chrome-63.0.3239.132', null, null, null, null, null, '1', '2018-02-08 13:52:50', '1', '2018-02-08 13:52:50', null, '\0');
+INSERT INTO `sys_log` VALUES ('6', 'Ajax请求', '文件上传', '127.0.0.1', '我是管理员', 'http://localhost:8080/file/upload/', 'POST', 'com.ledict.core.controller.system.FileController.uploadFile', 0x5B226F72672E737072696E676672616D65776F726B2E7765622E6D756C7469706172742E737570706F72742E5374616E646172644D756C74697061727448747470536572766C657452657175657374245374616E646172644D756C74697061727446696C65403232653565653131225D, '8310d5c4-f6ef-4937-8d20-e1c6c6cdb915', 0x7B2264617461223A7B226E616D65223A22353030666439663964373261363035393039396363643561323333343334396230323362626165352E6A7067222C2275726C223A22687474703A2F2F6F77396C67383279792E626B742E636C6F7564646E2E636F6D2F35633837363335352D613938392D346265642D626338332D6637663262343934383562352E6A7067227D2C2273756363657373223A747275652C226D657373616765223A22E68890E58A9F227D, '1661', 'Windows-Chrome-63.0.3239.132', null, null, null, null, null, '1', '2018-02-08 13:53:04', '1', '2018-02-08 13:53:04', null, '\0');
+INSERT INTO `sys_log` VALUES ('7', '普通请求', '跳转系统字典页面', '127.0.0.1', '我是管理员', 'http://localhost:8080/admin/system/dict/list', 'GET', 'com.ledict.core.controller.system.TableController.list', 0x5B5D, '8310d5c4-f6ef-4937-8d20-e1c6c6cdb915', 0x2261646D696E2F73797374656D2F646963742F6C69737422, '12', 'Windows-Chrome-63.0.3239.132', null, null, null, null, null, '1', '2018-02-08 13:54:41', '1', '2018-02-08 13:54:41', null, '\0');
+INSERT INTO `sys_log` VALUES ('8', '普通请求', '跳转系统字典页面', '127.0.0.1', '我是管理员', 'http://localhost:8080/admin/system/dict/list', 'GET', 'com.ledict.core.controller.system.TableController.list', 0x5B5D, '8310d5c4-f6ef-4937-8d20-e1c6c6cdb915', 0x2261646D696E2F73797374656D2F646963742F6C69737422, '12', 'Windows-Chrome-63.0.3239.132', null, null, null, null, null, '1', '2018-02-08 13:54:41', '1', '2018-02-08 13:54:41', null, '\0');
+INSERT INTO `sys_log` VALUES ('9', '普通请求', '跳转网站展示页面', '127.0.0.1', '我是管理员', 'http://localhost:8080/admin/system/site/show', 'GET', 'com.ledict.core.controller.system.SiteController.show', 0x5B7B7D5D, '8310d5c4-f6ef-4937-8d20-e1c6c6cdb915', 0x2261646D696E2F73797374656D2F736974652F73686F7722, '16', 'Windows-Chrome-63.0.3239.132', null, null, null, null, null, '1', '2018-02-08 13:54:41', '1', '2018-02-08 13:54:41', null, '\0');
+INSERT INTO `sys_log` VALUES ('10', 'Ajax请求', '文件上传', '127.0.0.1', '我是管理员', 'http://localhost:8080/file/upload/', 'POST', 'com.ledict.core.controller.system.FileController.uploadFile', 0x5B226F72672E737072696E676672616D65776F726B2E7765622E6D756C7469706172742E737570706F72742E5374616E646172644D756C74697061727448747470536572766C657452657175657374245374616E646172644D756C74697061727446696C65403565323334356166225D, '8310d5c4-f6ef-4937-8d20-e1c6c6cdb915', 0x7B2264617461223A7B226E616D65223A22353030666439663964373261363035393039396363643561323333343334396230323362626165352E6A7067222C2275726C223A22687474703A2F2F6F77396C67383279792E626B742E636C6F7564646E2E636F6D2F35633837363335352D613938392D346265642D626338332D6637663262343934383562352E6A7067227D2C2273756363657373223A747275652C226D657373616765223A22E68890E58A9F227D, '190', 'Windows-Chrome-63.0.3239.132', null, null, null, null, null, '1', '2018-02-08 13:54:49', '1', '2018-02-08 13:54:49', null, '\0');
+INSERT INTO `sys_log` VALUES ('11', 'Ajax请求', '文件上传', '127.0.0.1', '我是管理员', 'http://localhost:8080/file/upload/', 'POST', 'com.ledict.core.controller.system.FileController.uploadFile', 0x5B226F72672E737072696E676672616D65776F726B2E7765622E6D756C7469706172742E737570706F72742E5374616E646172644D756C74697061727448747470536572766C657452657175657374245374616E646172644D756C74697061727446696C65403766366435396134225D, '8310d5c4-f6ef-4937-8d20-e1c6c6cdb915', 0x7B2264617461223A7B226E616D65223A22353030666439663964373261363035393039396363643561323333343334396230323362626165352E6A7067222C2275726C223A22687474703A2F2F6F77396C67383279792E626B742E636C6F7564646E2E636F6D2F35633837363335352D613938392D346265642D626338332D6637663262343934383562352E6A7067227D2C2273756363657373223A747275652C226D657373616765223A22E68890E58A9F227D, '19', 'Windows-Chrome-63.0.3239.132', null, null, null, null, null, '1', '2018-02-08 13:56:11', '1', '2018-02-08 13:56:11', null, '\0');
+INSERT INTO `sys_log` VALUES ('12', 'Ajax请求', '文件上传', '127.0.0.1', '我是管理员', 'http://localhost:8080/file/upload/', 'POST', 'com.ledict.core.controller.system.FileController.uploadFile', 0x5B226F72672E737072696E676672616D65776F726B2E7765622E6D756C7469706172742E737570706F72742E5374616E646172644D756C74697061727448747470536572766C657452657175657374245374616E646172644D756C74697061727446696C654037326265393433225D, '8310d5c4-f6ef-4937-8d20-e1c6c6cdb915', 0x7B2264617461223A7B226E616D65223A22646F6E6772692E6A7067222C2275726C223A2268747470733A2F2F7374617469632E6D7973697465666F726D652E636F6D2F37373836313033342D323565662D343835362D383765632D3234646131383339386563662E6A7067227D2C2273756363657373223A747275652C226D657373616765223A22E68890E58A9F227D, '19645', 'Windows-Chrome-63.0.3239.132', null, null, null, null, null, '1', '2018-02-08 13:58:03', '1', '2018-02-08 13:58:03', null, '\0');
+INSERT INTO `sys_log` VALUES ('13', 'Ajax请求', '文件上传', '127.0.0.1', '我是管理员', 'http://localhost:8080/file/upload/', 'POST', 'com.ledict.core.controller.system.FileController.uploadFile', 0x5B226F72672E737072696E676672616D65776F726B2E7765622E6D756C7469706172742E737570706F72742E5374616E646172644D756C74697061727448747470536572766C657452657175657374245374616E646172644D756C74697061727446696C65403463396330306439225D, '8310d5c4-f6ef-4937-8d20-e1c6c6cdb915', 0x7B2264617461223A7B226E616D65223A22353030666439663964373261363035393039396363643561323333343334396230323362626165352E6A7067222C2275726C223A22687474703A2F2F6F77396C67383279792E626B742E636C6F7564646E2E636F6D2F35633837363335352D613938392D346265642D626338332D6637663262343934383562352E6A7067227D2C2273756363657373223A747275652C226D657373616765223A22E68890E58A9F227D, '9975', 'Windows-Chrome-63.0.3239.132', null, null, null, null, null, '1', '2018-02-08 13:58:46', '1', '2018-02-08 13:58:46', null, '\0');
+INSERT INTO `sys_log` VALUES ('14', 'Ajax请求', '文件上传', '127.0.0.1', '我是管理员', 'http://localhost:8080/file/upload/', 'POST', 'com.ledict.core.controller.system.FileController.uploadFile', 0x5B226F72672E737072696E676672616D65776F726B2E7765622E6D756C7469706172742E737570706F72742E5374616E646172644D756C74697061727448747470536572766C657452657175657374245374616E646172644D756C74697061727446696C65403335313236396636225D, '8310d5c4-f6ef-4937-8d20-e1c6c6cdb915', 0x7B2264617461223A7B226E616D65223A22353030666439663964373261363035393039396363643561323333343334396230323362626165352E6A7067222C2275726C223A2268747470733A2F2F7374617469632E6D7973697465666F726D652E636F6D2F30346561306365302D653533622D346562332D623165612D6463333136303633643239662E6A7067227D2C2273756363657373223A747275652C226D657373616765223A22E68890E58A9F227D, '6153', 'Windows-Chrome-63.0.3239.132', null, null, null, null, null, '1', '2018-02-08 13:59:10', '1', '2018-02-08 13:59:10', null, '\0');
+INSERT INTO `sys_log` VALUES ('15', 'Ajax请求', '保存网站基本数据', '127.0.0.1', '我是管理员', 'http://localhost:8080/admin/system/site/edit', 'POST', 'com.ledict.core.controller.system.SiteController.edit', 0x5B7B2261646472657373223A22E6B19FE88B8F2DE88B8FE5B79E222C22617574686F72223A2277616E676C222C22617574686F7249636F6E223A2268747470733A2F2F7374617469632E6D7973697465666F726D652E636F6D2F30346561306365302D653533622D346562332D623165612D6463333136303633643239662E6A7067222C226461746162617365223A226D7973716C222C2264656C466C6167223A66616C73652C226465736372697074696F6E223A22E7BD91E7AB99E68F8FE8BFB0222C22656D61696C223A22313131353738343637354071712E636F6D222C22676974223A2268747470733A2F2F67697465652E636F6D2F77616E676C696E677869616F2F222C22676974687562223A2268747470733A2F2F6769746875622E636F6D2F77616E676C31393839222C226964223A312C226B6579776F726473223A22222C226C6F676F223A22687474703A2F2F6F77396C67383279792E626B742E636C6F7564646E2E636F6D2F32346635633336302D343835642D346136642D393436382D3261363163333533636633372E69636F222C226D617855706C6F6164223A322C226E616D65223A22E5ADA4E78BACE79A84E69785E8A18CE5AEB6222C226E6F4E616D65223A66616C73652C226F70656E4D657373616765223A747275652C2270686F6E65223A223133373736303535313739222C22706F7765726279223A22222C227171223A2231313135373834363735222C227265636F7264223A22E88B8F494350E5A4873137303633363530E58FB7222C2272656D61726B73223A223C703E3839E5B9B4E5B08FE7A081E5869CE4B880E58FAA2CE4BB8EE4BA8B6A617661E5908EE58FB0E5BC80E58F913C2F703E3C703E3C62723E3C2F703E222C22736572766572223A2277696E646F7773222C2275726C223A2268747470733A2F2F6D7973697465666F726D652E636F6D2F222C2276657273696F6E223A22312E30222C22776569626F223A2268747470733A2F2F776569626F2E636F6D2F752F32313733383636333832227D5D, '8310d5c4-f6ef-4937-8d20-e1c6c6cdb915', 0x7B2273756363657373223A747275652C226D657373616765223A22E68890E58A9F227D, '37', 'Windows-Chrome-63.0.3239.132', null, null, null, null, null, '1', '2018-02-08 13:59:22', '1', '2018-02-08 13:59:22', null, '\0');
+INSERT INTO `sys_log` VALUES ('16', '普通请求', '跳转网站展示页面', '127.0.0.1', '我是管理员', 'http://localhost:8080/admin/system/site/show', 'GET', 'com.ledict.core.controller.system.SiteController.show', 0x5B7B7D5D, '8310d5c4-f6ef-4937-8d20-e1c6c6cdb915', 0x2261646D696E2F73797374656D2F736974652F73686F7722, '9', 'Windows-Chrome-63.0.3239.132', null, null, null, null, null, '1', '2018-02-08 13:59:25', '1', '2018-02-08 13:59:25', null, '\0');
+INSERT INTO `sys_log` VALUES ('17', '普通请求', '跳转系统字典页面', '127.0.0.1', '我是管理员', 'http://localhost:8080/admin/system/dict/list', 'GET', 'com.ledict.core.controller.system.DictController.list', 0x5B5D, '8310d5c4-f6ef-4937-8d20-e1c6c6cdb915', 0x2261646D696E2F73797374656D2F646963742F6C69737422, '1', 'Windows-Chrome-63.0.3239.132', null, null, null, null, null, '1', '2018-02-08 13:59:48', '1', '2018-02-08 13:59:48', null, '\0');
+INSERT INTO `sys_log` VALUES ('18', '普通请求', '跳转数据表列表页面', '127.0.0.1', '我是管理员', 'http://localhost:8080/admin/system/table/list', 'GET', 'com.ledict.core.controller.system.TableController.list', 0x5B5D, '8310d5c4-f6ef-4937-8d20-e1c6c6cdb915', 0x2261646D696E2F73797374656D2F7461626C652F6C69737422, '2', 'Windows-Chrome-63.0.3239.132', null, null, null, null, null, '1', '2018-02-08 13:59:48', '1', '2018-02-08 13:59:48', null, '\0');
+INSERT INTO `sys_log` VALUES ('19', '普通请求', '跳转网站展示页面', '127.0.0.1', '我是管理员', 'http://localhost:8080/admin/system/site/show', 'GET', 'com.ledict.core.controller.system.SiteController.show', 0x5B7B7D5D, '8310d5c4-f6ef-4937-8d20-e1c6c6cdb915', 0x2261646D696E2F73797374656D2F736974652F73686F7722, '3', 'Windows-Chrome-63.0.3239.132', null, null, null, null, null, '1', '2018-02-08 13:59:48', '1', '2018-02-08 13:59:48', null, '\0');
+INSERT INTO `sys_log` VALUES ('20', '普通请求', '退出系统', '127.0.0.1', '我是管理员', 'http://localhost:8080/systemLogout', 'GET', 'com.ledict.core.controller.LoginController.logOut', 0x5B5D, '8310d5c4-f6ef-4937-8d20-e1c6c6cdb915', 0x2272656469726563743A2F6C6F67696E22, '4', 'Windows-Chrome-63.0.3239.132', null, null, null, null, null, null, '2018-02-08 13:59:57', null, '2018-02-08 13:59:57', null, '\0');
+INSERT INTO `sys_log` VALUES ('21', 'Ajax请求', '用户登录', '127.0.0.1', '我是管理员', 'http://localhost:8080/login/main', 'POST', 'com.ledict.core.controller.LoginController.loginMain', 0x5B226F72672E6170616368652E736869726F2E7765622E736572766C65742E536869726F48747470536572766C657452657175657374403166303262636330225D, '541d6888-510d-4d3b-ad8c-5f3af16cbf4f', 0x7B2264617461223A7B2275726C223A22696E646578227D2C2273756363657373223A747275652C226D657373616765223A22E799BBE5BD95E68890E58A9F227D, '62', 'Windows-Chrome-63.0.3239.132', null, null, null, null, null, '1', '2018-02-08 14:00:04', '1', '2018-02-08 14:00:04', null, '\0');
+INSERT INTO `sys_log` VALUES ('22', 'Ajax请求', '文件上传', '127.0.0.1', '我是管理员', 'http://localhost:8080/file/upload/', 'POST', 'com.ledict.core.controller.system.FileController.uploadFile', 0x5B226F72672E737072696E676672616D65776F726B2E7765622E6D756C7469706172742E737570706F72742E5374616E646172644D756C74697061727448747470536572766C657452657175657374245374616E646172644D756C74697061727446696C65403566636639663537225D, '541d6888-510d-4d3b-ad8c-5f3af16cbf4f', 0x7B2264617461223A7B226E616D65223A22353030666439663964373261363035393039396363643561323333343334396230323362626165352E6A7067222C2275726C223A2268747470733A2F2F7374617469632E6D7973697465666F726D652E636F6D2F30346561306365302D653533622D346562332D623165612D6463333136303633643239662E6A7067227D2C2273756363657373223A747275652C226D657373616765223A22E68890E58A9F227D, '6785', 'Windows-Chrome-63.0.3239.132', null, null, null, null, null, '1', '2018-02-08 14:01:00', '1', '2018-02-08 14:01:00', null, '\0');
+INSERT INTO `sys_log` VALUES ('23', 'Ajax请求', '系统用户个人信息修改', '127.0.0.1', '我是管理员', 'http://localhost:8080/admin/system/user/saveUserinfo', 'POST', 'com.ledict.core.controller.system.UserConteroller.saveUserInfo', 0x5B7B2264656C466C6167223A66616C73652C22656D61696C223A22624071712E636F6D222C2269636F6E223A2268747470733A2F2F7374617469632E6D7973697465666F726D652E636F6D2F30346561306365302D653533622D346562332D623165612D6463333136303633643239662E6A7067222C226964223A312C226C6F67696E4E616D65223A2274657374222C226D656E7573223A5B5D2C226E69636B4E616D65223A22E68891E698AFE7AEA1E79086E59198222C2272656D61726B73223A22222C22726F6C654C69737473223A5B5D2C2274656C223A223133373736303535313739227D5D, '541d6888-510d-4d3b-ad8c-5f3af16cbf4f', 0x7B2273756363657373223A747275652C226D657373616765223A22E68890E58A9F227D, '34', 'Windows-Chrome-63.0.3239.132', null, null, null, null, null, '1', '2018-02-08 14:01:07', '1', '2018-02-08 14:01:07', null, '\0');
+INSERT INTO `sys_log` VALUES ('24', '普通请求', '跳转系统字典页面', '127.0.0.1', '我是管理员', 'http://localhost:8080/admin/system/dict/list', 'GET', 'com.ledict.core.controller.system.DictController.list', 0x5B5D, '541d6888-510d-4d3b-ad8c-5f3af16cbf4f', 0x2261646D696E2F73797374656D2F646963742F6C69737422, '2', 'Windows-Chrome-63.0.3239.132', null, null, null, null, null, '1', '2018-02-08 14:01:21', '1', '2018-02-08 14:01:21', null, '\0');
+INSERT INTO `sys_log` VALUES ('25', '普通请求', '跳转网站展示页面', '127.0.0.1', '我是管理员', 'http://localhost:8080/admin/system/site/show', 'GET', 'com.ledict.core.controller.system.SiteController.show', 0x5B7B7D5D, '541d6888-510d-4d3b-ad8c-5f3af16cbf4f', 0x2261646D696E2F73797374656D2F736974652F73686F7722, '5', 'Windows-Chrome-63.0.3239.132', null, null, null, null, null, '1', '2018-02-08 14:01:23', '1', '2018-02-08 14:01:23', null, '\0');
+INSERT INTO `sys_log` VALUES ('26', '普通请求', '跳转系统字典页面', '127.0.0.1', '我是管理员', 'http://localhost:8080/admin/system/dict/list', 'GET', 'com.ledict.core.controller.system.DictController.list', 0x5B5D, '541d6888-510d-4d3b-ad8c-5f3af16cbf4f', 0x2261646D696E2F73797374656D2F646963742F6C69737422, '3', 'Windows-Chrome-63.0.3239.132', null, null, null, null, null, '1', '2018-02-08 14:07:20', '1', '2018-02-08 14:07:20', null, '\0');
+INSERT INTO `sys_log` VALUES ('27', '普通请求', '跳转网站展示页面', '127.0.0.1', '我是管理员', 'http://localhost:8080/admin/system/site/show', 'GET', 'com.ledict.core.controller.system.SiteController.show', 0x5B7B7D5D, '541d6888-510d-4d3b-ad8c-5f3af16cbf4f', 0x2261646D696E2F73797374656D2F736974652F73686F7722, '3', 'Windows-Chrome-63.0.3239.132', null, null, null, null, null, '1', '2018-02-08 14:07:20', '1', '2018-02-08 14:07:20', null, '\0');
+INSERT INTO `sys_log` VALUES ('28', 'Ajax请求', '保存网站基本数据', '127.0.0.1', '我是管理员', 'http://localhost:8080/admin/system/site/edit', 'POST', 'com.ledict.core.controller.system.SiteController.edit', 0x5B7B2261646472657373223A22E6B19FE88B8F2DE88B8FE5B79E222C22617574686F72223A2277616E676C222C22617574686F7249636F6E223A2268747470733A2F2F7374617469632E6D7973697465666F726D652E636F6D2F30346561306365302D653533622D346562332D623165612D6463333136303633643239662E6A7067222C226461746162617365223A226D7973716C222C2264656C466C6167223A66616C73652C226465736372697074696F6E223A22E7BD91E7AB99E68F8FE8BFB0222C22656D61696C223A22313131353738343637354071712E636F6D222C22676974223A2268747470733A2F2F67697465652E636F6D2F77616E676C696E677869616F2F222C22676974687562223A2268747470733A2F2F6769746875622E636F6D2F77616E676C31393839222C226964223A312C226B6579776F726473223A22222C226C6F676F223A22687474703A2F2F6F77396C67383279792E626B742E636C6F7564646E2E636F6D2F32346635633336302D343835642D346136642D393436382D3261363163333533636633372E69636F222C226D617855706C6F6164223A322C226E616D65223A22E5ADA4E78BACE79A84E69785E8A18CE5AEB6222C226E6F4E616D65223A66616C73652C226F70656E4D657373616765223A747275652C2270686F6E65223A223133373736303535313739222C22706F7765726279223A22222C227171223A2231313135373834363735222C227265636F7264223A22E88B8F494350E5A4873137303633363530E58FB7222C2272656D61726B73223A223233333333222C22736572766572223A2277696E646F7773222C2275726C223A2268747470733A2F2F6D7973697465666F726D652E636F6D2F222C2276657273696F6E223A22312E30222C22776569626F223A2268747470733A2F2F776569626F2E636F6D2F752F32313733383636333832227D5D, '541d6888-510d-4d3b-ad8c-5f3af16cbf4f', 0x7B2273756363657373223A747275652C226D657373616765223A22E68890E58A9F227D, '16', 'Windows-Chrome-63.0.3239.132', null, null, null, null, null, '1', '2018-02-08 14:07:28', '1', '2018-02-08 14:07:28', null, '\0');
+INSERT INTO `sys_log` VALUES ('29', '普通请求', '跳转网站展示页面', '127.0.0.1', '我是管理员', 'http://localhost:8080/admin/system/site/show', 'GET', 'com.ledict.core.controller.system.SiteController.show', 0x5B7B7D5D, '541d6888-510d-4d3b-ad8c-5f3af16cbf4f', 0x2261646D696E2F73797374656D2F736974652F73686F7722, '5', 'Windows-Chrome-63.0.3239.132', null, null, null, null, null, '1', '2018-02-08 14:07:31', '1', '2018-02-08 14:07:31', null, '\0');
+INSERT INTO `sys_log` VALUES ('30', '普通请求', '跳转系统字典页面', '127.0.0.1', '我是管理员', 'http://localhost:8080/admin/system/dict/list', 'GET', 'com.ledict.core.controller.system.DictController.list', 0x5B5D, '541d6888-510d-4d3b-ad8c-5f3af16cbf4f', 0x2261646D696E2F73797374656D2F646963742F6C69737422, '1', 'Windows-Chrome-63.0.3239.132', null, null, null, null, null, '1', '2018-02-08 14:15:50', '1', '2018-02-08 14:15:50', null, '\0');
+INSERT INTO `sys_log` VALUES ('31', '普通请求', '跳转系统字典页面', '127.0.0.1', '我是管理员', 'http://localhost:8080/admin/system/dict/list', 'GET', 'com.ledict.core.controller.system.DictController.list', 0x5B5D, '541d6888-510d-4d3b-ad8c-5f3af16cbf4f', 0x2261646D696E2F73797374656D2F646963742F6C69737422, '1', 'Windows-Chrome-63.0.3239.132', null, null, null, null, null, '1', '2018-02-08 14:16:04', '1', '2018-02-08 14:16:04', null, '\0');
+INSERT INTO `sys_log` VALUES ('32', '普通请求', '跳转数据表列表页面', '127.0.0.1', '我是管理员', 'http://localhost:8080/admin/system/table/list', 'GET', 'com.ledict.core.controller.system.TableController.list', 0x5B5D, '541d6888-510d-4d3b-ad8c-5f3af16cbf4f', 0x2261646D696E2F73797374656D2F7461626C652F6C69737422, '1', 'Windows-Chrome-63.0.3239.132', null, null, null, null, null, '1', '2018-02-08 14:16:09', '1', '2018-02-08 14:16:09', null, '\0');
+INSERT INTO `sys_log` VALUES ('33', '普通请求', '跳转网站展示页面', '127.0.0.1', '我是管理员', 'http://localhost:8080/admin/system/site/show', 'GET', 'com.ledict.core.controller.system.SiteController.show', 0x5B7B7D5D, '541d6888-510d-4d3b-ad8c-5f3af16cbf4f', 0x2261646D696E2F73797374656D2F736974652F73686F7722, '3', 'Windows-Chrome-63.0.3239.132', null, null, null, null, null, '1', '2018-02-08 14:16:10', '1', '2018-02-08 14:16:10', null, '\0');
+INSERT INTO `sys_log` VALUES ('34', '普通请求', '跳转资源展示列表', '127.0.0.1', '我是管理员', 'http://localhost:8080/admin/system/rescource/list', 'GET', 'com.ledict.core.controller.system.RescourceController.list', 0x5B5D, '541d6888-510d-4d3b-ad8c-5f3af16cbf4f', 0x2261646D696E2F73797374656D2F726573636F757263652F6C69737422, '3', 'Windows-Chrome-63.0.3239.132', null, null, null, null, null, '1', '2018-02-08 14:16:13', '1', '2018-02-08 14:16:13', null, '\0');
+INSERT INTO `sys_log` VALUES ('35', '普通请求', '跳转菜单列表', '127.0.0.1', '我是管理员', 'http://localhost:8080/admin/system/menu/list', 'GET', 'com.ledict.core.controller.system.MenuController.list', 0x5B7B7D5D, '541d6888-510d-4d3b-ad8c-5f3af16cbf4f', 0x2261646D696E2F73797374656D2F6D656E752F7465737422, '5', 'Windows-Chrome-63.0.3239.132', null, null, null, null, null, '1', '2018-02-08 14:16:15', '1', '2018-02-08 14:16:15', null, '\0');
+INSERT INTO `sys_log` VALUES ('36', '普通请求', '跳转角色列表页面', '127.0.0.1', '我是管理员', 'http://localhost:8080/admin/system/role/list', 'GET', 'com.ledict.core.controller.system.RoleController.list', 0x5B5D, '541d6888-510d-4d3b-ad8c-5f3af16cbf4f', 0x2261646D696E2F73797374656D2F726F6C652F6C69737422, '5', 'Windows-Chrome-63.0.3239.132', null, null, null, null, null, '1', '2018-02-08 14:16:23', '1', '2018-02-08 14:16:23', null, '\0');
+INSERT INTO `sys_log` VALUES ('37', '普通请求', '跳转系统用户列表页面', '127.0.0.1', '我是管理员', 'http://localhost:8080/admin/system/user/list', 'GET', 'com.ledict.core.controller.system.UserConteroller.list', 0x5B5D, '541d6888-510d-4d3b-ad8c-5f3af16cbf4f', 0x2261646D696E2F73797374656D2F757365722F6C69737422, '1', 'Windows-Chrome-63.0.3239.132', null, null, null, null, null, '1', '2018-02-08 14:16:24', '1', '2018-02-08 14:16:24', null, '\0');
+INSERT INTO `sys_log` VALUES ('38', '普通请求', '跳转博客内容列表', '127.0.0.1', '我是管理员', 'http://localhost:8080/admin/blogArticle/list', 'GET', 'com.ledict.core.controller.BlogArticleController.list', 0x5B5D, '541d6888-510d-4d3b-ad8c-5f3af16cbf4f', 0x222F61646D696E2F626C6F6741727469636C652F6C69737422, '3', 'Windows-Chrome-63.0.3239.132', null, null, null, null, null, '1', '2018-02-08 14:16:26', '1', '2018-02-08 14:16:26', null, '\0');
+INSERT INTO `sys_log` VALUES ('39', '普通请求', '跳转定时任务列表', '127.0.0.1', '我是管理员', 'http://localhost:8080/admin/quartzTask/list', 'GET', 'com.ledict.core.controller.QuartzTaskController.list', 0x5B5D, '541d6888-510d-4d3b-ad8c-5f3af16cbf4f', 0x222F61646D696E2F71756172747A5461736B2F6C69737422, '3', 'Windows-Chrome-63.0.3239.132', null, null, null, null, null, '1', '2018-02-08 14:16:58', '1', '2018-02-08 14:16:58', null, '\0');
+INSERT INTO `sys_log` VALUES ('40', '普通请求', '跳转任务执行日志列表', '127.0.0.1', '我是管理员', 'http://localhost:8080/admin/quartzTaskLog/list', 'GET', 'com.ledict.core.controller.QuartzTaskLogController.list', 0x5B5D, '541d6888-510d-4d3b-ad8c-5f3af16cbf4f', 0x222F61646D696E2F71756172747A5461736B4C6F672F6C69737422, '3', 'Windows-Chrome-63.0.3239.132', null, null, null, null, null, '1', '2018-02-08 14:17:00', '1', '2018-02-08 14:17:00', null, '\0');
+INSERT INTO `sys_log` VALUES ('41', 'Ajax请求', '用户登录', '127.0.0.1', '我是管理员', 'http://localhost:8080/login/main', 'POST', 'com.ledict.core.controller.LoginController.loginMain', 0x5B226F72672E6170616368652E736869726F2E7765622E736572766C65742E536869726F48747470536572766C657452657175657374403361373338306563225D, 'c903873e-e508-46cb-a975-55088516110e', 0x7B2264617461223A7B2275726C223A22696E646578227D2C2273756363657373223A747275652C226D657373616765223A22E799BBE5BD95E68890E58A9F227D, '865', 'Windows-Firefox-58.0', null, null, null, null, null, '1', '2018-03-13 11:58:09', '1', '2018-03-13 11:58:09', null, '\0');
+INSERT INTO `sys_log` VALUES ('42', '普通请求', '跳转系统字典页面', '127.0.0.1', '我是管理员', 'http://localhost:8080/admin/system/dict/list', 'GET', 'com.ledict.core.controller.system.DictController.list', 0x5B5D, 'c903873e-e508-46cb-a975-55088516110e', 0x2261646D696E2F73797374656D2F646963742F6C69737422, '20', 'Windows-Firefox-58.0', null, null, null, null, null, '1', '2018-03-13 11:59:50', '1', '2018-03-13 11:59:50', null, '\0');
+INSERT INTO `sys_log` VALUES ('43', '普通请求', '跳转数据表列表页面', '127.0.0.1', '我是管理员', 'http://localhost:8080/admin/system/table/list', 'GET', 'com.ledict.core.controller.system.TableController.list', 0x5B5D, 'c903873e-e508-46cb-a975-55088516110e', 0x2261646D696E2F73797374656D2F7461626C652F6C69737422, '12', 'Windows-Firefox-58.0', null, null, null, null, null, '1', '2018-03-13 11:59:56', '1', '2018-03-13 11:59:56', null, '\0');
+INSERT INTO `sys_log` VALUES ('44', '普通请求', '跳转网站展示页面', '127.0.0.1', '我是管理员', 'http://localhost:8080/admin/system/site/show', 'GET', 'com.ledict.core.controller.system.SiteController.show', 0x5B7B7D5D, 'c903873e-e508-46cb-a975-55088516110e', 0x2261646D696E2F73797374656D2F736974652F73686F7722, '16', 'Windows-Firefox-58.0', null, null, null, null, null, '1', '2018-03-13 11:59:59', '1', '2018-03-13 11:59:59', null, '\0');
+INSERT INTO `sys_log` VALUES ('45', '普通请求', '跳转资源展示列表', '127.0.0.1', '我是管理员', 'http://localhost:8080/admin/system/rescource/list', 'GET', 'com.ledict.core.controller.system.RescourceController.list', 0x5B5D, 'c903873e-e508-46cb-a975-55088516110e', 0x2261646D696E2F73797374656D2F726573636F757263652F6C69737422, '11', 'Windows-Firefox-58.0', null, null, null, null, null, '1', '2018-03-13 12:00:02', '1', '2018-03-13 12:00:02', null, '\0');
+INSERT INTO `sys_log` VALUES ('46', '普通请求', '跳转菜单列表', '127.0.0.1', '我是管理员', 'http://localhost:8080/admin/system/menu/list', 'GET', 'com.ledict.core.controller.system.MenuController.list', 0x5B7B7D5D, 'c903873e-e508-46cb-a975-55088516110e', 0x2261646D696E2F73797374656D2F6D656E752F7465737422, '7', 'Windows-Firefox-58.0', null, null, null, null, null, '1', '2018-03-13 12:00:03', '1', '2018-03-13 12:00:03', null, '\0');
+INSERT INTO `sys_log` VALUES ('47', '普通请求', '跳转角色列表页面', '127.0.0.1', '我是管理员', 'http://localhost:8080/admin/system/role/list', 'GET', 'com.ledict.core.controller.system.RoleController.list', 0x5B5D, 'c903873e-e508-46cb-a975-55088516110e', 0x2261646D696E2F73797374656D2F726F6C652F6C69737422, '11', 'Windows-Firefox-58.0', null, null, null, null, null, '1', '2018-03-13 12:00:04', '1', '2018-03-13 12:00:04', null, '\0');
+INSERT INTO `sys_log` VALUES ('48', '普通请求', '跳转系统用户列表页面', '127.0.0.1', '我是管理员', 'http://localhost:8080/admin/system/user/list', 'GET', 'com.ledict.core.controller.system.UserConteroller.list', 0x5B5D, 'c903873e-e508-46cb-a975-55088516110e', 0x2261646D696E2F73797374656D2F757365722F6C69737422, '5', 'Windows-Firefox-58.0', null, null, null, null, null, '1', '2018-03-13 12:00:06', '1', '2018-03-13 12:00:06', null, '\0');
+INSERT INTO `sys_log` VALUES ('49', '普通请求', '跳转定时任务列表', '127.0.0.1', '我是管理员', 'http://localhost:8080/admin/quartzTask/list', 'GET', 'com.ledict.core.controller.QuartzTaskController.list', 0x5B5D, 'c903873e-e508-46cb-a975-55088516110e', 0x222F61646D696E2F71756172747A5461736B2F6C69737422, '8', 'Windows-Firefox-58.0', null, null, null, null, null, '1', '2018-03-13 12:00:15', '1', '2018-03-13 12:00:15', null, '\0');
+INSERT INTO `sys_log` VALUES ('50', '普通请求', '跳转任务执行日志列表', '127.0.0.1', '我是管理员', 'http://localhost:8080/admin/quartzTaskLog/list', 'GET', 'com.ledict.core.controller.QuartzTaskLogController.list', 0x5B5D, 'c903873e-e508-46cb-a975-55088516110e', 0x222F61646D696E2F71756172747A5461736B4C6F672F6C69737422, '10', 'Windows-Firefox-58.0', null, null, null, null, null, '1', '2018-03-13 12:00:17', '1', '2018-03-13 12:00:17', null, '\0');
+INSERT INTO `sys_log` VALUES ('51', '普通请求', '跳转博客内容列表', '127.0.0.1', '我是管理员', 'http://localhost:8080/admin/blogArticle/list', 'GET', 'com.ledict.core.controller.BlogArticleController.list', 0x5B5D, 'c903873e-e508-46cb-a975-55088516110e', 0x222F61646D696E2F626C6F6741727469636C652F6C69737422, '8', 'Windows-Firefox-58.0', null, null, null, null, null, '1', '2018-03-13 12:00:23', '1', '2018-03-13 12:00:23', null, '\0');
+INSERT INTO `sys_log` VALUES ('52', '普通请求', '跳转博客评论列表', '127.0.0.1', '我是管理员', 'http://localhost:8080/admin/blogComment/list', 'GET', 'com.ledict.core.controller.BlogCommentController.list', 0x5B5D, 'c903873e-e508-46cb-a975-55088516110e', 0x222F61646D696E2F626C6F67436F6D6D656E742F6C69737422, '8', 'Windows-Firefox-58.0', null, null, null, null, null, '1', '2018-03-13 12:00:25', '1', '2018-03-13 12:00:25', null, '\0');
+INSERT INTO `sys_log` VALUES ('53', '普通请求', '跳转博客栏目列表', '127.0.0.1', '我是管理员', 'http://localhost:8080/admin/blogChannel/list', 'GET', 'com.ledict.core.controller.BlogChannelController.list', 0x5B5D, 'c903873e-e508-46cb-a975-55088516110e', 0x222F61646D696E2F626C6F674368616E6E656C2F6C69737422, '11', 'Windows-Firefox-58.0', null, null, null, null, null, '1', '2018-03-13 12:00:27', '1', '2018-03-13 12:00:27', null, '\0');
+INSERT INTO `sys_log` VALUES ('54', '普通请求', '跳转数据表列表页面', '127.0.0.1', '我是管理员', 'http://localhost:8080/admin/system/table/list', 'GET', 'com.ledict.core.controller.system.TableController.list', 0x5B5D, 'c903873e-e508-46cb-a975-55088516110e', 0x2261646D696E2F73797374656D2F7461626C652F6C69737422, '4', 'Windows-Firefox-58.0', null, null, null, null, null, '1', '2018-03-13 12:02:57', '1', '2018-03-13 12:02:57', null, '\0');
+INSERT INTO `sys_log` VALUES ('55', '普通请求', '跳转网站展示页面', '127.0.0.1', '我是管理员', 'http://localhost:8080/admin/system/site/show', 'GET', 'com.ledict.core.controller.system.SiteController.show', 0x5B7B7D5D, 'c903873e-e508-46cb-a975-55088516110e', 0x2261646D696E2F73797374656D2F736974652F73686F7722, '16', 'Windows-Firefox-58.0', null, null, null, null, null, '1', '2018-03-13 12:02:57', '1', '2018-03-13 12:02:57', null, '\0');
+INSERT INTO `sys_log` VALUES ('56', '普通请求', '跳转资源展示列表', '127.0.0.1', '我是管理员', 'http://localhost:8080/admin/system/rescource/list', 'GET', 'com.ledict.core.controller.system.RescourceController.list', 0x5B5D, 'c903873e-e508-46cb-a975-55088516110e', 0x2261646D696E2F73797374656D2F726573636F757263652F6C69737422, '7', 'Windows-Firefox-58.0', null, null, null, null, null, '1', '2018-03-13 12:02:57', '1', '2018-03-13 12:02:57', null, '\0');
+INSERT INTO `sys_log` VALUES ('57', '普通请求', '跳转菜单列表', '127.0.0.1', '我是管理员', 'http://localhost:8080/admin/system/menu/list', 'GET', 'com.ledict.core.controller.system.MenuController.list', 0x5B7B7D5D, 'c903873e-e508-46cb-a975-55088516110e', 0x2261646D696E2F73797374656D2F6D656E752F7465737422, '11', 'Windows-Firefox-58.0', null, null, null, null, null, '1', '2018-03-13 12:02:57', '1', '2018-03-13 12:02:57', null, '\0');
+INSERT INTO `sys_log` VALUES ('58', '普通请求', '跳转角色列表页面', '127.0.0.1', '我是管理员', 'http://localhost:8080/admin/system/role/list', 'GET', 'com.ledict.core.controller.system.RoleController.list', 0x5B5D, 'c903873e-e508-46cb-a975-55088516110e', 0x2261646D696E2F73797374656D2F726F6C652F6C69737422, '9', 'Windows-Firefox-58.0', null, null, null, null, null, '1', '2018-03-13 12:02:57', '1', '2018-03-13 12:02:57', null, '\0');
+INSERT INTO `sys_log` VALUES ('59', '普通请求', '跳转定时任务列表', '127.0.0.1', '我是管理员', 'http://localhost:8080/admin/quartzTask/list', 'GET', 'com.ledict.core.controller.QuartzTaskController.list', 0x5B5D, 'c903873e-e508-46cb-a975-55088516110e', 0x222F61646D696E2F71756172747A5461736B2F6C69737422, '6', 'Windows-Firefox-58.0', null, null, null, null, null, '1', '2018-03-13 12:02:57', '1', '2018-03-13 12:02:57', null, '\0');
+INSERT INTO `sys_log` VALUES ('60', '普通请求', '跳转定时任务列表', '127.0.0.1', '我是管理员', 'http://localhost:8080/admin/quartzTask/list', 'GET', 'com.ledict.core.controller.QuartzTaskController.list', 0x5B5D, 'c903873e-e508-46cb-a975-55088516110e', 0x222F61646D696E2F71756172747A5461736B2F6C69737422, '6', 'Windows-Firefox-58.0', null, null, null, null, null, '1', '2018-03-13 12:02:57', '1', '2018-03-13 12:02:57', null, '\0');
+INSERT INTO `sys_log` VALUES ('61', '普通请求', '跳转博客内容列表', '127.0.0.1', '我是管理员', 'http://localhost:8080/admin/blogArticle/list', 'GET', 'com.ledict.core.controller.BlogArticleController.list', 0x5B5D, 'c903873e-e508-46cb-a975-55088516110e', 0x222F61646D696E2F626C6F6741727469636C652F6C69737422, '12', 'Windows-Firefox-58.0', null, null, null, null, null, '1', '2018-03-13 12:02:57', '1', '2018-03-13 12:02:57', null, '\0');
+INSERT INTO `sys_log` VALUES ('62', '普通请求', '跳转博客栏目列表', '127.0.0.1', '我是管理员', 'http://localhost:8080/admin/blogChannel/list', 'GET', 'com.ledict.core.controller.BlogChannelController.list', 0x5B5D, 'c903873e-e508-46cb-a975-55088516110e', 0x222F61646D696E2F626C6F674368616E6E656C2F6C69737422, '8', 'Windows-Firefox-58.0', null, null, null, null, null, '1', '2018-03-13 12:04:19', '1', '2018-03-13 12:04:19', null, '\0');
+INSERT INTO `sys_log` VALUES ('63', '普通请求', '跳转博客评论列表', '127.0.0.1', '我是管理员', 'http://localhost:8080/admin/blogComment/list', 'GET', 'com.ledict.core.controller.BlogCommentController.list', 0x5B5D, 'c903873e-e508-46cb-a975-55088516110e', 0x222F61646D696E2F626C6F67436F6D6D656E742F6C69737422, '5', 'Windows-Firefox-58.0', null, null, null, null, null, '1', '2018-03-13 12:04:27', '1', '2018-03-13 12:04:27', null, '\0');
+INSERT INTO `sys_log` VALUES ('64', 'Ajax请求', '文件上传', '127.0.0.1', '我是管理员', 'http://localhost:8080/file/upload/', 'POST', 'com.ledict.core.controller.system.FileController.uploadFile', 0x5B226F72672E737072696E676672616D65776F726B2E7765622E6D756C7469706172742E737570706F72742E5374616E646172644D756C74697061727448747470536572766C657452657175657374245374616E646172644D756C74697061727446696C65403537306365363861225D, 'c903873e-e508-46cb-a975-55088516110e', 0x7B2264617461223A7B226E616D65223A2231623737616537373065656463393761353234386235643161643838643038372E6A7067222C2275726C223A2268747470733A2F2F7374617469632E6D7973697465666F726D652E636F6D2F33653262616634302D663265352D346233632D393364312D3366393739363530313765632E6A7067227D2C2273756363657373223A747275652C226D657373616765223A22E68890E58A9F227D, '942', 'Windows-Firefox-58.0', null, null, null, null, null, '1', '2018-03-13 12:54:36', '1', '2018-03-13 12:54:36', null, '\0');
+INSERT INTO `sys_log` VALUES ('65', 'Ajax请求', '保存新增博客内容数据', '127.0.0.1', '我是管理员', 'http://localhost:8080/admin/blogArticle/add', 'POST', 'com.ledict.core.controller.BlogArticleController.add', 0x5B7B2263617465676F7279223A2231222C226368616E6E656C4964223A31392C22636F6E74656E74223A223C703EE59BBEE789873C62723E3C2F703E222C2264656C466C6167223A66616C73652C226D61726B73223A22222C227075626C69737454696D65223A313532303839393230303030302C227265636F6D6D656E64223A66616C73652C227265736F7572636573223A22222C2273686F77506963223A2268747470733A2F2F7374617469632E6D7973697465666F726D652E636F6D2F33653262616634302D663265352D346233632D393364312D3366393739363530313765632E6A7067222C227375625469746C65223A2262616E6E6572222C2274657874223A22E59BBEE78987222C227469746C65223A2262616E6E6572222C22746F70223A66616C73657D5D, 'c903873e-e508-46cb-a975-55088516110e', 0x7B2273756363657373223A747275652C226D657373616765223A22E68890E58A9F227D, '1857', 'Windows-Firefox-58.0', null, null, null, null, null, '1', '2018-03-13 12:55:18', '1', '2018-03-13 12:55:18', null, '\0');
+INSERT INTO `sys_log` VALUES ('66', '普通请求', '跳转博客内容列表', '127.0.0.1', '我是管理员', 'http://localhost:8080/admin/blogArticle/list', 'GET', 'com.ledict.core.controller.BlogArticleController.list', 0x5B5D, 'c903873e-e508-46cb-a975-55088516110e', 0x222F61646D696E2F626C6F6741727469636C652F6C69737422, '7', 'Windows-Firefox-58.0', null, null, null, null, null, '1', '2018-03-13 12:55:20', '1', '2018-03-13 12:55:20', null, '\0');
+INSERT INTO `sys_log` VALUES ('67', 'Ajax请求', '请求字段展示数据(全部显示)', '127.0.0.1', '我是管理员', 'http://localhost:8080/admin/system/table/showFields', 'POST', 'com.ledict.core.controller.system.TableController.showFields', 0x5B2271756172747A5F7461736B5F6C6F67222C315D, 'c903873e-e508-46cb-a975-55088516110e', 0x7B22636F6465223A302C22636F756E74223A382C2264617461223A5B7B22636F6D6D656E74223A22E4BBBBE58AA14944222C2264656661756C7456616C7565223A66616C73652C22646963746C697374223A5B5D2C22646F666F72223A2230222C2269734E756C6C56616C7565223A22594553222C226C656E677468223A32302C226C6973744973536561726368223A66616C73652C226C697374497353686F77223A66616C73652C226E616D65223A226A6F625F6964222C2274797065223A22424947494E54227D2C7B22636F6D6D656E74223A22E5AE9AE697B6E4BBBBE58AA1E5908DE7A7B0222C2264656661756C7456616C7565223A66616C73652C22646963746C697374223A5B5D2C22646F666F72223A22696E707574222C2269734E756C6C56616C7565223A22594553222C226C656E677468223A3235352C226C6973744973536561726368223A747275652C226C697374497353686F77223A747275652C226E616D65223A226E616D65222C2274797065223A2256415243484152227D2C7B22636F6D6D656E74223A22E5AE9AE588B6E4BBBBE58AA1E689A7E8A18CE7B1BB222C2264656661756C7456616C7565223A66616C73652C22646963746C697374223A5B5D2C22646F666F72223A22696E707574222C2269734E756C6C56616C7565223A22594553222C226C656E677468223A3235352C226C6973744973536561726368223A66616C73652C226C697374497353686F77223A747275652C226E616D65223A227461726765745F6265616E222C2274797065223A2256415243484152227D2C7B22636F6D6D656E74223A22E5AE9AE697B6E4BBBBE58AA1E689A7E8A18CE696B9E6B395222C2264656661756C7456616C7565223A66616C73652C22646963746C697374223A5B5D2C22646F666F72223A22696E707574222C2269734E756C6C56616C7565223A22594553222C226C656E677468223A3235352C226C6973744973536561726368223A66616C73652C226C697374497353686F77223A747275652C226E616D65223A2274726765745F6D6574686F64222C2274797065223A2256415243484152227D2C7B22636F6D6D656E74223A22E689A7E8A18CE58F82E695B0222C2264656661756C7456616C7565223A66616C73652C22646963746C697374223A5B5D2C22646F666F72223A22696E707574222C2269734E756C6C56616C7565223A22594553222C226C656E677468223A3235352C226C6973744973536561726368223A66616C73652C226C697374497353686F77223A747275652C226E616D65223A22706172616D73222C2274797065223A2256415243484152227D2C7B22636F6D6D656E74223A22E4BBBBE58AA1E78AB6E68081222C2264656661756C7456616C7565223A66616C73652C22646963746C697374223A5B5D2C22646F666F72223A2230222C2269734E756C6C56616C7565223A22594553222C226C656E677468223A31312C226C6973744973536561726368223A66616C73652C226C697374497353686F77223A66616C73652C226E616D65223A22737461747573222C2274797065223A22494E54227D2C7B22636F6D6D656E74223A22E5BC82E5B8B8E6B688E681AF222C2264656661756C7456616C7565223A66616C73652C22646963746C697374223A5B5D2C22646F666F72223A227465787461726561222C2269734E756C6C56616C7565223A22594553222C226C6973744973536561726368223A66616C73652C226C697374497353686F77223A66616C73652C226E616D65223A226572726F72222C2274797065223A2254455854227D2C7B22636F6D6D656E74223A22E689A7E8A18CE697B6E997B4222C2264656661756C7456616C7565223A66616C73652C22646963746C697374223A5B5D2C22646F666F72223A22696E707574222C2269734E756C6C56616C7565223A22594553222C226C656E677468223A31312C226C6973744973536561726368223A66616C73652C226C697374497353686F77223A747275652C226E616D65223A2274696D6573222C2274797065223A22494E54227D5D2C226D7367223A22227D, '36', 'Windows-Firefox-58.0', null, null, null, null, null, '1', '2018-03-13 12:58:07', '1', '2018-03-13 12:58:07', null, '\0');
+INSERT INTO `sys_log` VALUES ('68', '普通请求', '跳转系统字典页面', '127.0.0.1', '我是管理员', 'http://localhost:8080/admin/system/dict/list', 'GET', 'com.ledict.core.controller.system.DictController.list', 0x5B5D, 'c903873e-e508-46cb-a975-55088516110e', 0x2261646D696E2F73797374656D2F646963742F6C69737422, '5', 'Windows-Firefox-58.0', null, null, null, null, null, '1', '2018-03-13 12:58:26', '1', '2018-03-13 12:58:26', null, '\0');
+INSERT INTO `sys_log` VALUES ('69', '普通请求', '跳转网站展示页面', '127.0.0.1', '我是管理员', 'http://localhost:8080/admin/system/site/show', 'GET', 'com.ledict.core.controller.system.SiteController.show', 0x5B7B7D5D, 'c903873e-e508-46cb-a975-55088516110e', 0x2261646D696E2F73797374656D2F7461626C652F6C69737422, '40', 'Windows-Firefox-58.0', null, null, null, null, null, '1', '2018-03-13 13:46:29', '1', '2018-03-13 13:46:29', null, '\0');
+INSERT INTO `sys_log` VALUES ('70', '普通请求', '跳转资源展示列表', '127.0.0.1', '我是管理员', 'http://localhost:8080/admin/system/rescource/list', 'GET', 'com.ledict.core.controller.system.RescourceController.list', 0x5B5D, 'c903873e-e508-46cb-a975-55088516110e', 0x2261646D696E2F73797374656D2F736974652F73686F7722, '59', 'Windows-Firefox-58.0', null, null, null, null, null, '1', '2018-03-13 13:46:29', '1', '2018-03-13 13:46:29', null, '\0');
+INSERT INTO `sys_log` VALUES ('71', '普通请求', '跳转资源展示列表', '127.0.0.1', '我是管理员', 'http://localhost:8080/admin/system/rescource/list', 'GET', 'com.ledict.core.controller.system.RescourceController.list', 0x5B5D, 'c903873e-e508-46cb-a975-55088516110e', 0x2261646D696E2F73797374656D2F736974652F73686F7722, '59', 'Windows-Firefox-58.0', null, null, null, null, null, '1', '2018-03-13 13:46:29', '1', '2018-03-13 13:46:29', null, '\0');
+INSERT INTO `sys_log` VALUES ('72', '普通请求', '跳转菜单列表', '127.0.0.1', '我是管理员', 'http://localhost:8080/admin/system/menu/list', 'GET', 'com.ledict.core.controller.system.MenuController.list', 0x5B7B7D5D, 'c903873e-e508-46cb-a975-55088516110e', 0x2261646D696E2F73797374656D2F6D656E752F7465737422, '21', 'Windows-Firefox-58.0', null, null, null, null, null, '1', '2018-03-13 13:46:29', '1', '2018-03-13 13:46:29', null, '\0');
+INSERT INTO `sys_log` VALUES ('73', '普通请求', '跳转角色列表页面', '127.0.0.1', '我是管理员', 'http://localhost:8080/admin/system/role/list', 'GET', 'com.ledict.core.controller.system.RoleController.list', 0x5B5D, 'c903873e-e508-46cb-a975-55088516110e', 0x2261646D696E2F73797374656D2F726F6C652F6C69737422, '13', 'Windows-Firefox-58.0', null, null, null, null, null, '1', '2018-03-13 13:46:29', '1', '2018-03-13 13:46:29', null, '\0');
+INSERT INTO `sys_log` VALUES ('74', '普通请求', '跳转系统用户列表页面', '127.0.0.1', '我是管理员', 'http://localhost:8080/admin/system/user/list', 'GET', 'com.ledict.core.controller.system.UserConteroller.list', 0x5B5D, 'c903873e-e508-46cb-a975-55088516110e', 0x2261646D696E2F73797374656D2F757365722F6C69737422, '15', 'Windows-Firefox-58.0', null, null, null, null, null, '1', '2018-03-13 13:46:29', '1', '2018-03-13 13:46:29', null, '\0');
+INSERT INTO `sys_log` VALUES ('75', '普通请求', '跳转定时任务列表', '127.0.0.1', '我是管理员', 'http://localhost:8080/admin/quartzTask/list', 'GET', 'com.ledict.core.controller.QuartzTaskController.list', 0x5B5D, 'c903873e-e508-46cb-a975-55088516110e', 0x222F61646D696E2F71756172747A5461736B2F6C69737422, '14', 'Windows-Firefox-58.0', null, null, null, null, null, '1', '2018-03-13 13:46:29', '1', '2018-03-13 13:46:29', null, '\0');
+INSERT INTO `sys_log` VALUES ('76', '普通请求', '跳转博客内容列表', '127.0.0.1', '我是管理员', 'http://localhost:8080/admin/blogArticle/list', 'GET', 'com.ledict.core.controller.BlogArticleController.list', 0x5B5D, 'c903873e-e508-46cb-a975-55088516110e', 0x222F61646D696E2F626C6F6741727469636C652F6C69737422, '15', 'Windows-Firefox-58.0', null, null, null, null, null, '1', '2018-03-13 13:46:29', '1', '2018-03-13 13:46:29', null, '\0');
+INSERT INTO `sys_log` VALUES ('77', '普通请求', '跳转系统字典页面', '127.0.0.1', '我是管理员', 'http://localhost:8080/admin/system/dict/list', 'GET', 'com.ledict.core.controller.system.DictController.list', 0x5B5D, 'c903873e-e508-46cb-a975-55088516110e', 0x2261646D696E2F73797374656D2F646963742F6C69737422, '35', 'Windows-Firefox-58.0', null, null, null, null, null, '1', '2018-03-13 13:46:30', '1', '2018-03-13 13:46:30', null, '\0');
+INSERT INTO `sys_log` VALUES ('78', '普通请求', '跳转网站展示页面', '127.0.0.1', '我是管理员', 'http://localhost:8080/admin/system/site/show', 'GET', 'com.ledict.core.controller.system.SiteController.show', 0x5B7B7D5D, 'c903873e-e508-46cb-a975-55088516110e', 0x2261646D696E2F73797374656D2F736974652F73686F7722, '65', 'Windows-Firefox-58.0', null, null, null, null, null, '1', '2018-03-13 13:56:05', '1', '2018-03-13 13:56:05', null, '\0');
+INSERT INTO `sys_log` VALUES ('79', '普通请求', '跳转网站展示页面', '127.0.0.1', '我是管理员', 'http://localhost:8080/admin/system/site/show', 'GET', 'com.ledict.core.controller.system.SiteController.show', 0x5B7B7D5D, 'c903873e-e508-46cb-a975-55088516110e', 0x2261646D696E2F73797374656D2F736974652F73686F7722, '65', 'Windows-Firefox-58.0', null, null, null, null, null, '1', '2018-03-13 13:56:05', '1', '2018-03-13 13:56:05', null, '\0');
+INSERT INTO `sys_log` VALUES ('80', '普通请求', '跳转资源展示列表', '127.0.0.1', '我是管理员', 'http://localhost:8080/admin/system/rescource/list', 'GET', 'com.ledict.core.controller.system.RescourceController.list', 0x5B5D, 'c903873e-e508-46cb-a975-55088516110e', 0x2261646D696E2F73797374656D2F726573636F757263652F6C69737422, '22', 'Windows-Firefox-58.0', null, null, null, null, null, '1', '2018-03-13 13:56:05', '1', '2018-03-13 13:56:05', null, '\0');
+INSERT INTO `sys_log` VALUES ('81', '普通请求', '跳转菜单列表', '127.0.0.1', '我是管理员', 'http://localhost:8080/admin/system/menu/list', 'GET', 'com.ledict.core.controller.system.MenuController.list', 0x5B7B7D5D, 'c903873e-e508-46cb-a975-55088516110e', 0x2261646D696E2F73797374656D2F6D656E752F7465737422, '21', 'Windows-Firefox-58.0', null, null, null, null, null, '1', '2018-03-13 13:56:05', '1', '2018-03-13 13:56:05', null, '\0');
+INSERT INTO `sys_log` VALUES ('82', '普通请求', '跳转角色列表页面', '127.0.0.1', '我是管理员', 'http://localhost:8080/admin/system/role/list', 'GET', 'com.ledict.core.controller.system.RoleController.list', 0x5B5D, 'c903873e-e508-46cb-a975-55088516110e', 0x2261646D696E2F73797374656D2F726F6C652F6C69737422, '13', 'Windows-Firefox-58.0', null, null, null, null, null, '1', '2018-03-13 13:56:06', '1', '2018-03-13 13:56:06', null, '\0');
+INSERT INTO `sys_log` VALUES ('83', '普通请求', '跳转系统用户列表页面', '127.0.0.1', '我是管理员', 'http://localhost:8080/admin/system/user/list', 'GET', 'com.ledict.core.controller.system.UserConteroller.list', 0x5B5D, 'c903873e-e508-46cb-a975-55088516110e', 0x2261646D696E2F73797374656D2F757365722F6C69737422, '7', 'Windows-Firefox-58.0', null, null, null, null, null, '1', '2018-03-13 13:56:06', '1', '2018-03-13 13:56:06', null, '\0');
+INSERT INTO `sys_log` VALUES ('84', '普通请求', '跳转系统用户列表页面', '127.0.0.1', '我是管理员', 'http://localhost:8080/admin/system/user/list', 'GET', 'com.ledict.core.controller.system.UserConteroller.list', 0x5B5D, 'c903873e-e508-46cb-a975-55088516110e', 0x2261646D696E2F73797374656D2F757365722F6C69737422, '7', 'Windows-Firefox-58.0', null, null, null, null, null, '1', '2018-03-13 13:56:06', '1', '2018-03-13 13:56:06', null, '\0');
+INSERT INTO `sys_log` VALUES ('85', '普通请求', '跳转博客内容列表', '127.0.0.1', '我是管理员', 'http://localhost:8080/admin/blogArticle/list', 'GET', 'com.ledict.core.controller.BlogArticleController.list', 0x5B5D, 'c903873e-e508-46cb-a975-55088516110e', 0x222F61646D696E2F626C6F6741727469636C652F6C69737422, '61', 'Windows-Firefox-58.0', null, null, null, null, null, '1', '2018-03-13 13:56:07', '1', '2018-03-13 13:56:07', null, '\0');
+INSERT INTO `sys_log` VALUES ('86', '普通请求', '跳转系统字典页面', '127.0.0.1', '我是管理员', 'http://localhost:8080/admin/system/dict/list', 'GET', 'com.ledict.core.controller.system.DictController.list', 0x5B5D, 'c903873e-e508-46cb-a975-55088516110e', 0x2261646D696E2F73797374656D2F646963742F6C69737422, '50', 'Windows-Firefox-58.0', null, null, null, null, null, '1', '2018-03-13 13:56:07', '1', '2018-03-13 13:56:07', null, '\0');
+INSERT INTO `sys_log` VALUES ('87', 'Ajax请求', '用户登录', '127.0.0.1', '我是管理员', 'http://localhost:8080/login/main', 'POST', 'com.ledict.core.controller.LoginController.loginMain', 0x5B226F72672E6170616368652E736869726F2E7765622E736572766C65742E536869726F48747470536572766C6574526571756573744036386131356130225D, '7289a6b4-00d5-461c-b61f-b7ebb4c9adbc', 0x7B2264617461223A7B2275726C223A22696E646578227D2C2273756363657373223A747275652C226D657373616765223A22E799BBE5BD95E68890E58A9F227D, '2478', 'Windows-Firefox-58.0', null, null, null, null, null, '1', '2018-03-13 15:16:08', '1', '2018-03-13 15:16:08', null, '\0');
+INSERT INTO `sys_log` VALUES ('88', '普通请求', '跳转数据表列表页面', '127.0.0.1', '我是管理员', 'http://localhost:8080/admin/system/table/list', 'GET', 'com.ledict.core.controller.system.TableController.list', 0x5B5D, '7289a6b4-00d5-461c-b61f-b7ebb4c9adbc', 0x2261646D696E2F73797374656D2F7461626C652F6C69737422, '26', 'Windows-Firefox-58.0', null, null, null, null, null, '1', '2018-03-13 15:16:09', '1', '2018-03-13 15:16:09', null, '\0');
+INSERT INTO `sys_log` VALUES ('89', '普通请求', '跳转网站展示页面', '127.0.0.1', '我是管理员', 'http://localhost:8080/admin/system/site/show', 'GET', 'com.ledict.core.controller.system.SiteController.show', 0x5B7B7D5D, '7289a6b4-00d5-461c-b61f-b7ebb4c9adbc', 0x2261646D696E2F73797374656D2F736974652F73686F7722, '21', 'Windows-Firefox-58.0', null, null, null, null, null, '1', '2018-03-13 15:16:09', '1', '2018-03-13 15:16:09', null, '\0');
+INSERT INTO `sys_log` VALUES ('90', '普通请求', '跳转资源展示列表', '127.0.0.1', '我是管理员', 'http://localhost:8080/admin/system/rescource/list', 'GET', 'com.ledict.core.controller.system.RescourceController.list', 0x5B5D, '7289a6b4-00d5-461c-b61f-b7ebb4c9adbc', 0x2261646D696E2F73797374656D2F726573636F757263652F6C69737422, '12', 'Windows-Firefox-58.0', null, null, null, null, null, '1', '2018-03-13 15:16:09', '1', '2018-03-13 15:16:09', null, '\0');
+INSERT INTO `sys_log` VALUES ('91', '普通请求', '跳转菜单列表', '127.0.0.1', '我是管理员', 'http://localhost:8080/admin/system/menu/list', 'GET', 'com.ledict.core.controller.system.MenuController.list', 0x5B7B7D5D, '7289a6b4-00d5-461c-b61f-b7ebb4c9adbc', 0x2261646D696E2F73797374656D2F6D656E752F7465737422, '9', 'Windows-Firefox-58.0', null, null, null, null, null, '1', '2018-03-13 15:16:09', '1', '2018-03-13 15:16:09', null, '\0');
+INSERT INTO `sys_log` VALUES ('92', '普通请求', '跳转角色列表页面', '127.0.0.1', '我是管理员', 'http://localhost:8080/admin/system/role/list', 'GET', 'com.ledict.core.controller.system.RoleController.list', 0x5B5D, '7289a6b4-00d5-461c-b61f-b7ebb4c9adbc', 0x2261646D696E2F73797374656D2F726F6C652F6C69737422, '12', 'Windows-Firefox-58.0', null, null, null, null, null, '1', '2018-03-13 15:16:09', '1', '2018-03-13 15:16:09', null, '\0');
+INSERT INTO `sys_log` VALUES ('93', '普通请求', '跳转系统用户列表页面', '127.0.0.1', '我是管理员', 'http://localhost:8080/admin/system/user/list', 'GET', 'com.ledict.core.controller.system.UserConteroller.list', 0x5B5D, '7289a6b4-00d5-461c-b61f-b7ebb4c9adbc', 0x2261646D696E2F73797374656D2F757365722F6C69737422, '15', 'Windows-Firefox-58.0', null, null, null, null, null, '1', '2018-03-13 15:16:09', '1', '2018-03-13 15:16:09', null, '\0');
+INSERT INTO `sys_log` VALUES ('94', '普通请求', '跳转博客内容列表', '127.0.0.1', '我是管理员', 'http://localhost:8080/admin/blogArticle/list', 'GET', 'com.ledict.core.controller.BlogArticleController.list', 0x5B5D, '7289a6b4-00d5-461c-b61f-b7ebb4c9adbc', 0x222F61646D696E2F71756172747A5461736B2F6C69737422, '18', 'Windows-Firefox-58.0', null, null, null, null, null, '1', '2018-03-13 15:16:09', '1', '2018-03-13 15:16:09', null, '\0');
+INSERT INTO `sys_log` VALUES ('95', '普通请求', '跳转博客内容列表', '127.0.0.1', '我是管理员', 'http://localhost:8080/admin/blogArticle/list', 'GET', 'com.ledict.core.controller.BlogArticleController.list', 0x5B5D, '7289a6b4-00d5-461c-b61f-b7ebb4c9adbc', 0x222F61646D696E2F71756172747A5461736B2F6C69737422, '18', 'Windows-Firefox-58.0', null, null, null, null, null, '1', '2018-03-13 15:16:09', '1', '2018-03-13 15:16:09', null, '\0');
+INSERT INTO `sys_log` VALUES ('96', '普通请求', '跳转系统字典页面', '127.0.0.1', '我是管理员', 'http://localhost:8080/admin/system/dict/list', 'GET', 'com.ledict.core.controller.system.DictController.list', 0x5B5D, '7289a6b4-00d5-461c-b61f-b7ebb4c9adbc', 0x2261646D696E2F73797374656D2F646963742F6C69737422, '12', 'Windows-Firefox-58.0', null, null, null, null, null, '1', '2018-03-13 15:16:09', '1', '2018-03-13 15:16:09', null, '\0');
+INSERT INTO `sys_log` VALUES ('97', 'Ajax请求', '请求字段展示数据(全部显示)', '127.0.0.1', '我是管理员', 'http://localhost:8080/admin/system/table/showFields', 'POST', 'com.ledict.core.controller.system.TableController.showFields', 0x5B225152545A5F53494D504C455F5452494747455253222C305D, '7289a6b4-00d5-461c-b61f-b7ebb4c9adbc', 0x6E756C6C, '8', 'Windows-Firefox-58.0', null, null, null, null, null, '1', '2018-03-13 15:22:04', '1', '2018-03-13 15:22:04', null, '\0');
+INSERT INTO `sys_log` VALUES ('98', 'Ajax请求', '请求字段展示数据(全部显示)', '127.0.0.1', '我是管理员', 'http://localhost:8080/admin/system/table/showFields', 'POST', 'com.ledict.core.controller.system.TableController.showFields', 0x5B2271756172747A5F7461736B222C315D, '7289a6b4-00d5-461c-b61f-b7ebb4c9adbc', 0x7B22636F6465223A302C22636F756E74223A362C2264617461223A5B7B22636F6D6D656E74223A22E4BBBBE58AA1E5908DE7A7B0222C2264656661756C7456616C7565223A66616C73652C22646963746C697374223A5B5D2C22646F666F72223A22696E707574222C2269734E756C6C56616C7565223A22594553222C226C656E677468223A3235352C226C6973744973536561726368223A747275652C226C697374497353686F77223A747275652C226E616D65223A226E616D65222C2274797065223A2256415243484152227D2C7B22636F6D6D656E74223A22E4BBBBE58AA1E8A1A8E8BEBEE5BC8F222C2264656661756C7456616C7565223A66616C73652C22646963746C697374223A5B5D2C22646F666F72223A22696E707574222C2269734E756C6C56616C7565223A22594553222C226C656E677468223A3235352C226C6973744973536561726368223A66616C73652C226C697374497353686F77223A747275652C226E616D65223A2263726F6E222C2274797065223A2256415243484152227D2C7B22636F6D6D656E74223A22E689A7E8A18CE79A84E7B1BB222C2264656661756C7456616C7565223A66616C73652C22646963746C697374223A5B5D2C22646F666F72223A22696E707574222C2269734E756C6C56616C7565223A22594553222C226C656E677468223A3235352C226C6973744973536561726368223A66616C73652C226C697374497353686F77223A747275652C226E616D65223A227461726765745F6265616E222C2274797065223A2256415243484152227D2C7B22636F6D6D656E74223A22E689A7E8A18CE696B9E6B395222C2264656661756C7456616C7565223A66616C73652C22646963746C697374223A5B5D2C22646F666F72223A22696E707574222C2269734E756C6C56616C7565223A22594553222C226C656E677468223A3235352C226C6973744973536561726368223A66616C73652C226C697374497353686F77223A747275652C226E616D65223A2274726765745F6D6574686F64222C2274797065223A2256415243484152227D2C7B22636F6D6D656E74223A22E689A7E8A18CE58F82E695B0222C2264656661756C7456616C7565223A66616C73652C22646963746C697374223A5B5D2C22646F666F72223A227465787461726561222C2269734E756C6C56616C7565223A22594553222C226C656E677468223A3235352C226C6973744973536561726368223A66616C73652C226C697374497353686F77223A66616C73652C226E616D65223A22706172616D73222C2274797065223A2256415243484152227D2C7B22636F6D6D656E74223A22E4BBBBE58AA1E78AB6E68081222C2264656661756C7456616C7565223A66616C73652C22646963746C697374223A5B7B2264656C466C6167223A66616C73652C226964223A3132332C226C6162656C223A22E6ADA3E5B8B8222C2274797065223A2271756172747A5F7461736B5F737461747573222C2276616C7565223A2230227D2C7B2264656C466C6167223A66616C73652C226964223A3132342C226C6162656C223A22E69A82E5819C222C2274797065223A2271756172747A5F7461736B5F737461747573222C2276616C7565223A2231227D5D2C22646F666F72223A22726164696F222C2269734E756C6C56616C7565223A22594553222C226C656E677468223A31312C226C6973744973536561726368223A747275652C226C697374497353686F77223A747275652C226E616D65223A22737461747573222C2274797065223A22494E54227D5D2C226D7367223A22227D, '38', 'Windows-Firefox-58.0', null, null, null, null, null, '1', '2018-03-13 15:22:15', '1', '2018-03-13 15:22:15', null, '\0');
+INSERT INTO `sys_log` VALUES ('99', 'Ajax请求', '请求字段展示数据(全部显示)', '127.0.0.1', '我是管理员', 'http://localhost:8080/admin/system/table/showFields', 'POST', 'com.ledict.core.controller.system.TableController.showFields', 0x5B225152545A5F43524F4E5F5452494747455253222C305D, '7289a6b4-00d5-461c-b61f-b7ebb4c9adbc', 0x6E756C6C, '10', 'Windows-Firefox-58.0', null, null, null, null, null, '1', '2018-03-13 15:22:24', '1', '2018-03-13 15:22:24', null, '\0');
+INSERT INTO `sys_log` VALUES ('100', 'Ajax请求', '请求字段展示数据(全部显示)', '127.0.0.1', '我是管理员', 'http://localhost:8080/admin/system/table/showFields', 'POST', 'com.ledict.core.controller.system.TableController.showFields', 0x5B226861745F61726561222C305D, '7289a6b4-00d5-461c-b61f-b7ebb4c9adbc', 0x6E756C6C, '9', 'Windows-Firefox-58.0', null, null, null, null, null, '1', '2018-03-13 15:23:23', '1', '2018-03-13 15:23:23', null, '\0');
+INSERT INTO `sys_log` VALUES ('101', 'Ajax请求', '请求字段展示数据(全部显示)', '127.0.0.1', '我是管理员', 'http://localhost:8080/admin/system/table/showFields', 'POST', 'com.ledict.core.controller.system.TableController.showFields', 0x5B22626C6F675F74616773222C315D, '7289a6b4-00d5-461c-b61f-b7ebb4c9adbc', 0x7B22636F6465223A302C22636F756E74223A322C2264617461223A5B7B22636F6D6D656E74223A22E6A087E7ADBEE5908DE5AD97222C2264656661756C7456616C7565223A66616C73652C22646963746C697374223A5B5D2C22646F666F72223A22696E707574222C2269734E756C6C56616C7565223A22594553222C226C656E677468223A3235352C226C6973744973536561726368223A747275652C226C697374497353686F77223A747275652C226E616D65223A226E616D65222C2274797065223A2256415243484152227D2C7B22636F6D6D656E74223A22E68E92E5BA8F222C2264656661756C7456616C7565223A66616C73652C22646963746C697374223A5B5D2C22646F666F72223A2230222C2269734E756C6C56616C7565223A22594553222C226C656E677468223A31312C226C6973744973536561726368223A66616C73652C226C697374497353686F77223A66616C73652C226E616D65223A22736F7274222C2274797065223A22494E54227D5D2C226D7367223A22227D, '35', 'Windows-Firefox-58.0', null, null, null, null, null, '1', '2018-03-13 15:23:28', '1', '2018-03-13 15:23:28', null, '\0');
+INSERT INTO `sys_log` VALUES ('102', '普通请求', '跳转系统字典页面', '127.0.0.1', '我是管理员', 'http://localhost:8080/admin/system/dict/list', 'GET', 'com.ledict.core.controller.system.DictController.list', 0x5B5D, '7289a6b4-00d5-461c-b61f-b7ebb4c9adbc', 0x2261646D696E2F73797374656D2F646963742F6C69737422, '16', 'Windows-Firefox-58.0', null, null, null, null, null, '1', '2018-03-13 15:33:21', '1', '2018-03-13 15:33:21', null, '\0');
+INSERT INTO `sys_log` VALUES ('103', '普通请求', '跳转网站展示页面', '127.0.0.1', '我是管理员', 'http://localhost:8080/admin/system/site/show', 'GET', 'com.ledict.core.controller.system.SiteController.show', 0x5B7B7D5D, '7289a6b4-00d5-461c-b61f-b7ebb4c9adbc', 0x2261646D696E2F73797374656D2F736974652F73686F7722, '19', 'Windows-Firefox-58.0', null, null, null, null, null, '1', '2018-03-13 15:33:22', '1', '2018-03-13 15:33:22', null, '\0');
+INSERT INTO `sys_log` VALUES ('104', '普通请求', '跳转资源展示列表', '127.0.0.1', '我是管理员', 'http://localhost:8080/admin/system/rescource/list', 'GET', 'com.ledict.core.controller.system.RescourceController.list', 0x5B5D, '7289a6b4-00d5-461c-b61f-b7ebb4c9adbc', 0x2261646D696E2F73797374656D2F726573636F757263652F6C69737422, '13', 'Windows-Firefox-58.0', null, null, null, null, null, '1', '2018-03-13 15:33:24', '1', '2018-03-13 15:33:24', null, '\0');
+INSERT INTO `sys_log` VALUES ('105', 'Ajax请求', '用户登录', '127.0.0.1', '我是管理员', 'http://localhost:8081/login/main', 'POST', 'com.ledict.core.controller.LoginController.loginMain', 0x5B226F72672E6170616368652E736869726F2E7765622E736572766C65742E536869726F48747470536572766C657452657175657374403233316637343432225D, '4ef30035-f33f-419b-9871-0b8c20f73a5f', 0x7B2264617461223A7B2275726C223A22696E646578227D2C2273756363657373223A747275652C226D657373616765223A22E799BBE5BD95E68890E58A9F227D, '261', 'Windows-Firefox-58.0', null, null, null, null, null, '1', '2018-03-13 16:39:13', '1', '2018-03-13 16:39:13', null, '\0');
+INSERT INTO `sys_log` VALUES ('106', '普通请求', '跳转系统字典页面', '127.0.0.1', '我是管理员', 'http://localhost:8081/admin/system/dict/list', 'GET', 'com.ledict.core.controller.system.DictController.list', 0x5B5D, '4ef30035-f33f-419b-9871-0b8c20f73a5f', 0x2261646D696E2F73797374656D2F646963742F6C69737422, '17', 'Windows-Firefox-58.0', null, null, null, null, null, '1', '2018-03-13 16:41:16', '1', '2018-03-13 16:41:16', null, '\0');
+INSERT INTO `sys_log` VALUES ('107', '普通请求', '跳转数据表列表页面', '127.0.0.1', '我是管理员', 'http://localhost:8081/admin/system/table/list', 'GET', 'com.ledict.core.controller.system.TableController.list', 0x5B5D, '4ef30035-f33f-419b-9871-0b8c20f73a5f', 0x2261646D696E2F73797374656D2F7461626C652F6C69737422, '11', 'Windows-Firefox-58.0', null, null, null, null, null, '1', '2018-03-13 16:41:17', '1', '2018-03-13 16:41:17', null, '\0');
+INSERT INTO `sys_log` VALUES ('108', '普通请求', '跳转网站展示页面', '127.0.0.1', '我是管理员', 'http://localhost:8081/admin/system/site/show', 'GET', 'com.ledict.core.controller.system.SiteController.show', 0x5B7B7D5D, '4ef30035-f33f-419b-9871-0b8c20f73a5f', 0x2261646D696E2F73797374656D2F736974652F73686F7722, '18', 'Windows-Firefox-58.0', null, null, null, null, null, '1', '2018-03-13 16:41:18', '1', '2018-03-13 16:41:18', null, '\0');
+INSERT INTO `sys_log` VALUES ('109', '普通请求', '跳转资源展示列表', '127.0.0.1', '我是管理员', 'http://localhost:8081/admin/system/rescource/list', 'GET', 'com.ledict.core.controller.system.RescourceController.list', 0x5B5D, '4ef30035-f33f-419b-9871-0b8c20f73a5f', 0x2261646D696E2F73797374656D2F726573636F757263652F6C69737422, '11', 'Windows-Firefox-58.0', null, null, null, null, null, '1', '2018-03-13 16:41:19', '1', '2018-03-13 16:41:19', null, '\0');
+INSERT INTO `sys_log` VALUES ('110', '普通请求', '跳转角色列表页面', '127.0.0.1', '我是管理员', 'http://localhost:8081/admin/system/role/list', 'GET', 'com.ledict.core.controller.system.RoleController.list', 0x5B5D, '4ef30035-f33f-419b-9871-0b8c20f73a5f', 0x2261646D696E2F73797374656D2F726F6C652F6C69737422, '7', 'Windows-Firefox-58.0', null, null, null, null, null, '1', '2018-03-13 16:54:25', '1', '2018-03-13 16:54:25', null, '\0');
+INSERT INTO `sys_log` VALUES ('111', '普通请求', '跳转菜单列表', '127.0.0.1', '我是管理员', 'http://localhost:8081/admin/system/menu/list', 'GET', 'com.ledict.core.controller.system.MenuController.list', 0x5B7B7D5D, '4ef30035-f33f-419b-9871-0b8c20f73a5f', 0x2261646D696E2F73797374656D2F6D656E752F7465737422, '9', 'Windows-Firefox-58.0', null, null, null, null, null, '1', '2018-03-13 16:54:28', '1', '2018-03-13 16:54:28', null, '\0');
+INSERT INTO `sys_log` VALUES ('112', '普通请求', '跳转系统用户列表页面', '127.0.0.1', '我是管理员', 'http://localhost:8081/admin/system/user/list', 'GET', 'com.ledict.core.controller.system.UserConteroller.list', 0x5B5D, '4ef30035-f33f-419b-9871-0b8c20f73a5f', 0x2261646D696E2F73797374656D2F757365722F6C69737422, '5', 'Windows-Firefox-58.0', null, null, null, null, null, '1', '2018-03-13 16:54:30', '1', '2018-03-13 16:54:30', null, '\0');
+INSERT INTO `sys_log` VALUES ('113', '普通请求', '跳转系统字典页面', '127.0.0.1', '我是管理员', 'http://localhost:8081/admin/system/dict/list', 'GET', 'com.ledict.core.controller.system.DictController.list', 0x5B5D, '4ef30035-f33f-419b-9871-0b8c20f73a5f', 0x2261646D696E2F73797374656D2F646963742F6C69737422, '12', 'Windows-Firefox-58.0', null, null, null, null, null, '1', '2018-03-13 17:01:36', '1', '2018-03-13 17:01:36', null, '\0');
+INSERT INTO `sys_log` VALUES ('114', '普通请求', '跳转网站展示页面', '127.0.0.1', '我是管理员', 'http://localhost:8081/admin/system/site/show', 'GET', 'com.ledict.core.controller.system.SiteController.show', 0x5B7B7D5D, '4ef30035-f33f-419b-9871-0b8c20f73a5f', 0x2261646D696E2F73797374656D2F736974652F73686F7722, '58', 'Windows-Firefox-58.0', null, null, null, null, null, '1', '2018-03-13 17:01:36', '1', '2018-03-13 17:01:36', null, '\0');
+INSERT INTO `sys_log` VALUES ('115', '普通请求', '跳转系统字典页面', '127.0.0.1', '我是管理员', 'http://localhost:8081/admin/system/dict/list', 'GET', 'com.ledict.core.controller.system.DictController.list', 0x5B5D, '4ef30035-f33f-419b-9871-0b8c20f73a5f', 0x2261646D696E2F73797374656D2F646963742F6C69737422, '21', 'Windows-Firefox-58.0', null, null, null, null, null, '1', '2018-03-13 17:18:23', '1', '2018-03-13 17:18:23', null, '\0');
+INSERT INTO `sys_log` VALUES ('116', '普通请求', '跳转数据表列表页面', '127.0.0.1', '我是管理员', 'http://localhost:8081/admin/system/table/list', 'GET', 'com.ledict.core.controller.system.TableController.list', 0x5B5D, '4ef30035-f33f-419b-9871-0b8c20f73a5f', 0x2261646D696E2F73797374656D2F7461626C652F6C69737422, '17', 'Windows-Firefox-58.0', null, null, null, null, null, '1', '2018-03-13 17:18:23', '1', '2018-03-13 17:18:23', null, '\0');
+INSERT INTO `sys_log` VALUES ('117', '普通请求', '跳转网站展示页面', '127.0.0.1', '我是管理员', 'http://localhost:8081/admin/system/site/show', 'GET', 'com.ledict.core.controller.system.SiteController.show', 0x5B7B7D5D, '4ef30035-f33f-419b-9871-0b8c20f73a5f', 0x2261646D696E2F73797374656D2F736974652F73686F7722, '49', 'Windows-Firefox-58.0', null, null, null, null, null, '1', '2018-03-13 17:18:23', '1', '2018-03-13 17:18:23', null, '\0');
+INSERT INTO `sys_log` VALUES ('118', '普通请求', '跳转系统字典页面', '127.0.0.1', '我是管理员', 'http://localhost:8081/admin/system/dict/list', 'GET', 'com.ledict.core.controller.system.DictController.list', 0x5B5D, '4ef30035-f33f-419b-9871-0b8c20f73a5f', 0x2261646D696E2F73797374656D2F646963742F6C69737422, '19', 'Windows-Firefox-58.0', null, null, null, null, null, '1', '2018-03-13 17:27:08', '1', '2018-03-13 17:27:08', null, '\0');
+INSERT INTO `sys_log` VALUES ('119', '普通请求', '跳转数据表列表页面', '127.0.0.1', '我是管理员', 'http://localhost:8081/admin/system/table/list', 'GET', 'com.ledict.core.controller.system.TableController.list', 0x5B5D, '4ef30035-f33f-419b-9871-0b8c20f73a5f', 0x2261646D696E2F73797374656D2F7461626C652F6C69737422, '129', 'Windows-Firefox-58.0', null, null, null, null, null, '1', '2018-03-13 17:27:08', '1', '2018-03-13 17:27:08', null, '\0');
+INSERT INTO `sys_log` VALUES ('120', '普通请求', '跳转网站展示页面', '127.0.0.1', '我是管理员', 'http://localhost:8081/admin/system/site/show', 'GET', 'com.ledict.core.controller.system.SiteController.show', 0x5B7B7D5D, '4ef30035-f33f-419b-9871-0b8c20f73a5f', 0x2261646D696E2F73797374656D2F736974652F73686F7722, '53', 'Windows-Firefox-58.0', null, null, null, null, null, '1', '2018-03-13 17:27:08', '1', '2018-03-13 17:27:08', null, '\0');
+INSERT INTO `sys_log` VALUES ('121', '普通请求', '跳转系统字典页面', '127.0.0.1', '我是管理员', 'http://localhost:8081/admin/system/dict/list', 'GET', 'com.ledict.core.controller.system.DictController.list', 0x5B5D, '4ef30035-f33f-419b-9871-0b8c20f73a5f', 0x2261646D696E2F73797374656D2F646963742F6C69737422, '7', 'Windows-Firefox-58.0', null, null, null, null, null, '1', '2018-03-13 17:29:56', '1', '2018-03-13 17:29:56', null, '\0');
+INSERT INTO `sys_log` VALUES ('122', '普通请求', '跳转数据表列表页面', '127.0.0.1', '我是管理员', 'http://localhost:8081/admin/system/table/list', 'GET', 'com.ledict.core.controller.system.TableController.list', 0x5B5D, '4ef30035-f33f-419b-9871-0b8c20f73a5f', 0x2261646D696E2F73797374656D2F7461626C652F6C69737422, '10', 'Windows-Firefox-58.0', null, null, null, null, null, '1', '2018-03-13 17:29:59', '1', '2018-03-13 17:29:59', null, '\0');
+INSERT INTO `sys_log` VALUES ('123', '普通请求', '跳转系统字典页面', '127.0.0.1', '我是管理员', 'http://localhost:8081/admin/system/dict/list', 'GET', 'com.ledict.core.controller.system.DictController.list', 0x5B5D, '4ef30035-f33f-419b-9871-0b8c20f73a5f', 0x2261646D696E2F73797374656D2F646963742F6C69737422, '15', 'Windows-Firefox-58.0', null, null, null, null, null, '1', '2018-03-13 18:05:52', '1', '2018-03-13 18:05:52', null, '\0');
+INSERT INTO `sys_log` VALUES ('124', '普通请求', '跳转数据表列表页面', '127.0.0.1', '我是管理员', 'http://localhost:8081/admin/system/table/list', 'GET', 'com.ledict.core.controller.system.TableController.list', 0x5B5D, '4ef30035-f33f-419b-9871-0b8c20f73a5f', 0x2261646D696E2F73797374656D2F7461626C652F6C69737422, '11', 'Windows-Firefox-58.0', null, null, null, null, null, '1', '2018-03-13 18:05:53', '1', '2018-03-13 18:05:53', null, '\0');
+INSERT INTO `sys_log` VALUES ('125', 'Ajax请求', '用户登录', '127.0.0.1', '我是管理员', 'http://localhost:8083/login/main', 'POST', 'com.ledict.core.controller.LoginController.loginMain', 0x5B226F72672E6170616368652E736869726F2E7765622E736572766C65742E536869726F48747470536572766C657452657175657374403731373663333962225D, '821f3a6e-517d-495a-a153-d326a7374d52', 0x7B2264617461223A7B2275726C223A22696E646578227D2C2273756363657373223A747275652C226D657373616765223A22E799BBE5BD95E68890E58A9F227D, '990', 'Windows-Chrome-64.0.3282.186', null, null, null, null, null, '1', '2018-03-14 15:20:49', '1', '2018-03-14 15:20:49', null, '\0');
+INSERT INTO `sys_log` VALUES ('126', '普通请求', '跳转系统字典页面', '127.0.0.1', '我是管理员', 'http://localhost:8083/admin/system/dict/list', 'GET', 'com.ledict.core.controller.system.DictController.list', 0x5B5D, '821f3a6e-517d-495a-a153-d326a7374d52', 0x2261646D696E2F73797374656D2F646963742F6C69737422, '101', 'Windows-Chrome-64.0.3282.186', null, null, null, null, null, '1', '2018-03-14 16:16:25', '1', '2018-03-14 16:16:25', null, '\0');
+INSERT INTO `sys_log` VALUES ('127', '普通请求', '跳转数据表列表页面', '127.0.0.1', '我是管理员', 'http://localhost:8083/admin/system/table/list', 'GET', 'com.ledict.core.controller.system.TableController.list', 0x5B5D, '821f3a6e-517d-495a-a153-d326a7374d52', 0x2261646D696E2F73797374656D2F7461626C652F6C69737422, '29', 'Windows-Chrome-64.0.3282.186', null, null, null, null, null, '1', '2018-03-14 16:16:27', '1', '2018-03-14 16:16:27', null, '\0');
+INSERT INTO `sys_log` VALUES ('128', '普通请求', '跳转网站展示页面', '127.0.0.1', '我是管理员', 'http://localhost:8083/admin/system/site/show', 'GET', 'com.ledict.core.controller.system.SiteController.show', 0x5B7B7D5D, '821f3a6e-517d-495a-a153-d326a7374d52', 0x2261646D696E2F73797374656D2F736974652F73686F7722, '51', 'Windows-Chrome-64.0.3282.186', null, null, null, null, null, '1', '2018-03-14 16:16:29', '1', '2018-03-14 16:16:29', null, '\0');
+INSERT INTO `sys_log` VALUES ('129', '普通请求', '跳转资源展示列表', '127.0.0.1', '我是管理员', 'http://localhost:8083/admin/system/rescource/list', 'GET', 'com.ledict.core.controller.system.RescourceController.list', 0x5B5D, '821f3a6e-517d-495a-a153-d326a7374d52', 0x2261646D696E2F73797374656D2F726573636F757263652F6C69737422, '28', 'Windows-Chrome-64.0.3282.186', null, null, null, null, null, '1', '2018-03-14 16:17:36', '1', '2018-03-14 16:17:36', null, '\0');
+INSERT INTO `sys_log` VALUES ('130', '普通请求', '跳转菜单列表', '127.0.0.1', '我是管理员', 'http://localhost:8083/admin/system/menu/list', 'GET', 'com.ledict.core.controller.system.MenuController.list', 0x5B7B7D5D, '821f3a6e-517d-495a-a153-d326a7374d52', 0x2261646D696E2F73797374656D2F6D656E752F7465737422, '28', 'Windows-Chrome-64.0.3282.186', null, null, null, null, null, '1', '2018-03-14 16:17:38', '1', '2018-03-14 16:17:38', null, '\0');
+INSERT INTO `sys_log` VALUES ('131', 'Ajax请求', '用户登录', '127.0.0.1', '我是管理员', 'http://localhost:8080/login/main', 'POST', 'com.ledict.core.controller.LoginController.loginMain', 0x5B226F72672E6170616368652E736869726F2E7765622E736572766C65742E536869726F48747470536572766C657452657175657374403336646637343938225D, 'd79caca2-d397-4611-ab17-e709697bb193', 0x7B2273756363657373223A66616C73652C226D657373616765223A22E9AA8CE8AF81E7A081E99499E8AFAF227D, '28', 'Windows-Chrome-64.0.3282.186', null, null, null, null, null, '1', '2018-03-15 10:04:46', '1', '2018-03-15 10:04:46', null, '\0');
+INSERT INTO `sys_log` VALUES ('132', 'Ajax请求', '用户登录', '127.0.0.1', '我是管理员', 'http://localhost:8080/login/main', 'POST', 'com.ledict.core.controller.LoginController.loginMain', 0x5B226F72672E6170616368652E736869726F2E7765622E736572766C65742E536869726F48747470536572766C6574526571756573744031396134663165225D, 'd79caca2-d397-4611-ab17-e709697bb193', 0x7B2264617461223A7B2275726C223A22696E646578227D2C2273756363657373223A747275652C226D657373616765223A22E799BBE5BD95E68890E58A9F227D, '639', 'Windows-Chrome-64.0.3282.186', null, null, null, null, null, '1', '2018-03-15 10:04:53', '1', '2018-03-15 10:04:53', null, '\0');
+INSERT INTO `sys_log` VALUES ('133', '普通请求', '跳转菜单列表', '127.0.0.1', '我是管理员', 'http://localhost:8080/admin/system/menu/list', 'GET', 'com.ledict.core.controller.system.MenuController.list', 0x5B7B7D5D, 'd79caca2-d397-4611-ab17-e709697bb193', 0x2261646D696E2F73797374656D2F6D656E752F7465737422, '16', 'Windows-Chrome-64.0.3282.186', null, null, null, null, null, '1', '2018-03-15 10:05:30', '1', '2018-03-15 10:05:30', null, '\0');
+INSERT INTO `sys_log` VALUES ('134', '普通请求', '跳转系统用户列表页面', '127.0.0.1', '我是管理员', 'http://localhost:8080/admin/system/user/list', 'GET', 'com.ledict.core.controller.system.UserConteroller.list', 0x5B5D, 'd79caca2-d397-4611-ab17-e709697bb193', 0x2261646D696E2F73797374656D2F757365722F6C69737422, '11', 'Windows-Chrome-64.0.3282.186', null, null, null, null, null, '1', '2018-03-15 10:06:17', '1', '2018-03-15 10:06:17', null, '\0');
+INSERT INTO `sys_log` VALUES ('135', '普通请求', '跳转角色列表页面', '127.0.0.1', '我是管理员', 'http://localhost:8080/admin/system/role/list', 'GET', 'com.ledict.core.controller.system.RoleController.list', 0x5B5D, 'd79caca2-d397-4611-ab17-e709697bb193', 0x2261646D696E2F73797374656D2F726F6C652F6C69737422, '12', 'Windows-Chrome-64.0.3282.186', null, null, null, null, null, '1', '2018-03-15 10:06:32', '1', '2018-03-15 10:06:32', null, '\0');
+INSERT INTO `sys_log` VALUES ('136', '普通请求', '跳转系统用户列表页面', '127.0.0.1', '我是管理员', 'http://localhost:8080/admin/system/user/list', 'GET', 'com.ledict.core.controller.system.UserConteroller.list', 0x5B5D, 'd79caca2-d397-4611-ab17-e709697bb193', 0x2261646D696E2F73797374656D2F757365722F6C69737422, '9', 'Windows-Chrome-64.0.3282.186', null, null, null, null, null, '1', '2018-03-15 10:07:22', '1', '2018-03-15 10:07:22', null, '\0');
+INSERT INTO `sys_log` VALUES ('137', '普通请求', '跳转资源展示列表', '127.0.0.1', '我是管理员', 'http://localhost:8080/admin/system/rescource/list', 'GET', 'com.ledict.core.controller.system.RescourceController.list', 0x5B5D, 'd79caca2-d397-4611-ab17-e709697bb193', 0x2261646D696E2F73797374656D2F726573636F757263652F6C69737422, '13', 'Windows-Chrome-64.0.3282.186', null, null, null, null, null, '1', '2018-03-15 10:07:39', '1', '2018-03-15 10:07:39', null, '\0');
+INSERT INTO `sys_log` VALUES ('138', '普通请求', '跳转菜单列表', '127.0.0.1', '我是管理员', 'http://localhost:8080/admin/system/menu/list', 'GET', 'com.ledict.core.controller.system.MenuController.list', 0x5B7B7D5D, 'd79caca2-d397-4611-ab17-e709697bb193', 0x2261646D696E2F73797374656D2F6D656E752F7465737422, '10', 'Windows-Chrome-64.0.3282.186', null, null, null, null, null, '1', '2018-03-15 10:07:48', '1', '2018-03-15 10:07:48', null, '\0');
+INSERT INTO `sys_log` VALUES ('139', 'Ajax请求', '保存新增菜单数据', '127.0.0.1', '我是管理员', 'http://localhost:8080/admin/system/menu/add', 'POST', 'com.ledict.core.controller.system.MenuController.add', 0x5B7B226267436F6C6F72223A22222C2264656C466C6167223A66616C73652C2268726566223A22222C2269636F6E223A22EE98B9222C22697353686F77223A66616C73652C226E616D65223A22E4BFAEE694B9E5AF86E7A081222C22706172656E744964223A322C227065726D697373696F6E223A227379733A757365723A6368616E676550617373776F7264222C22736F7274223A33307D5D, 'd79caca2-d397-4611-ab17-e709697bb193', 0x7B2273756363657373223A747275652C226D657373616765223A22E68890E58A9F227D, '218', 'Windows-Chrome-64.0.3282.186', null, null, null, null, null, '1', '2018-03-15 10:14:06', '1', '2018-03-15 10:14:06', null, '\0');
+INSERT INTO `sys_log` VALUES ('140', '普通请求', '跳转菜单列表', '127.0.0.1', '我是管理员', 'http://localhost:8080/admin/system/menu/list', 'GET', 'com.ledict.core.controller.system.MenuController.list', 0x5B7B7D5D, 'd79caca2-d397-4611-ab17-e709697bb193', 0x2261646D696E2F73797374656D2F6D656E752F7465737422, '7', 'Windows-Chrome-64.0.3282.186', null, null, null, null, null, '1', '2018-03-15 10:14:08', '1', '2018-03-15 10:14:08', null, '\0');
+INSERT INTO `sys_log` VALUES ('141', 'Ajax请求', '保存编辑角色数据', '127.0.0.1', '我是管理员', 'http://localhost:8080/admin/system/role/edit', 'POST', 'com.ledict.core.controller.system.RoleController.edit', 0x5B7B2264656C466C6167223A66616C73652C226964223A322C226D656E75536574223A5B7B2264656C466C6167223A66616C73652C226964223A33352C22736F7274223A33307D2C7B2264656C466C6167223A66616C73652C226964223A34352C22736F7274223A33307D2C7B2264656C466C6167223A66616C73652C226964223A32332C22736F7274223A33307D2C7B2264656C466C6167223A66616C73652C226964223A32342C22736F7274223A33307D2C7B2264656C466C6167223A66616C73652C226964223A32312C22736F7274223A33307D2C7B2264656C466C6167223A66616C73652C226964223A35322C22736F7274223A33307D2C7B2264656C466C6167223A66616C73652C226964223A33312C22736F7274223A33307D2C7B2264656C466C6167223A66616C73652C226964223A33382C22736F7274223A33307D2C7B2264656C466C6167223A66616C73652C226964223A32352C22736F7274223A33307D2C7B2264656C466C6167223A66616C73652C226964223A352C22736F7274223A33307D2C7B2264656C466C6167223A66616C73652C226964223A33332C22736F7274223A33307D2C7B2264656C466C6167223A66616C73652C226964223A32362C22736F7274223A33307D2C7B2264656C466C6167223A66616C73652C226964223A33362C22736F7274223A33307D2C7B2264656C466C6167223A66616C73652C226964223A34382C22736F7274223A33307D2C7B2264656C466C6167223A66616C73652C226964223A31332C22736F7274223A33307D2C7B2264656C466C6167223A66616C73652C226964223A332C22736F7274223A33307D2C7B2264656C466C6167223A66616C73652C226964223A31352C22736F7274223A33307D2C7B2264656C466C6167223A66616C73652C226964223A32392C22736F7274223A33307D2C7B2264656C466C6167223A66616C73652C226964223A31312C22736F7274223A33307D2C7B2264656C466C6167223A66616C73652C226964223A362C22736F7274223A33307D2C7B2264656C466C6167223A66616C73652C226964223A382C22736F7274223A33307D2C7B2264656C466C6167223A66616C73652C226964223A32372C22736F7274223A33307D2C7B2264656C466C6167223A66616C73652C226964223A35302C22736F7274223A33307D2C7B2264656C466C6167223A66616C73652C226964223A32382C22736F7274223A33307D2C7B2264656C466C6167223A66616C73652C226964223A31302C22736F7274223A33307D2C7B2264656C466C6167223A66616C73652C226964223A31382C22736F7274223A33307D2C7B2264656C466C6167223A66616C73652C226964223A35332C22736F7274223A33307D2C7B2264656C466C6167223A66616C73652C226964223A34322C22736F7274223A33307D2C7B2264656C466C6167223A66616C73652C226964223A31362C22736F7274223A33307D2C7B2264656C466C6167223A66616C73652C226964223A34362C22736F7274223A33307D2C7B2264656C466C6167223A66616C73652C226964223A33392C22736F7274223A33307D2C7B2264656C466C6167223A66616C73652C226964223A33322C22736F7274223A33307D2C7B2264656C466C6167223A66616C73652C226964223A392C22736F7274223A33307D2C7B2264656C466C6167223A66616C73652C226964223A33302C22736F7274223A33307D2C7B2264656C466C6167223A66616C73652C226964223A34312C22736F7274223A33307D2C7B2264656C466C6167223A66616C73652C226964223A34372C22736F7274223A33307D2C7B2264656C466C6167223A66616C73652C226964223A342C22736F7274223A33307D2C7B2264656C466C6167223A66616C73652C226964223A312C22736F7274223A33307D2C7B2264656C466C6167223A66616C73652C226964223A34342C22736F7274223A33307D2C7B2264656C466C6167223A66616C73652C226964223A32322C22736F7274223A33307D2C7B2264656C466C6167223A66616C73652C226964223A34332C22736F7274223A33307D2C7B2264656C466C6167223A66616C73652C226964223A322C22736F7274223A33307D2C7B2264656C466C6167223A66616C73652C226964223A31372C22736F7274223A33307D2C7B2264656C466C6167223A66616C73652C226964223A32302C22736F7274223A33307D2C7B2264656C466C6167223A66616C73652C226964223A33372C22736F7274223A33307D2C7B2264656C466C6167223A66616C73652C226964223A35312C22736F7274223A33307D2C7B2264656C466C6167223A66616C73652C226964223A34302C22736F7274223A33307D2C7B2264656C466C6167223A66616C73652C226964223A34392C22736F7274223A33307D2C7B2264656C466C6167223A66616C73652C226964223A31342C22736F7274223A33307D2C7B2264656C466C6167223A66616C73652C226964223A372C22736F7274223A33307D2C7B2264656C466C6167223A66616C73652C226964223A31322C22736F7274223A33307D2C7B2264656C466C6167223A66616C73652C226964223A33342C22736F7274223A33307D2C7B2264656C466C6167223A66616C73652C226964223A31392C22736F7274223A33307D5D2C226E616D65223A22E7B3BBE7BB9FE7AEA1E79086E59198222C2272656D61726B73223A22227D5D, 'd79caca2-d397-4611-ab17-e709697bb193', 0x7B2273756363657373223A747275652C226D657373616765223A22E68890E58A9F227D, '121', 'Windows-Chrome-64.0.3282.186', null, null, null, null, null, '1', '2018-03-15 10:14:25', '1', '2018-03-15 10:14:25', null, '\0');
+INSERT INTO `sys_log` VALUES ('142', '普通请求', '跳转角色列表页面', '127.0.0.1', '我是管理员', 'http://localhost:8080/admin/system/role/list', 'GET', 'com.ledict.core.controller.system.RoleController.list', 0x5B5D, 'd79caca2-d397-4611-ab17-e709697bb193', 0x2261646D696E2F73797374656D2F726F6C652F6C69737422, '6', 'Windows-Chrome-64.0.3282.186', null, null, null, null, null, '1', '2018-03-15 10:14:27', '1', '2018-03-15 10:14:27', null, '\0');
+INSERT INTO `sys_log` VALUES ('143', 'Ajax请求', '保存新增菜单数据', '127.0.0.1', '我是管理员', 'http://localhost:8080/admin/system/menu/add', 'POST', 'com.ledict.core.controller.system.MenuController.add', 0x5B7B226267436F6C6F72223A22222C2264656C466C6167223A66616C73652C2268726566223A22222C2269636F6E223A22222C22697353686F77223A66616C73652C226E616D65223A22E588A0E999A4E5AD97E585B8222C22706172656E744964223A392C227065726D697373696F6E223A227379733A646963743A64656C657465222C22736F7274223A33307D5D, 'd79caca2-d397-4611-ab17-e709697bb193', 0x7B2273756363657373223A747275652C226D657373616765223A22E68890E58A9F227D, '275', 'Windows-Chrome-64.0.3282.186', null, null, null, null, null, '1', '2018-03-15 10:16:55', '1', '2018-03-15 10:16:55', null, '\0');
+INSERT INTO `sys_log` VALUES ('144', '普通请求', '跳转菜单列表', '127.0.0.1', '我是管理员', 'http://localhost:8080/admin/system/menu/list', 'GET', 'com.ledict.core.controller.system.MenuController.list', 0x5B7B7D5D, 'd79caca2-d397-4611-ab17-e709697bb193', 0x2261646D696E2F73797374656D2F6D656E752F7465737422, '10', 'Windows-Chrome-64.0.3282.186', null, null, null, null, null, '1', '2018-03-15 10:16:59', '1', '2018-03-15 10:16:59', null, '\0');
+INSERT INTO `sys_log` VALUES ('145', 'Ajax请求', '保存编辑角色数据', '127.0.0.1', '我是管理员', 'http://localhost:8080/admin/system/role/edit', 'POST', 'com.ledict.core.controller.system.RoleController.edit', 0x5B7B2264656C466C6167223A66616C73652C226964223A322C226D656E75536574223A5B7B2264656C466C6167223A66616C73652C226964223A31342C22736F7274223A33307D2C7B2264656C466C6167223A66616C73652C226964223A31352C22736F7274223A33307D2C7B2264656C466C6167223A66616C73652C226964223A35312C22736F7274223A33307D2C7B2264656C466C6167223A66616C73652C226964223A322C22736F7274223A33307D2C7B2264656C466C6167223A66616C73652C226964223A352C22736F7274223A33307D2C7B2264656C466C6167223A66616C73652C226964223A362C22736F7274223A33307D2C7B2264656C466C6167223A66616C73652C226964223A32332C22736F7274223A33307D2C7B2264656C466C6167223A66616C73652C226964223A35342C22736F7274223A33307D2C7B2264656C466C6167223A66616C73652C226964223A34392C22736F7274223A33307D2C7B2264656C466C6167223A66616C73652C226964223A33372C22736F7274223A33307D2C7B2264656C466C6167223A66616C73652C226964223A33332C22736F7274223A33307D2C7B2264656C466C6167223A66616C73652C226964223A32382C22736F7274223A33307D2C7B2264656C466C6167223A66616C73652C226964223A34312C22736F7274223A33307D2C7B2264656C466C6167223A66616C73652C226964223A392C22736F7274223A33307D2C7B2264656C466C6167223A66616C73652C226964223A31312C22736F7274223A33307D2C7B2264656C466C6167223A66616C73652C226964223A34322C22736F7274223A33307D2C7B2264656C466C6167223A66616C73652C226964223A32352C22736F7274223A33307D2C7B2264656C466C6167223A66616C73652C226964223A32322C22736F7274223A33307D2C7B2264656C466C6167223A66616C73652C226964223A31372C22736F7274223A33307D2C7B2264656C466C6167223A66616C73652C226964223A34302C22736F7274223A33307D2C7B2264656C466C6167223A66616C73652C226964223A34362C22736F7274223A33307D2C7B2264656C466C6167223A66616C73652C226964223A31382C22736F7274223A33307D2C7B2264656C466C6167223A66616C73652C226964223A32362C22736F7274223A33307D2C7B2264656C466C6167223A66616C73652C226964223A35332C22736F7274223A33307D2C7B2264656C466C6167223A66616C73652C226964223A31332C22736F7274223A33307D2C7B2264656C466C6167223A66616C73652C226964223A33392C22736F7274223A33307D2C7B2264656C466C6167223A66616C73652C226964223A31322C22736F7274223A33307D2C7B2264656C466C6167223A66616C73652C226964223A32372C22736F7274223A33307D2C7B2264656C466C6167223A66616C73652C226964223A34352C22736F7274223A33307D2C7B2264656C466C6167223A66616C73652C226964223A32392C22736F7274223A33307D2C7B2264656C466C6167223A66616C73652C226964223A31362C22736F7274223A33307D2C7B2264656C466C6167223A66616C73652C226964223A31392C22736F7274223A33307D2C7B2264656C466C6167223A66616C73652C226964223A32312C22736F7274223A33307D2C7B2264656C466C6167223A66616C73652C226964223A33382C22736F7274223A33307D2C7B2264656C466C6167223A66616C73652C226964223A34382C22736F7274223A33307D2C7B2264656C466C6167223A66616C73652C226964223A372C22736F7274223A33307D2C7B2264656C466C6167223A66616C73652C226964223A33302C22736F7274223A33307D2C7B2264656C466C6167223A66616C73652C226964223A312C22736F7274223A33307D2C7B2264656C466C6167223A66616C73652C226964223A342C22736F7274223A33307D2C7B2264656C466C6167223A66616C73652C226964223A332C22736F7274223A33307D2C7B2264656C466C6167223A66616C73652C226964223A34372C22736F7274223A33307D2C7B2264656C466C6167223A66616C73652C226964223A32342C22736F7274223A33307D2C7B2264656C466C6167223A66616C73652C226964223A33352C22736F7274223A33307D2C7B2264656C466C6167223A66616C73652C226964223A34332C22736F7274223A33307D2C7B2264656C466C6167223A66616C73652C226964223A32302C22736F7274223A33307D2C7B2264656C466C6167223A66616C73652C226964223A34342C22736F7274223A33307D2C7B2264656C466C6167223A66616C73652C226964223A35322C22736F7274223A33307D2C7B2264656C466C6167223A66616C73652C226964223A35302C22736F7274223A33307D2C7B2264656C466C6167223A66616C73652C226964223A31302C22736F7274223A33307D2C7B2264656C466C6167223A66616C73652C226964223A33342C22736F7274223A33307D2C7B2264656C466C6167223A66616C73652C226964223A33322C22736F7274223A33307D2C7B2264656C466C6167223A66616C73652C226964223A33312C22736F7274223A33307D2C7B2264656C466C6167223A66616C73652C226964223A33362C22736F7274223A33307D2C7B2264656C466C6167223A66616C73652C226964223A382C22736F7274223A33307D5D2C226E616D65223A22E7B3BBE7BB9FE7AEA1E79086E59198222C2272656D61726B73223A22227D5D, 'd79caca2-d397-4611-ab17-e709697bb193', 0x7B2273756363657373223A747275652C226D657373616765223A22E68890E58A9F227D, '130', 'Windows-Chrome-64.0.3282.186', null, null, null, null, null, '1', '2018-03-15 10:18:17', '1', '2018-03-15 10:18:17', null, '\0');
+INSERT INTO `sys_log` VALUES ('146', '普通请求', '跳转角色列表页面', '127.0.0.1', '我是管理员', 'http://localhost:8080/admin/system/role/list', 'GET', 'com.ledict.core.controller.system.RoleController.list', 0x5B5D, 'd79caca2-d397-4611-ab17-e709697bb193', 0x2261646D696E2F73797374656D2F726F6C652F6C69737422, '10', 'Windows-Chrome-64.0.3282.186', null, null, null, null, null, '1', '2018-03-15 10:18:18', '1', '2018-03-15 10:18:18', null, '\0');
+INSERT INTO `sys_log` VALUES ('147', '普通请求', '跳转系统字典页面', '127.0.0.1', '我是管理员', 'http://localhost:8080/admin/system/dict/list', 'GET', 'com.ledict.core.controller.system.DictController.list', 0x5B5D, 'd79caca2-d397-4611-ab17-e709697bb193', 0x2261646D696E2F73797374656D2F646963742F6C69737422, '13', 'Windows-Chrome-64.0.3282.186', null, null, null, null, null, '1', '2018-03-15 10:18:20', '1', '2018-03-15 10:18:20', null, '\0');
+INSERT INTO `sys_log` VALUES ('148', '普通请求', '跳转系统字典页面', '127.0.0.1', '我是管理员', 'http://localhost:8080/admin/system/dict/list', 'GET', 'com.ledict.core.controller.system.DictController.list', 0x5B5D, 'd79caca2-d397-4611-ab17-e709697bb193', 0x2261646D696E2F73797374656D2F646963742F6C69737422, '7', 'Windows-Chrome-64.0.3282.186', null, null, null, null, null, '1', '2018-03-15 10:20:01', '1', '2018-03-15 10:20:01', null, '\0');
+INSERT INTO `sys_log` VALUES ('149', '普通请求', '跳转菜单列表', '127.0.0.1', '我是管理员', 'http://localhost:8080/admin/system/menu/list', 'GET', 'com.ledict.core.controller.system.MenuController.list', 0x5B7B7D5D, 'd79caca2-d397-4611-ab17-e709697bb193', 0x2261646D696E2F73797374656D2F6D656E752F7465737422, '9', 'Windows-Chrome-64.0.3282.186', null, null, null, null, null, '1', '2018-03-15 10:20:13', '1', '2018-03-15 10:20:13', null, '\0');
+INSERT INTO `sys_log` VALUES ('150', 'Ajax请求', '用户登录', '127.0.0.1', null, 'http://localhost:8080/login/main', 'POST', 'com.ledict.web.controller.LoginController.loginMain', 0x5B226F72672E6170616368652E736869726F2E7765622E736572766C65742E536869726F48747470536572766C657452657175657374403564346537653661225D, '4743a543-6ad2-489d-b8be-f997570357e6', 0x7B2273756363657373223A66616C73652C226D657373616765223A22E9AA8CE8AF81E7A081E8B685E697B6227D, '8', 'Windows-IE-11.0', null, null, null, null, null, null, '2018-04-02 10:26:24', null, '2018-04-02 10:26:24', null, '\0');
+INSERT INTO `sys_log` VALUES ('151', 'Ajax请求', '用户登录', '127.0.0.1', '管理员', 'http://localhost:8080/login/main', 'POST', 'com.ledict.web.controller.LoginController.loginMain', 0x5B226F72672E6170616368652E736869726F2E7765622E736572766C65742E536869726F48747470536572766C657452657175657374403338626463623264225D, '4743a543-6ad2-489d-b8be-f997570357e6', 0x7B2264617461223A7B2275726C223A22696E646578227D2C2273756363657373223A747275652C226D657373616765223A22E799BBE5BD95E68890E58A9F227D, '340', 'Windows-IE-11.0', null, null, null, null, null, '1', '2018-04-02 10:26:29', '1', '2018-04-02 10:26:30', null, '\0');
+INSERT INTO `sys_log` VALUES ('152', '普通请求', '跳转菜单列表', '127.0.0.1', '管理员', 'http://localhost:8080/admin/system/menu/list', 'GET', 'com.ledict.web.controller.system.MenuController.list', 0x5B7B7D5D, '4743a543-6ad2-489d-b8be-f997570357e6', 0x2261646D696E2F73797374656D2F6D656E752F7465737422, '4', 'Windows-IE-11.0', null, null, null, null, null, '1', '2018-04-02 10:26:47', '1', '2018-04-02 10:26:47', null, '\0');
+INSERT INTO `sys_log` VALUES ('153', '普通请求', '跳转资源展示列表', '127.0.0.1', '管理员', 'http://localhost:8080/admin/system/rescource/list', 'GET', 'com.ledict.web.controller.system.RescourceController.list', 0x5B5D, '4743a543-6ad2-489d-b8be-f997570357e6', 0x2261646D696E2F73797374656D2F726573636F757263652F6C69737422, '4', 'Windows-IE-11.0', null, null, null, null, null, '1', '2018-04-02 10:26:55', '1', '2018-04-02 10:26:55', null, '\0');
+INSERT INTO `sys_log` VALUES ('154', '普通请求', '跳转菜单列表', '127.0.0.1', '管理员', 'http://localhost:8080/admin/system/menu/list', 'GET', 'com.ledict.web.controller.system.MenuController.list', 0x5B7B7D5D, '4743a543-6ad2-489d-b8be-f997570357e6', 0x2261646D696E2F73797374656D2F6D656E752F7465737422, '2', 'Windows-IE-11.0', null, null, null, null, null, '1', '2018-04-02 10:27:20', '1', '2018-04-02 10:27:20', null, '\0');
+INSERT INTO `sys_log` VALUES ('155', '普通请求', '跳转资源展示列表', '127.0.0.1', '管理员', 'http://localhost:8080/admin/system/rescource/list', 'GET', 'com.ledict.web.controller.system.RescourceController.list', 0x5B5D, '4743a543-6ad2-489d-b8be-f997570357e6', 0x2261646D696E2F73797374656D2F726573636F757263652F6C69737422, '2', 'Windows-IE-11.0', null, null, null, null, null, '1', '2018-04-02 10:27:20', '1', '2018-04-02 10:27:20', null, '\0');
+INSERT INTO `sys_log` VALUES ('156', '普通请求', '跳转系统用户列表页面', '127.0.0.1', '管理员', 'http://localhost:8080/admin/system/user/list', 'GET', 'com.ledict.web.controller.system.UserConteroller.list', 0x5B5D, '4743a543-6ad2-489d-b8be-f997570357e6', 0x2261646D696E2F73797374656D2F757365722F6C69737422, '2', 'Windows-IE-11.0', null, null, null, null, null, '1', '2018-04-02 10:27:27', '1', '2018-04-02 10:27:27', null, '\0');
+INSERT INTO `sys_log` VALUES ('157', '普通请求', '跳转数据表列表页面', '127.0.0.1', '管理员', 'http://localhost:8080/admin/system/table/list', 'GET', 'com.ledict.web.controller.system.TableController.list', 0x5B5D, '4743a543-6ad2-489d-b8be-f997570357e6', 0x2261646D696E2F73797374656D2F7461626C652F6C69737422, '4', 'Windows-IE-11.0', null, null, null, null, null, '1', '2018-04-02 10:27:48', '1', '2018-04-02 10:27:48', null, '\0');
+INSERT INTO `sys_log` VALUES ('158', '普通请求', '跳转菜单列表', '127.0.0.1', '管理员', 'http://localhost:8080/admin/system/menu/list', 'GET', 'com.ledict.web.controller.system.MenuController.list', 0x5B7B7D5D, '4743a543-6ad2-489d-b8be-f997570357e6', 0x2261646D696E2F73797374656D2F6D656E752F7465737422, '2', 'Windows-IE-11.0', null, null, null, null, null, '1', '2018-04-02 10:27:56', '1', '2018-04-02 10:27:56', null, '\0');
+INSERT INTO `sys_log` VALUES ('159', 'Ajax请求', '用户登录', '127.0.0.1', '管理员', 'http://localhost:8080/login/main', 'POST', 'com.ledict.web.controller.LoginController.loginMain', 0x5B226F72672E6170616368652E736869726F2E7765622E736572766C65742E536869726F48747470536572766C657452657175657374403166656564643362225D, '8c45774a-35bd-4da0-bb5e-b01344e369f3', 0x7B2264617461223A7B2275726C223A22696E646578227D2C2273756363657373223A747275652C226D657373616765223A22E799BBE5BD95E68890E58A9F227D, '8', 'Windows-Chrome-65.0.3325.181', null, null, null, null, null, '1', '2018-04-02 10:28:49', '1', '2018-04-02 10:28:49', null, '\0');
+INSERT INTO `sys_log` VALUES ('160', '普通请求', '跳转资源展示列表', '127.0.0.1', '管理员', 'http://localhost:8080/admin/system/rescource/list', 'GET', 'com.ledict.web.controller.system.RescourceController.list', 0x5B5D, '8c45774a-35bd-4da0-bb5e-b01344e369f3', 0x2261646D696E2F73797374656D2F726573636F757263652F6C69737422, '2', 'Windows-Chrome-65.0.3325.181', null, null, null, null, null, '1', '2018-04-02 10:28:55', '1', '2018-04-02 10:28:55', null, '\0');
+INSERT INTO `sys_log` VALUES ('161', '普通请求', '跳转菜单列表', '127.0.0.1', '管理员', 'http://localhost:8080/admin/system/menu/list', 'GET', 'com.ledict.web.controller.system.MenuController.list', 0x5B7B7D5D, '8c45774a-35bd-4da0-bb5e-b01344e369f3', 0x2261646D696E2F73797374656D2F6D656E752F7465737422, '1', 'Windows-Chrome-65.0.3325.181', null, null, null, null, null, '1', '2018-04-02 10:28:56', '1', '2018-04-02 10:28:56', null, '\0');
+INSERT INTO `sys_log` VALUES ('162', '普通请求', '跳转资源展示列表', '127.0.0.1', '管理员', 'http://localhost:8080/admin/system/rescource/list', 'GET', 'com.ledict.web.controller.system.RescourceController.list', 0x5B5D, '4743a543-6ad2-489d-b8be-f997570357e6', 0x2261646D696E2F73797374656D2F726573636F757263652F6C69737422, '10', 'Windows-IE-11.0', null, null, null, null, null, '1', '2018-04-02 10:49:05', '1', '2018-04-02 10:49:05', null, '\0');
+INSERT INTO `sys_log` VALUES ('163', '普通请求', '跳转系统用户列表页面', '127.0.0.1', '管理员', 'http://localhost:8080/admin/system/user/list', 'GET', 'com.ledict.web.controller.system.UserConteroller.list', 0x5B5D, '4743a543-6ad2-489d-b8be-f997570357e6', 0x2261646D696E2F73797374656D2F757365722F6C69737422, '3', 'Windows-IE-11.0', null, null, null, null, null, '1', '2018-04-02 10:49:05', '1', '2018-04-02 10:49:05', null, '\0');
+INSERT INTO `sys_log` VALUES ('164', '普通请求', '跳转数据表列表页面', '127.0.0.1', '管理员', 'http://localhost:8080/admin/system/table/list', 'GET', 'com.ledict.web.controller.system.TableController.list', 0x5B5D, '4743a543-6ad2-489d-b8be-f997570357e6', 0x2261646D696E2F73797374656D2F7461626C652F6C69737422, '4', 'Windows-IE-11.0', null, null, null, null, null, '1', '2018-04-02 10:49:05', '1', '2018-04-02 10:49:05', null, '\0');
+INSERT INTO `sys_log` VALUES ('165', '普通请求', '跳转菜单列表', '127.0.0.1', '管理员', 'http://localhost:8080/admin/system/menu/list', 'GET', 'com.ledict.web.controller.system.MenuController.list', 0x5B7B7D5D, '4743a543-6ad2-489d-b8be-f997570357e6', 0x2261646D696E2F73797374656D2F6D656E752F7465737422, '7', 'Windows-IE-11.0', null, null, null, null, null, '1', '2018-04-02 10:49:05', '1', '2018-04-02 10:49:05', null, '\0');
+INSERT INTO `sys_log` VALUES ('166', 'Ajax请求', '用户登录', '127.0.0.1', '管理员', 'http://localhost:8080/login/main', 'POST', 'com.ledict.web.controller.LoginController.loginMain', 0x5B226F72672E6170616368652E736869726F2E7765622E736572766C65742E536869726F48747470536572766C657452657175657374403436653636306363225D, '25d62c21-d5f5-4892-b77a-1992f291444c', 0x7B2264617461223A7B2275726C223A22696E646578227D2C2273756363657373223A747275652C226D657373616765223A22E799BBE5BD95E68890E58A9F227D, '24', 'Windows-IE-11.0', null, null, null, null, null, '1', '2018-04-02 10:49:45', '1', '2018-04-02 10:49:45', null, '\0');
+INSERT INTO `sys_log` VALUES ('167', 'Ajax请求', '用户登录', '127.0.0.1', '管理员', 'http://localhost:8080/login/main', 'POST', 'com.ledict.web.controller.LoginController.loginMain', 0x5B226F72672E6170616368652E736869726F2E7765622E736572766C65742E536869726F48747470536572766C657452657175657374403364653532656435225D, 'fcc7d240-b795-44f5-b0cb-283d6c415f20', 0x7B2264617461223A7B2275726C223A22696E646578227D2C2273756363657373223A747275652C226D657373616765223A22E799BBE5BD95E68890E58A9F227D, '6037', 'Windows-Chrome-65.0.3325.181', null, null, null, null, null, '1', '2018-04-02 13:49:41', '1', '2018-04-02 13:49:41', null, '\0');
+INSERT INTO `sys_log` VALUES ('168', '普通请求', '跳转资源展示列表', '127.0.0.1', '管理员', 'http://localhost:8080/admin/system/rescource/list', 'GET', 'com.ledict.web.controller.system.RescourceController.list', 0x5B5D, 'fcc7d240-b795-44f5-b0cb-283d6c415f20', 0x2261646D696E2F73797374656D2F726573636F757263652F6C69737422, '10', 'Windows-Chrome-65.0.3325.181', null, null, null, null, null, '1', '2018-04-02 15:10:56', '1', '2018-04-02 15:10:56', null, '\0');
+INSERT INTO `sys_log` VALUES ('169', '普通请求', '跳转菜单列表', '127.0.0.1', '管理员', 'http://localhost:8080/admin/system/menu/list', 'GET', 'com.ledict.web.controller.system.MenuController.list', 0x5B7B7D5D, 'fcc7d240-b795-44f5-b0cb-283d6c415f20', 0x2261646D696E2F73797374656D2F6D656E752F7465737422, '5', 'Windows-Chrome-65.0.3325.181', null, null, null, null, null, '1', '2018-04-02 15:10:57', '1', '2018-04-02 15:10:57', null, '\0');
+INSERT INTO `sys_log` VALUES ('170', '普通请求', '跳转资源展示列表', '127.0.0.1', '管理员', 'http://localhost:8080/admin/system/rescource/list', 'GET', 'com.ledict.web.controller.system.RescourceController.list', 0x5B5D, 'fcc7d240-b795-44f5-b0cb-283d6c415f20', 0x2261646D696E2F73797374656D2F726573636F757263652F6C69737422, '2', 'Windows-Chrome-65.0.3325.181', null, null, null, null, null, '1', '2018-04-02 15:11:40', '1', '2018-04-02 15:11:40', null, '\0');
+INSERT INTO `sys_log` VALUES ('171', '普通请求', '跳转菜单列表', '127.0.0.1', '管理员', 'http://localhost:8080/admin/system/menu/list', 'GET', 'com.ledict.web.controller.system.MenuController.list', 0x5B7B7D5D, 'fcc7d240-b795-44f5-b0cb-283d6c415f20', 0x2261646D696E2F73797374656D2F6D656E752F7465737422, '1', 'Windows-Chrome-65.0.3325.181', null, null, null, null, null, '1', '2018-04-02 15:11:40', '1', '2018-04-02 15:11:40', null, '\0');
+INSERT INTO `sys_log` VALUES ('172', '普通请求', '跳转菜单列表', '127.0.0.1', '管理员', 'http://localhost:8080/admin/system/menu/list', 'GET', 'com.ledict.web.controller.system.MenuController.list', 0x5B7B7D5D, 'fcc7d240-b795-44f5-b0cb-283d6c415f20', 0x2261646D696E2F73797374656D2F6D656E752F7465737422, '3', 'Windows-Chrome-65.0.3325.181', null, null, null, null, null, '1', '2018-04-02 15:17:49', '1', '2018-04-02 15:17:49', null, '\0');
+INSERT INTO `sys_log` VALUES ('173', '普通请求', '跳转菜单列表', '127.0.0.1', '管理员', 'http://localhost:8080/admin/system/menu/list', 'GET', 'com.ledict.web.controller.system.MenuController.list', 0x5B7B7D5D, 'fcc7d240-b795-44f5-b0cb-283d6c415f20', 0x2261646D696E2F73797374656D2F6D656E752F7465737422, '2', 'Windows-Chrome-65.0.3325.181', null, null, null, null, null, '1', '2018-04-02 15:21:06', '1', '2018-04-02 15:21:06', null, '\0');
+INSERT INTO `sys_log` VALUES ('174', '普通请求', '跳转角色列表页面', '127.0.0.1', '管理员', 'http://localhost:8080/admin/system/role/list', 'GET', 'com.ledict.web.controller.system.RoleController.list', 0x5B5D, 'fcc7d240-b795-44f5-b0cb-283d6c415f20', 0x2261646D696E2F73797374656D2F726F6C652F6C69737422, '6', 'Windows-Chrome-65.0.3325.181', null, null, null, null, null, '1', '2018-04-02 17:08:45', '1', '2018-04-02 17:08:45', null, '\0');
+INSERT INTO `sys_log` VALUES ('175', '普通请求', '跳转系统用户列表页面', '127.0.0.1', '管理员', 'http://localhost:8080/admin/system/user/list', 'GET', 'com.ledict.web.controller.system.UserConteroller.list', 0x5B5D, 'fcc7d240-b795-44f5-b0cb-283d6c415f20', 0x2261646D696E2F73797374656D2F757365722F6C69737422, '2', 'Windows-Chrome-65.0.3325.181', null, null, null, null, null, '1', '2018-04-02 17:08:48', '1', '2018-04-02 17:08:48', null, '\0');
+INSERT INTO `sys_log` VALUES ('176', '普通请求', '跳转资源展示列表', '127.0.0.1', '管理员', 'http://localhost:8080/admin/system/rescource/list', 'GET', 'com.ledict.web.controller.system.RescourceController.list', 0x5B5D, 'fcc7d240-b795-44f5-b0cb-283d6c415f20', 0x2261646D696E2F73797374656D2F726573636F757263652F6C69737422, '5', 'Windows-Chrome-65.0.3325.181', null, null, null, null, null, '1', '2018-04-02 17:09:29', '1', '2018-04-02 17:09:29', null, '\0');
+INSERT INTO `sys_log` VALUES ('177', '普通请求', '跳转菜单列表', '127.0.0.1', '管理员', 'http://localhost:8080/admin/system/menu/list', 'GET', 'com.ledict.web.controller.system.MenuController.list', 0x5B7B7D5D, 'fcc7d240-b795-44f5-b0cb-283d6c415f20', 0x2261646D696E2F73797374656D2F6D656E752F7465737422, '19', 'Windows-Chrome-65.0.3325.181', null, null, null, null, null, '1', '2018-04-02 17:09:34', '1', '2018-04-02 17:09:34', null, '\0');
+INSERT INTO `sys_log` VALUES ('178', 'Ajax请求', '保存新增菜单数据', '127.0.0.1', '管理员', 'http://localhost:8080/admin/system/menu/add', 'POST', 'com.ledict.web.controller.system.MenuController.add', 0x5B7B226267436F6C6F72223A22222C2264656C466C6167223A66616C73652C2268726566223A222323222C2269636F6E223A22EE9CB5222C22697353686F77223A747275652C226E616D65223A22E4BC9AE5AEA1E5B9B3E58FB0222C227065726D697373696F6E223A2264697363757373696F6E3A73656C656374222C22736F7274223A33307D5D, 'fcc7d240-b795-44f5-b0cb-283d6c415f20', 0x7B2273756363657373223A747275652C226D657373616765223A22E68890E58A9F227D, '129', 'Windows-Chrome-65.0.3325.181', null, null, null, null, null, '1', '2018-04-02 17:10:13', '1', '2018-04-02 17:10:13', null, '\0');
+INSERT INTO `sys_log` VALUES ('179', '普通请求', '跳转菜单列表', '127.0.0.1', '管理员', 'http://localhost:8080/admin/system/menu/list', 'GET', 'com.ledict.web.controller.system.MenuController.list', 0x5B7B7D5D, 'fcc7d240-b795-44f5-b0cb-283d6c415f20', 0x2261646D696E2F73797374656D2F6D656E752F7465737422, '5', 'Windows-Chrome-65.0.3325.181', null, null, null, null, null, '1', '2018-04-02 17:10:15', '1', '2018-04-02 17:10:15', null, '\0');
+INSERT INTO `sys_log` VALUES ('180', '普通请求', '跳转角色列表页面', '127.0.0.1', '管理员', 'http://localhost:8080/admin/system/role/list', 'GET', 'com.ledict.web.controller.system.RoleController.list', 0x5B5D, 'fcc7d240-b795-44f5-b0cb-283d6c415f20', 0x2261646D696E2F73797374656D2F726F6C652F6C69737422, '2', 'Windows-Chrome-65.0.3325.181', null, null, null, null, null, '1', '2018-04-02 17:10:19', '1', '2018-04-02 17:10:19', null, '\0');
+INSERT INTO `sys_log` VALUES ('181', '普通请求', '跳转系统用户列表页面', '127.0.0.1', '管理员', 'http://localhost:8080/admin/system/user/list', 'GET', 'com.ledict.web.controller.system.UserConteroller.list', 0x5B5D, 'fcc7d240-b795-44f5-b0cb-283d6c415f20', 0x2261646D696E2F73797374656D2F757365722F6C69737422, '2', 'Windows-Chrome-65.0.3325.181', null, null, null, null, null, '1', '2018-04-02 17:10:19', '1', '2018-04-02 17:10:19', null, '\0');
+INSERT INTO `sys_log` VALUES ('182', '普通请求', '跳转菜单列表', '127.0.0.1', '管理员', 'http://localhost:8080/admin/system/menu/list', 'GET', 'com.ledict.web.controller.system.MenuController.list', 0x5B7B7D5D, 'fcc7d240-b795-44f5-b0cb-283d6c415f20', 0x2261646D696E2F73797374656D2F6D656E752F7465737422, '6', 'Windows-Chrome-65.0.3325.181', null, null, null, null, null, '1', '2018-04-02 17:10:19', '1', '2018-04-02 17:10:19', null, '\0');
+INSERT INTO `sys_log` VALUES ('183', '普通请求', '跳转角色列表页面', '127.0.0.1', '管理员', 'http://localhost:8080/admin/system/role/list', 'GET', 'com.ledict.web.controller.system.RoleController.list', 0x5B5D, 'fcc7d240-b795-44f5-b0cb-283d6c415f20', 0x2261646D696E2F73797374656D2F726F6C652F6C69737422, '2', 'Windows-Chrome-65.0.3325.181', null, null, null, null, null, '1', '2018-04-02 17:10:36', '1', '2018-04-02 17:10:36', null, '\0');
+INSERT INTO `sys_log` VALUES ('184', '普通请求', '跳转系统用户列表页面', '127.0.0.1', '管理员', 'http://localhost:8080/admin/system/user/list', 'GET', 'com.ledict.web.controller.system.UserConteroller.list', 0x5B5D, 'fcc7d240-b795-44f5-b0cb-283d6c415f20', 0x2261646D696E2F73797374656D2F757365722F6C69737422, '4', 'Windows-Chrome-65.0.3325.181', null, null, null, null, null, '1', '2018-04-02 17:10:36', '1', '2018-04-02 17:10:36', null, '\0');
+INSERT INTO `sys_log` VALUES ('185', '普通请求', '跳转菜单列表', '127.0.0.1', '管理员', 'http://localhost:8080/admin/system/menu/list', 'GET', 'com.ledict.web.controller.system.MenuController.list', 0x5B7B7D5D, 'fcc7d240-b795-44f5-b0cb-283d6c415f20', 0x2261646D696E2F73797374656D2F6D656E752F7465737422, '2', 'Windows-Chrome-65.0.3325.181', null, null, null, null, null, '1', '2018-04-02 17:10:36', '1', '2018-04-02 17:10:36', null, '\0');
+INSERT INTO `sys_log` VALUES ('186', 'Ajax请求', '保存编辑角色数据', '127.0.0.1', '管理员', 'http://localhost:8080/admin/system/role/edit', 'POST', 'com.ledict.web.controller.system.RoleController.edit', 0x5B7B2264656C466C6167223A66616C73652C226964223A322C226D656E75536574223A5B7B2264656C466C6167223A66616C73652C226964223A322C22736F7274223A33307D2C7B2264656C466C6167223A66616C73652C226964223A33332C22736F7274223A33307D2C7B2264656C466C6167223A66616C73652C226964223A372C22736F7274223A33307D2C7B2264656C466C6167223A66616C73652C226964223A33302C22736F7274223A33307D2C7B2264656C466C6167223A66616C73652C226964223A32332C22736F7274223A33307D2C7B2264656C466C6167223A66616C73652C226964223A35312C22736F7274223A33307D2C7B2264656C466C6167223A66616C73652C226964223A35332C22736F7274223A33307D2C7B2264656C466C6167223A66616C73652C226964223A34392C22736F7274223A33307D2C7B2264656C466C6167223A66616C73652C226964223A33382C22736F7274223A33307D2C7B2264656C466C6167223A66616C73652C226964223A31352C22736F7274223A33307D2C7B2264656C466C6167223A66616C73652C226964223A332C22736F7274223A33307D2C7B2264656C466C6167223A66616C73652C226964223A342C22736F7274223A33307D2C7B2264656C466C6167223A66616C73652C226964223A34352C22736F7274223A33307D2C7B2264656C466C6167223A66616C73652C226964223A34332C22736F7274223A33307D2C7B2264656C466C6167223A66616C73652C226964223A382C22736F7274223A33307D2C7B2264656C466C6167223A66616C73652C226964223A31382C22736F7274223A33307D2C7B2264656C466C6167223A66616C73652C226964223A31342C22736F7274223A33307D2C7B2264656C466C6167223A66616C73652C226964223A35302C22736F7274223A33307D2C7B2264656C466C6167223A66616C73652C226964223A35322C22736F7274223A33307D2C7B2264656C466C6167223A66616C73652C226964223A31302C22736F7274223A33307D2C7B2264656C466C6167223A66616C73652C226964223A32352C22736F7274223A33307D2C7B2264656C466C6167223A66616C73652C226964223A31312C22736F7274223A33307D2C7B2264656C466C6167223A66616C73652C226964223A32372C22736F7274223A33307D2C7B2264656C466C6167223A66616C73652C226964223A35352C22736F7274223A33307D2C7B2264656C466C6167223A66616C73652C226964223A31372C22736F7274223A33307D2C7B2264656C466C6167223A66616C73652C226964223A33342C22736F7274223A33307D2C7B2264656C466C6167223A66616C73652C226964223A35342C22736F7274223A33307D2C7B2264656C466C6167223A66616C73652C226964223A352C22736F7274223A33307D2C7B2264656C466C6167223A66616C73652C226964223A34322C22736F7274223A33307D2C7B2264656C466C6167223A66616C73652C226964223A34372C22736F7274223A33307D2C7B2264656C466C6167223A66616C73652C226964223A31392C22736F7274223A33307D2C7B2264656C466C6167223A66616C73652C226964223A362C22736F7274223A33307D2C7B2264656C466C6167223A66616C73652C226964223A31322C22736F7274223A33307D2C7B2264656C466C6167223A66616C73652C226964223A34382C22736F7274223A33307D2C7B2264656C466C6167223A66616C73652C226964223A32382C22736F7274223A33307D2C7B2264656C466C6167223A66616C73652C226964223A32302C22736F7274223A33307D2C7B2264656C466C6167223A66616C73652C226964223A33322C22736F7274223A33307D2C7B2264656C466C6167223A66616C73652C226964223A32342C22736F7274223A33307D2C7B2264656C466C6167223A66616C73652C226964223A34312C22736F7274223A33307D2C7B2264656C466C6167223A66616C73652C226964223A34302C22736F7274223A33307D2C7B2264656C466C6167223A66616C73652C226964223A33392C22736F7274223A33307D2C7B2264656C466C6167223A66616C73652C226964223A32322C22736F7274223A33307D2C7B2264656C466C6167223A66616C73652C226964223A33362C22736F7274223A33307D2C7B2264656C466C6167223A66616C73652C226964223A33312C22736F7274223A33307D2C7B2264656C466C6167223A66616C73652C226964223A31332C22736F7274223A33307D2C7B2264656C466C6167223A66616C73652C226964223A34362C22736F7274223A33307D2C7B2264656C466C6167223A66616C73652C226964223A31362C22736F7274223A33307D2C7B2264656C466C6167223A66616C73652C226964223A33372C22736F7274223A33307D2C7B2264656C466C6167223A66616C73652C226964223A32392C22736F7274223A33307D2C7B2264656C466C6167223A66616C73652C226964223A32362C22736F7274223A33307D2C7B2264656C466C6167223A66616C73652C226964223A312C22736F7274223A33307D2C7B2264656C466C6167223A66616C73652C226964223A32312C22736F7274223A33307D2C7B2264656C466C6167223A66616C73652C226964223A392C22736F7274223A33307D2C7B2264656C466C6167223A66616C73652C226964223A33352C22736F7274223A33307D2C7B2264656C466C6167223A66616C73652C226964223A34342C22736F7274223A33307D5D2C226E616D65223A22E7B3BBE7BB9FE7AEA1E79086E59198222C2272656D61726B73223A22227D5D, 'fcc7d240-b795-44f5-b0cb-283d6c415f20', 0x7B2273756363657373223A747275652C226D657373616765223A22E68890E58A9F227D, '116', 'Windows-Chrome-65.0.3325.181', null, null, null, null, null, '1', '2018-04-02 17:12:13', '1', '2018-04-02 17:12:13', null, '\0');
+INSERT INTO `sys_log` VALUES ('187', '普通请求', '跳转角色列表页面', '127.0.0.1', '管理员', 'http://localhost:8080/admin/system/role/list', 'GET', 'com.ledict.web.controller.system.RoleController.list', 0x5B5D, 'fcc7d240-b795-44f5-b0cb-283d6c415f20', 0x2261646D696E2F73797374656D2F726F6C652F6C69737422, '2', 'Windows-Chrome-65.0.3325.181', null, null, null, null, null, '1', '2018-04-02 17:12:14', '1', '2018-04-02 17:12:14', null, '\0');
+INSERT INTO `sys_log` VALUES ('188', '普通请求', '跳转角色列表页面', '127.0.0.1', '管理员', 'http://localhost:8080/admin/system/role/list', 'GET', 'com.ledict.web.controller.system.RoleController.list', 0x5B5D, 'fcc7d240-b795-44f5-b0cb-283d6c415f20', 0x2261646D696E2F73797374656D2F726F6C652F6C69737422, '2', 'Windows-Chrome-65.0.3325.181', null, null, null, null, null, '1', '2018-04-02 17:12:16', '1', '2018-04-02 17:12:16', null, '\0');
+INSERT INTO `sys_log` VALUES ('189', '普通请求', '跳转系统用户列表页面', '127.0.0.1', '管理员', 'http://localhost:8080/admin/system/user/list', 'GET', 'com.ledict.web.controller.system.UserConteroller.list', 0x5B5D, 'fcc7d240-b795-44f5-b0cb-283d6c415f20', 0x2261646D696E2F73797374656D2F757365722F6C69737422, '2', 'Windows-Chrome-65.0.3325.181', null, null, null, null, null, '1', '2018-04-02 17:12:16', '1', '2018-04-02 17:12:16', null, '\0');
+INSERT INTO `sys_log` VALUES ('190', '普通请求', '跳转菜单列表', '127.0.0.1', '管理员', 'http://localhost:8080/admin/system/menu/list', 'GET', 'com.ledict.web.controller.system.MenuController.list', 0x5B7B7D5D, 'fcc7d240-b795-44f5-b0cb-283d6c415f20', 0x2261646D696E2F73797374656D2F6D656E752F7465737422, '1', 'Windows-Chrome-65.0.3325.181', null, null, null, null, null, '1', '2018-04-02 17:12:16', '1', '2018-04-02 17:12:16', null, '\0');
+INSERT INTO `sys_log` VALUES ('191', '普通请求', '跳转角色列表页面', '127.0.0.1', '管理员', 'http://localhost:8080/admin/system/role/list', 'GET', 'com.ledict.web.controller.system.RoleController.list', 0x5B5D, 'fcc7d240-b795-44f5-b0cb-283d6c415f20', 0x2261646D696E2F73797374656D2F726F6C652F6C69737422, '2', 'Windows-Chrome-65.0.3325.181', null, null, null, null, null, '1', '2018-04-02 17:12:22', '1', '2018-04-02 17:12:22', null, '\0');
+INSERT INTO `sys_log` VALUES ('192', '普通请求', '跳转系统用户列表页面', '127.0.0.1', '管理员', 'http://localhost:8080/admin/system/user/list', 'GET', 'com.ledict.web.controller.system.UserConteroller.list', 0x5B5D, 'fcc7d240-b795-44f5-b0cb-283d6c415f20', 0x2261646D696E2F73797374656D2F757365722F6C69737422, '2', 'Windows-Chrome-65.0.3325.181', null, null, null, null, null, '1', '2018-04-02 17:12:22', '1', '2018-04-02 17:12:22', null, '\0');
+INSERT INTO `sys_log` VALUES ('193', '普通请求', '跳转菜单列表', '127.0.0.1', '管理员', 'http://localhost:8080/admin/system/menu/list', 'GET', 'com.ledict.web.controller.system.MenuController.list', 0x5B7B7D5D, 'fcc7d240-b795-44f5-b0cb-283d6c415f20', 0x2261646D696E2F73797374656D2F6D656E752F7465737422, '6', 'Windows-Chrome-65.0.3325.181', null, null, null, null, null, '1', '2018-04-02 17:12:22', '1', '2018-04-02 17:12:22', null, '\0');
+INSERT INTO `sys_log` VALUES ('194', '普通请求', '跳转系统用户列表页面', '127.0.0.1', '管理员', 'http://localhost:8080/admin/system/user/list', 'GET', 'com.ledict.web.controller.system.UserConteroller.list', 0x5B5D, 'fcc7d240-b795-44f5-b0cb-283d6c415f20', 0x2261646D696E2F73797374656D2F757365722F6C69737422, '8', 'Windows-Chrome-65.0.3325.181', null, null, null, null, null, '1', '2018-04-02 17:13:45', '1', '2018-04-02 17:13:45', null, '\0');
+INSERT INTO `sys_log` VALUES ('195', '普通请求', '跳转任务执行日志列表', '127.0.0.1', '管理员', 'http://localhost:8080/admin/quartzTaskLog/list', 'GET', 'com.ledict.web.controller.QuartzTaskLogController.list', 0x5B5D, 'fcc7d240-b795-44f5-b0cb-283d6c415f20', 0x222F61646D696E2F71756172747A5461736B4C6F672F6C69737422, '9', 'Windows-Chrome-65.0.3325.181', null, null, null, null, null, '1', '2018-04-02 18:17:04', '1', '2018-04-02 18:17:04', null, '\0');
+INSERT INTO `sys_log` VALUES ('196', '普通请求', '跳转任务执行日志列表', '127.0.0.1', '管理员', 'http://localhost:8080/admin/quartzTaskLog/list', 'GET', 'com.ledict.web.controller.QuartzTaskLogController.list', 0x5B5D, 'fcc7d240-b795-44f5-b0cb-283d6c415f20', 0x222F61646D696E2F71756172747A5461736B4C6F672F6C69737422, '16', 'Windows-Chrome-65.0.3325.181', null, null, null, null, null, '1', '2018-04-02 18:19:49', '1', '2018-04-02 18:19:49', null, '\0');
+INSERT INTO `sys_log` VALUES ('197', 'Ajax请求', '用户登录', '127.0.0.1', null, 'http://localhost:8080/login/main', 'POST', 'com.ledict.web.controller.LoginController.loginMain', 0x5B226F72672E6170616368652E736869726F2E7765622E736572766C65742E536869726F48747470536572766C657452657175657374403433336638306133225D, 'cdf6af8f-202d-4bc6-9c3c-447afc44fed1', 0x7B2273756363657373223A66616C73652C226D657373616765223A22E9AA8CE8AF81E7A081E8B685E697B6227D, '197', 'Windows-IE-11.0', null, null, null, null, null, null, '2018-04-02 18:25:50', null, '2018-04-02 18:25:50', null, '\0');
+INSERT INTO `sys_log` VALUES ('198', 'Ajax请求', '用户登录', '127.0.0.1', '管理员', 'http://localhost:8080/login/main', 'POST', 'com.ledict.web.controller.LoginController.loginMain', 0x5B226F72672E6170616368652E736869726F2E7765622E736572766C65742E536869726F48747470536572766C657452657175657374403330373730636433225D, 'cdf6af8f-202d-4bc6-9c3c-447afc44fed1', 0x7B2264617461223A7B2275726C223A22696E646578227D2C2273756363657373223A747275652C226D657373616765223A22E799BBE5BD95E68890E58A9F227D, '126', 'Windows-IE-11.0', null, null, null, null, null, '1', '2018-04-02 18:25:55', '1', '2018-04-02 18:25:55', null, '\0');
+INSERT INTO `sys_log` VALUES ('199', 'Ajax请求', '用户登录', '127.0.0.1', '管理员', 'http://localhost:8080/login/main', 'POST', 'com.ledict.web.controller.LoginController.loginMain', 0x5B226F72672E6170616368652E736869726F2E7765622E736572766C65742E536869726F48747470536572766C657452657175657374403263353038323635225D, '0391f4f5-496d-434a-aff5-509d980ef90d', 0x7B2273756363657373223A66616C73652C226D657373616765223A22E9AA8CE8AF81E7A081E99499E8AFAF227D, '9171', 'Windows-Chrome-65.0.3325.181', null, null, null, null, null, '1', '2018-04-03 09:17:14', '1', '2018-04-03 09:17:14', null, '\0');
+INSERT INTO `sys_log` VALUES ('200', 'Ajax请求', '用户登录', '127.0.0.1', '管理员', 'http://localhost:8080/login/main', 'POST', 'com.ledict.web.controller.LoginController.loginMain', 0x5B226F72672E6170616368652E736869726F2E7765622E736572766C65742E536869726F48747470536572766C657452657175657374403164373765383665225D, '0391f4f5-496d-434a-aff5-509d980ef90d', 0x7B2264617461223A7B2275726C223A22696E646578227D2C2273756363657373223A747275652C226D657373616765223A22E799BBE5BD95E68890E58A9F227D, '143', 'Windows-Chrome-65.0.3325.181', null, null, null, null, null, '1', '2018-04-03 09:17:23', '1', '2018-04-03 09:17:23', null, '\0');
+INSERT INTO `sys_log` VALUES ('201', '普通请求', '跳转菜单列表', '127.0.0.1', '管理员', 'http://localhost:8080/admin/system/menu/list', 'GET', 'com.ledict.web.controller.system.MenuController.list', 0x5B7B7D5D, '0391f4f5-496d-434a-aff5-509d980ef90d', 0x2261646D696E2F73797374656D2F6D656E752F7465737422, '6', 'Windows-Chrome-65.0.3325.181', null, null, null, null, null, '1', '2018-04-03 09:17:54', '1', '2018-04-03 09:17:54', null, '\0');
+
+-- ----------------------------
+-- Table structure for sys_menu
+-- ----------------------------
+DROP TABLE IF EXISTS `sys_menu`;
+CREATE TABLE `sys_menu` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `name` varchar(40) DEFAULT NULL COMMENT '菜单名称',
+  `parent_id` bigint(20) DEFAULT NULL COMMENT '父菜单',
+  `level` bigint(2) DEFAULT NULL COMMENT '菜单层级',
+  `parent_ids` varchar(2000) DEFAULT NULL COMMENT '父菜单联集',
+  `sort` smallint(6) DEFAULT NULL COMMENT '排序',
+  `href` varchar(2000) DEFAULT NULL COMMENT '链接地址',
+  `target` varchar(20) DEFAULT NULL COMMENT '打开方式',
+  `icon` varchar(100) DEFAULT NULL COMMENT '菜单图标',
+  `bg_color` varchar(255) DEFAULT NULL COMMENT '显示背景色',
+  `is_show` tinyint(2) DEFAULT NULL COMMENT '是否显示',
+  `permission` varchar(200) DEFAULT NULL COMMENT '权限标识',
+  `create_by` bigint(20) DEFAULT NULL,
+  `create_date` datetime DEFAULT NULL,
+  `update_by` bigint(20) DEFAULT NULL,
+  `update_date` datetime DEFAULT NULL,
+  `remarks` varchar(255) DEFAULT NULL,
+  `del_flag` tinyint(2) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=56 DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of sys_menu
+-- ----------------------------
+INSERT INTO `sys_menu` VALUES ('1', '系统管理', null, '1', '1,', '20', '', null, '', null, '1', '', '1', '2018-01-16 11:29:46', '1', '2018-01-20 03:09:26', null, '0');
+INSERT INTO `sys_menu` VALUES ('2', '用户管理', '1', '2', '1,2,', '9', '/admin/system/user/list', null, '', '#47e69c', '1', 'sys:user:list', '1', '2018-01-16 11:31:18', '1', '2018-01-20 05:59:20', null, '0');
+INSERT INTO `sys_menu` VALUES ('3', '角色管理', '1', '2', '1,3,', '10', '/admin/system/role/list', null, '', '#c23ab9', '1', 'sys:role:list', '1', '2018-01-16 11:32:33', '1', '2018-01-20 05:58:58', null, '0');
+INSERT INTO `sys_menu` VALUES ('4', '权限管理', '1', '2', '1,4,', '20', '/admin/system/menu/list', null, '', '#d4573b', '1', 'sys:menu:list', '1', '2018-01-16 11:33:19', '1', '2018-02-08 09:49:28', null, '0');
+INSERT INTO `sys_menu` VALUES ('5', '资源管理', '1', '2', '1,5,', '30', '/admin/system/rescource/list', null, '', '#f5e42a', '1', 'sys:rescource:list', '1', '2018-01-16 11:34:48', '1', '2018-01-20 05:56:35', null, '0');
+INSERT INTO `sys_menu` VALUES ('6', '日志管理', '1', '2', '1,6,', '40', '/admin/system/log/list', null, '', '#b56c18', '1', 'sys:log:list', '1', '2018-01-16 11:35:31', '1', '2018-01-20 05:12:17', null, '0');
+INSERT INTO `sys_menu` VALUES ('7', '网站基本信息', '1', '2', '1,7,', '50', '/admin/system/site/show', null, '', '#95deb9', '1', 'sys:site:list', '1', '2018-01-16 11:36:50', '1', '2018-01-20 05:55:44', null, '0');
+INSERT INTO `sys_menu` VALUES ('8', '数据库管理', '1', '2', '1,8,', '60', '/admin/system/table/list', null, '', '#369e16', '1', 'sys:table:list', '1', '2018-01-16 11:38:29', '1', '2018-01-20 03:14:23', null, '0');
+INSERT INTO `sys_menu` VALUES ('9', '系统字典管理', '1', '2', '1,9,', '70', '/admin/system/dict/list', null, '', '#1bbcc2', '1', 'sys:dict:list', '1', '2018-01-16 14:51:52', '1', '2018-01-20 03:12:27', null, '0');
+INSERT INTO `sys_menu` VALUES ('10', '博客管理', null, '1', '10,', '10', '', null, '', null, '1', '', '1', '2018-01-17 13:21:53', '1', '2018-01-22 00:28:28', null, '0');
+INSERT INTO `sys_menu` VALUES ('11', '栏目管理', '10', '2', '10,11,', '6', '/admin/blogChannel/list', null, '', null, '1', 'blog:channel:list', '1', '2018-01-17 13:22:57', '1', '2018-02-08 10:20:54', null, '0');
+INSERT INTO `sys_menu` VALUES ('12', '博客评论', '10', '2', '10,12,', '7', '/admin/blogComment/list', null, '', '#c8e332', '1', 'blog:comment:list', '1', '2018-01-17 13:23:52', '1', '2018-02-08 10:25:26', null, '0');
+INSERT INTO `sys_menu` VALUES ('13', '博客文章', '10', '2', '10,13,', '8', '/admin/blogArticle/list', null, '', '#1962b5', '1', 'blog:article:list', '1', '2018-01-17 16:02:07', '1', '2018-02-08 10:26:13', null, '0');
+INSERT INTO `sys_menu` VALUES ('14', '定时任务', null, '1', '14,', '5', '', null, '', null, '1', '', '1', '2018-01-26 22:39:35', '1', '2018-02-08 10:31:05', null, '0');
+INSERT INTO `sys_menu` VALUES ('15', '任务列表', '14', '2', '14,15,', '15', '/admin/quartzTask/list', null, '', '#d6d178', '1', 'quartz:task:list', '1', '2018-01-26 22:41:25', '1', '2018-02-08 10:31:11', null, '0');
+INSERT INTO `sys_menu` VALUES ('16', '任务执行日志', '14', '2', '14,16,', '10', '/admin/quartzTaskLog/list', null, '', '#5158d6', '1', 'quartz:log:list', '1', '2018-01-27 01:07:11', '1', '2018-02-08 10:37:51', null, '0');
+INSERT INTO `sys_menu` VALUES ('17', '新增字典', '9', '3', '1,9,17,', '0', '', null, null, null, '0', 'sys:dict:add', '1', '2018-02-08 09:39:09', '1', '2018-02-08 09:39:19', null, '0');
+INSERT INTO `sys_menu` VALUES ('18', '编辑字典', '9', '3', '1,9,18,', '10', '', null, null, null, '0', 'sys:dict:edit', '1', '2018-02-08 09:40:37', '1', '2018-02-08 09:40:46', null, '0');
+INSERT INTO `sys_menu` VALUES ('19', '编辑字典类型', '9', '3', '1,9,19,', '20', '', null, null, null, '0', 'sys:dict:editType', '1', '2018-02-08 09:42:46', '1', '2018-02-08 09:54:07', null, '0');
+INSERT INTO `sys_menu` VALUES ('20', '新增系统权限', '4', '3', '1,4,20,', '0', '', null, null, null, '0', 'sys:menu:add', '1', '2018-02-08 09:49:15', '1', '2018-02-08 09:49:38', null, '0');
+INSERT INTO `sys_menu` VALUES ('21', '编辑系统权限', '4', '3', '1,4,21,', '10', '', null, null, null, '0', 'sys:menu:edit', '1', '2018-02-08 09:50:16', '1', '2018-02-08 09:50:25', null, '0');
+INSERT INTO `sys_menu` VALUES ('22', '删除系统权限', '4', '3', '1,4,22,', '20', '', null, null, null, '0', 'sys:menu:delete', '1', '2018-02-08 09:51:53', '1', '2018-02-08 09:53:42', null, '0');
+INSERT INTO `sys_menu` VALUES ('23', '删除系统资源', '5', '3', '1,5,23,', '0', '', null, null, null, '0', 'sys:rescource:delete', '1', '2018-02-08 09:56:44', '1', '2018-02-08 09:56:53', null, '0');
+INSERT INTO `sys_menu` VALUES ('24', '新增系统角色', '3', '3', '1,3,24,', '0', '', null, null, null, '0', 'sys:role:add', '1', '2018-02-08 09:58:11', '1', '2018-02-08 09:58:11', null, '0');
+INSERT INTO `sys_menu` VALUES ('25', '编辑菜单权限', '3', '3', '1,3,25,', '10', '', null, null, null, '0', 'sys:role:edit', '1', '2018-02-08 09:59:01', '1', '2018-02-08 09:59:01', null, '0');
+INSERT INTO `sys_menu` VALUES ('26', '删除角色', '3', '3', '1,3,26,', '20', '', null, null, null, '0', 'sys:role:delete', '1', '2018-02-08 09:59:56', '1', '2018-02-08 09:59:56', null, '0');
+INSERT INTO `sys_menu` VALUES ('27', '编辑系统信息', '7', '3', '1,7,27,', '0', '', null, null, null, '0', 'sys:site:edit', '1', '2018-02-08 10:01:40', '1', '2018-02-08 10:01:40', null, '0');
+INSERT INTO `sys_menu` VALUES ('28', '数据库新增', '8', '3', '1,8,28,', '0', '', null, null, null, '0', 'sys:table:add', '1', '2018-02-08 10:02:51', '1', '2018-02-08 10:02:51', null, '0');
+INSERT INTO `sys_menu` VALUES ('29', '编辑数据库', '8', '3', '1,8,29,', '10', '', null, null, null, '0', 'sys:table:edit', '1', '2018-02-08 10:03:58', '1', '2018-02-08 10:03:58', null, '0');
+INSERT INTO `sys_menu` VALUES ('30', '新增数据库字段', '8', '3', '1,8,30,', '20', '', null, null, null, '0', 'sys:table:addField', '1', '2018-02-08 10:05:11', '1', '2018-02-08 10:05:11', null, '0');
+INSERT INTO `sys_menu` VALUES ('31', '编辑数据库字段', '8', '3', '1,8,31,', '30', '', null, null, null, '0', 'sys:table:editField', '1', '2018-02-08 10:05:47', '1', '2018-02-08 10:05:47', null, '0');
+INSERT INTO `sys_menu` VALUES ('32', '删除数据库字段', '8', '3', '1,8,32,', '40', '', null, null, null, '0', 'sys:table:deleteField', '1', '2018-02-08 10:07:29', '1', '2018-02-08 10:15:39', null, '0');
+INSERT INTO `sys_menu` VALUES ('33', '删除数据库', '8', '3', '1,8,33,', '50', '', null, null, null, '0', 'sys:table:deleteTable', '1', '2018-02-08 10:08:16', '1', '2018-02-08 10:08:16', null, '0');
+INSERT INTO `sys_menu` VALUES ('34', '下载源码', '8', '3', '1,8,34,', '60', '', null, null, null, '0', 'sys:table:download', '1', '2018-02-08 10:09:28', '1', '2018-02-08 10:09:28', null, '0');
+INSERT INTO `sys_menu` VALUES ('35', '新增系统用户', '2', '3', '1,2,35,', '0', '', null, null, null, '0', 'sys:user:add', '1', '2018-02-08 10:10:32', '1', '2018-02-08 10:10:32', null, '0');
+INSERT INTO `sys_menu` VALUES ('36', '编辑系统用户', '2', '3', '1,2,36,', '10', '', null, null, null, '0', 'sys:user:edit', '1', '2018-02-08 10:11:49', '1', '2018-02-08 10:11:49', null, '0');
+INSERT INTO `sys_menu` VALUES ('37', '删除系统用户', '2', '3', '1,2,37,', '20', '', null, null, null, '0', 'sys:user:delete', '1', '2018-02-08 10:12:43', '1', '2018-02-08 10:12:43', null, '0');
+INSERT INTO `sys_menu` VALUES ('38', '新增博客文章', '13', '3', '10,13,38,', '0', '', null, null, null, '0', 'blog:article:add', '1', '2018-02-08 10:16:59', '1', '2018-02-08 10:16:59', null, '0');
+INSERT INTO `sys_menu` VALUES ('39', '博客文章编辑', '13', '3', '10,13,39,', '10', '', null, null, null, '0', 'blog:article:edit', '1', '2018-02-08 10:17:16', '1', '2018-02-08 10:17:16', null, '0');
+INSERT INTO `sys_menu` VALUES ('40', '博客文章删除', '13', '3', '10,13,40,', '20', '', null, null, null, '0', 'blog:article:delete', '1', '2018-02-08 10:17:34', '1', '2018-02-08 10:44:02', null, '0');
+INSERT INTO `sys_menu` VALUES ('41', '博客评论回复', '12', '3', '10,12,41,', '0', '', null, null, null, '0', 'blog:comment:reply', '1', '2018-02-08 10:19:29', '1', '2018-02-08 10:20:33', null, '0');
+INSERT INTO `sys_menu` VALUES ('42', '新增博客栏目', '11', '3', '10,11,42,', '0', '', null, null, null, '0', 'blog:channel:add', '1', '2018-02-08 10:22:06', '1', '2018-02-08 10:22:06', null, '0');
+INSERT INTO `sys_menu` VALUES ('43', '编辑博客栏目', '11', '3', '10,11,43,', '10', '', null, null, null, '0', 'blog:channel:edit', '1', '2018-02-08 10:23:31', '1', '2018-02-08 10:23:31', null, '0');
+INSERT INTO `sys_menu` VALUES ('44', '删除博客栏目', '11', '3', '10,11,44,', '20', '', null, null, null, '0', 'blog:channel:delete', '1', '2018-02-08 10:23:57', '1', '2018-02-08 10:23:57', null, '0');
+INSERT INTO `sys_menu` VALUES ('45', '删除博客评论', '12', '3', '10,12,45,', '10', '', null, null, null, '0', 'blog:comment:delete', '1', '2018-02-08 10:28:48', '1', '2018-02-08 10:28:48', null, '0');
+INSERT INTO `sys_menu` VALUES ('46', '新增定时任务', '15', '3', '14,15,46,', '0', '', null, null, null, '0', 'quartz:task:add', '1', '2018-02-08 10:32:46', '1', '2018-02-08 10:32:46', null, '0');
+INSERT INTO `sys_menu` VALUES ('47', '编辑定时任务', '15', '3', '14,15,47,', '10', '', null, null, null, '0', 'quartz:task:edit', '1', '2018-02-08 10:34:18', '1', '2018-02-08 10:34:18', null, '0');
+INSERT INTO `sys_menu` VALUES ('48', '删除定时任务', '15', '3', '14,15,48,', '20', '', null, null, null, '0', 'quartz:task:delete', '1', '2018-02-08 10:35:07', '1', '2018-02-08 10:35:07', null, '0');
+INSERT INTO `sys_menu` VALUES ('49', '暂停定时任务', '15', '3', '14,15,49,', '30', '', null, null, null, '0', 'quartz:task:paush', '1', '2018-02-08 10:35:43', '1', '2018-02-08 10:35:43', null, '0');
+INSERT INTO `sys_menu` VALUES ('50', '恢复运行任务', '15', '3', '14,15,50,', '40', '', null, null, null, '0', 'quartz:task:resume', '1', '2018-02-08 10:36:26', '1', '2018-02-08 10:36:26', null, '0');
+INSERT INTO `sys_menu` VALUES ('51', '立即执行运行任务', '15', '3', '14,15,51,', '50', '', null, null, null, '0', 'quartz:task:run', '1', '2018-02-08 10:36:55', '1', '2018-02-08 10:36:55', null, '0');
+INSERT INTO `sys_menu` VALUES ('52', '删除定时任务日志', '16', '3', '14,16,52,', '0', '', null, null, null, '0', 'quartz:log:delete', '1', '2018-02-08 10:39:04', '1', '2018-02-08 10:39:04', null, '0');
+INSERT INTO `sys_menu` VALUES ('53', '修改密码', '2', '3', '1,2,53,', '30', '', null, '', null, '0', 'sys:user:changePassword', '1', '2018-03-15 10:14:06', '1', '2018-03-15 10:14:06', null, '0');
+INSERT INTO `sys_menu` VALUES ('54', '删除字典', '9', '3', '1,9,54,', '30', '', null, null, null, '0', 'sys:dict:delete', '1', '2018-03-15 10:16:55', '1', '2018-03-15 10:16:55', null, '0');
+INSERT INTO `sys_menu` VALUES ('55', '会审平台', null, '1', '55,', '30', '##', null, '', null, '1', 'discussion:select', '1', '2018-04-02 17:10:13', '1', '2018-04-02 17:10:13', null, '0');
+
+-- ----------------------------
+-- Table structure for sys_rescource
+-- ----------------------------
+DROP TABLE IF EXISTS `sys_rescource`;
+CREATE TABLE `sys_rescource` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '主键',
+  `file_name` varchar(255) DEFAULT NULL COMMENT '文件名称',
+  `source` varchar(255) DEFAULT NULL COMMENT '来源',
+  `web_url` varchar(500) DEFAULT NULL COMMENT '资源网络地址',
+  `hash` varchar(255) DEFAULT NULL COMMENT '文件标识',
+  `file_size` varchar(50) DEFAULT NULL COMMENT '文件大小',
+  `file_type` varchar(255) DEFAULT NULL COMMENT '文件类型',
+  `create_date` datetime DEFAULT NULL COMMENT '创建时间',
+  `create_by` bigint(20) DEFAULT NULL COMMENT '创建人',
+  `update_date` datetime DEFAULT NULL COMMENT '修改时间',
+  `update_by` bigint(20) DEFAULT NULL COMMENT '修改人',
+  `remarks` varchar(255) DEFAULT NULL COMMENT '备注',
+  `del_flag` tinyint(4) DEFAULT NULL COMMENT '删除标记',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8 COMMENT='系统资源';
+
+-- ----------------------------
+-- Records of sys_rescource
+-- ----------------------------
+INSERT INTO `sys_rescource` VALUES ('2', '77861034-25ef-4856-87ec-24da18398ecf.jpg', 'qiniu', 'https://static.mysiteforme.com/77861034-25ef-4856-87ec-24da18398ecf.jpg', 'FvRpJ_-DlF-eFJ4l28xVGVUsHRCX', '105kb', '.jpg', '2018-02-08 13:57:44', '1', '2018-02-08 13:57:44', '1', null, '0');
+INSERT INTO `sys_rescource` VALUES ('3', '04ea0ce0-e53b-4eb3-b1ea-dc316063d29f.jpg', 'qiniu', 'https://static.mysiteforme.com/04ea0ce0-e53b-4eb3-b1ea-dc316063d29f.jpg', 'FrJ5IUYX0zMw5HpDW4fUfNvMv4Q3', '329kb', '.jpg', '2018-02-08 13:59:06', '1', '2018-02-08 13:59:06', '1', null, '0');
+INSERT INTO `sys_rescource` VALUES ('4', '3e2baf40-f2e5-4b3c-93d1-3f97965017ec.jpg', 'qiniu', 'https://static.mysiteforme.com/3e2baf40-f2e5-4b3c-93d1-3f97965017ec.jpg', 'FpgHWPFgcyMX1lqNEDk8Pdnl3lsu', '228kb', '.jpg', '2018-03-13 12:54:36', '1', '2018-03-13 12:54:36', '1', null, '0');
+
+-- ----------------------------
+-- Table structure for sys_role
+-- ----------------------------
+DROP TABLE IF EXISTS `sys_role`;
+CREATE TABLE `sys_role` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `name` varchar(40) DEFAULT NULL COMMENT '角色名称',
+  `create_date` datetime DEFAULT NULL,
+  `create_by` bigint(20) DEFAULT NULL,
+  `update_date` datetime DEFAULT NULL,
+  `update_by` bigint(20) DEFAULT NULL,
+  `remarks` varchar(255) DEFAULT NULL,
+  `del_flag` tinyint(2) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of sys_role
+-- ----------------------------
+INSERT INTO `sys_role` VALUES ('1', '老司机', '2017-11-02 14:19:07', '1', '2018-02-08 13:24:35', '1', '', '0');
+INSERT INTO `sys_role` VALUES ('2', '系统管理员', '2017-11-29 19:36:37', '1', '2018-04-02 17:12:13', '1', '', '0');
+
+-- ----------------------------
+-- Table structure for sys_role_menu
+-- ----------------------------
+DROP TABLE IF EXISTS `sys_role_menu`;
+CREATE TABLE `sys_role_menu` (
+  `role_id` bigint(20) NOT NULL,
+  `menu_id` bigint(20) NOT NULL,
+  PRIMARY KEY (`role_id`,`menu_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of sys_role_menu
+-- ----------------------------
+INSERT INTO `sys_role_menu` VALUES ('1', '1');
+INSERT INTO `sys_role_menu` VALUES ('1', '2');
+INSERT INTO `sys_role_menu` VALUES ('1', '3');
+INSERT INTO `sys_role_menu` VALUES ('1', '4');
+INSERT INTO `sys_role_menu` VALUES ('1', '8');
+INSERT INTO `sys_role_menu` VALUES ('1', '10');
+INSERT INTO `sys_role_menu` VALUES ('1', '13');
+INSERT INTO `sys_role_menu` VALUES ('2', '1');
+INSERT INTO `sys_role_menu` VALUES ('2', '2');
+INSERT INTO `sys_role_menu` VALUES ('2', '3');
+INSERT INTO `sys_role_menu` VALUES ('2', '4');
+INSERT INTO `sys_role_menu` VALUES ('2', '5');
+INSERT INTO `sys_role_menu` VALUES ('2', '6');
+INSERT INTO `sys_role_menu` VALUES ('2', '7');
+INSERT INTO `sys_role_menu` VALUES ('2', '8');
+INSERT INTO `sys_role_menu` VALUES ('2', '9');
+INSERT INTO `sys_role_menu` VALUES ('2', '10');
+INSERT INTO `sys_role_menu` VALUES ('2', '11');
+INSERT INTO `sys_role_menu` VALUES ('2', '12');
+INSERT INTO `sys_role_menu` VALUES ('2', '13');
+INSERT INTO `sys_role_menu` VALUES ('2', '14');
+INSERT INTO `sys_role_menu` VALUES ('2', '15');
+INSERT INTO `sys_role_menu` VALUES ('2', '16');
+INSERT INTO `sys_role_menu` VALUES ('2', '17');
+INSERT INTO `sys_role_menu` VALUES ('2', '18');
+INSERT INTO `sys_role_menu` VALUES ('2', '19');
+INSERT INTO `sys_role_menu` VALUES ('2', '20');
+INSERT INTO `sys_role_menu` VALUES ('2', '21');
+INSERT INTO `sys_role_menu` VALUES ('2', '22');
+INSERT INTO `sys_role_menu` VALUES ('2', '23');
+INSERT INTO `sys_role_menu` VALUES ('2', '24');
+INSERT INTO `sys_role_menu` VALUES ('2', '25');
+INSERT INTO `sys_role_menu` VALUES ('2', '26');
+INSERT INTO `sys_role_menu` VALUES ('2', '27');
+INSERT INTO `sys_role_menu` VALUES ('2', '28');
+INSERT INTO `sys_role_menu` VALUES ('2', '29');
+INSERT INTO `sys_role_menu` VALUES ('2', '30');
+INSERT INTO `sys_role_menu` VALUES ('2', '31');
+INSERT INTO `sys_role_menu` VALUES ('2', '32');
+INSERT INTO `sys_role_menu` VALUES ('2', '33');
+INSERT INTO `sys_role_menu` VALUES ('2', '34');
+INSERT INTO `sys_role_menu` VALUES ('2', '35');
+INSERT INTO `sys_role_menu` VALUES ('2', '36');
+INSERT INTO `sys_role_menu` VALUES ('2', '37');
+INSERT INTO `sys_role_menu` VALUES ('2', '38');
+INSERT INTO `sys_role_menu` VALUES ('2', '39');
+INSERT INTO `sys_role_menu` VALUES ('2', '40');
+INSERT INTO `sys_role_menu` VALUES ('2', '41');
+INSERT INTO `sys_role_menu` VALUES ('2', '42');
+INSERT INTO `sys_role_menu` VALUES ('2', '43');
+INSERT INTO `sys_role_menu` VALUES ('2', '44');
+INSERT INTO `sys_role_menu` VALUES ('2', '45');
+INSERT INTO `sys_role_menu` VALUES ('2', '46');
+INSERT INTO `sys_role_menu` VALUES ('2', '47');
+INSERT INTO `sys_role_menu` VALUES ('2', '48');
+INSERT INTO `sys_role_menu` VALUES ('2', '49');
+INSERT INTO `sys_role_menu` VALUES ('2', '50');
+INSERT INTO `sys_role_menu` VALUES ('2', '51');
+INSERT INTO `sys_role_menu` VALUES ('2', '52');
+INSERT INTO `sys_role_menu` VALUES ('2', '53');
+INSERT INTO `sys_role_menu` VALUES ('2', '54');
+INSERT INTO `sys_role_menu` VALUES ('2', '55');
+
+-- ----------------------------
+-- Table structure for sys_site
+-- ----------------------------
+DROP TABLE IF EXISTS `sys_site`;
+CREATE TABLE `sys_site` (
+  `id` bigint(20) NOT NULL,
+  `name` varchar(255) DEFAULT NULL,
+  `url` varchar(500) DEFAULT NULL COMMENT '系统网址',
+  `open_message` bit(1) DEFAULT NULL COMMENT '是否开放评论',
+  `is_no_name` bit(1) DEFAULT NULL COMMENT '是否匿名评论',
+  `version` varchar(255) DEFAULT NULL,
+  `author` varchar(255) DEFAULT NULL,
+  `author_icon` varchar(255) DEFAULT NULL,
+  `weibo` varchar(255) DEFAULT NULL,
+  `qq` varchar(255) DEFAULT NULL,
+  `git` varchar(255) DEFAULT NULL,
+  `github` varchar(255) DEFAULT NULL,
+  `phone` varchar(255) DEFAULT NULL,
+  `email` varchar(255) DEFAULT NULL,
+  `address` varchar(255) DEFAULT NULL,
+  `logo` varchar(255) DEFAULT NULL,
+  `server` varchar(255) DEFAULT NULL,
+  `database` varchar(255) DEFAULT NULL,
+  `max_upload` int(11) DEFAULT NULL,
+  `keywords` varchar(255) DEFAULT NULL,
+  `description` varchar(255) DEFAULT NULL,
+  `powerby` varchar(255) DEFAULT NULL,
+  `record` varchar(255) DEFAULT NULL,
+  `create_by` bigint(20) DEFAULT NULL,
+  `create_date` datetime DEFAULT NULL,
+  `update_by` bigint(20) DEFAULT NULL,
+  `update_date` datetime DEFAULT NULL,
+  `remarks` text,
+  `del_flag` bit(1) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of sys_site
+-- ----------------------------
+INSERT INTO `sys_site` VALUES ('1', '北京律典通', 'https://mysiteforme.com/', '', '\0', '1.0', 'ledict', 'https://static.mysiteforme.com/04ea0ce0-e53b-4eb3-b1ea-dc316063d29f.jpg', 'https://weibo.com/u/2173866382', '1115784675', 'https://gitee.com/wanglingxiao/', 'https://github.com/wangl1989', '13776055179', '1115784675@qq.com', '江苏-苏州', 'http://ow9lg82yy.bkt.clouddn.com/24f5c360-485d-4a6d-9468-2a61c353cf37.ico', 'windows', 'mysql', '2', null, '网站描述', null, '苏ICP备17063650号', '1', '2017-12-30 22:46:15', '1', '2018-02-08 14:07:28', '<p>89年小码农一只,从事java后台开发</p><p><br></p>', '\0');
+
+-- ----------------------------
+-- Table structure for sys_user
+-- ----------------------------
+DROP TABLE IF EXISTS `sys_user`;
+CREATE TABLE `sys_user` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '用户ID',
+  `login_name` varchar(36) DEFAULT NULL COMMENT '登录名',
+  `nick_name` varchar(40) DEFAULT NULL COMMENT '昵称',
+  `icon` varchar(2000) DEFAULT NULL,
+  `password` varchar(40) DEFAULT NULL COMMENT '密码',
+  `salt` varchar(40) DEFAULT NULL COMMENT 'shiro加密盐',
+  `tel` varchar(11) DEFAULT NULL COMMENT '手机号码',
+  `email` varchar(200) DEFAULT NULL COMMENT '邮箱地址',
+  `locked` tinyint(2) DEFAULT NULL COMMENT '是否锁定',
+  `create_date` datetime DEFAULT NULL,
+  `create_by` bigint(20) DEFAULT NULL,
+  `update_date` datetime DEFAULT NULL,
+  `update_by` bigint(20) DEFAULT NULL,
+  `remarks` varchar(255) DEFAULT NULL,
+  `del_flag` tinyint(4) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of sys_user
+-- ----------------------------
+INSERT INTO `sys_user` VALUES ('1', 'admin', '管理员', 'https://static.mysiteforme.com/04ea0ce0-e53b-4eb3-b1ea-dc316063d29f.jpg', '721e193bdf60d77a6aa550ea3f4aef8c9c7473a0', 'a8061fb4d1041f45', '13776055179', 'b@qq.com', '0', '2018-03-01 22:19:39', '1', '2018-03-08 14:01:07', '1', '', '0');
+
+-- ----------------------------
+-- Table structure for sys_user_role
+-- ----------------------------
+DROP TABLE IF EXISTS `sys_user_role`;
+CREATE TABLE `sys_user_role` (
+  `user_id` bigint(20) NOT NULL,
+  `role_id` bigint(20) NOT NULL,
+  PRIMARY KEY (`user_id`,`role_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of sys_user_role
+-- ----------------------------
+INSERT INTO `sys_user_role` VALUES ('1', '1');
+INSERT INTO `sys_user_role` VALUES ('1', '2');

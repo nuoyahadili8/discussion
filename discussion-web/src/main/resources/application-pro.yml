@@ -1,0 +1,38 @@
+#生产环境配置
+server:
+  #端口
+  port: 8080
+spring:
+  profiles: pro
+  #redis配置
+  redis:
+      database: 0
+      host: 127.0.0.1
+      port: 6379
+      password:      # 密码（默认为空）
+      timeout: 6000  # 连接超时时长（毫秒）
+      pool:
+        max-active: 1000  # 连接池最大连接数（使用负值表示没有限制）
+        max-wait: -1      # 连接池最大阻塞等待时间（使用负值表示没有限制）
+        max-idle: 10      # 连接池中的最大空闲连接
+        min-idle: 5       # 连接池中的最小空闲连接
+  # 数据源配置
+  datasource:
+    url: jdbc:mysql://127.0.0.1:3306/discussiondb?useUnicode=true&characterEncoding=utf8&useSSL=false&tinyInt1isBit=true
+    username: root
+    password: 123qwe
+
+#日志
+logging:
+  config: classpath:log/logback.xml
+  path: /home/log/discussion
+
+#自定义配置属性
+#源码生成文件夹
+#阿里云路径
+source-code-dic:  /opt/mysite
+source-code-zipfile:  /opt/源码.rar
+
+#搜索文件生成包的位置
+#阿里云路径
+lucence-dic : /opt/lucence
